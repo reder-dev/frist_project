@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 웹 자원을 제외한 프로젝트의 모든 자원을 관리하는 곳 -->
+	
+	<!-- DataSource - DB연결정보 객체  -->
+	
+	
+<!-- 	<bean id="dataSource"  -->
+<!-- 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!-- 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/> -->
+<!-- 		<property name="url" value="com.mysql.cj.jdbc.Driver"/> -->
+<!-- 		<property name="username" value="root"/> -->
+<!-- 		<property name="password" value="1234"/> -->
+<!-- </bean> -->
+	<!-- Data Source - DB의   -->					
+				
+				
+
+
+
+
+	<!-- DataSource - DB연결정보 객체  -->
+	
+<!-- 디비연결정보 객체 (hikariCP) -->		
+<bean id="hikariConfig"
+		class="com.zaxxer.hikari.HikariConfig">
+		<!--  <property name="driverClassName" 
+					value="com.mysql.cj.jdbc.Driver"/> -->
+		<property name="driverClassName" 
+				value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
+		<property name="jdbcUrl"
+					value="jdbc:log4jdbc:mysql://localhost:3306/springdb" />
+		<property name="username" value="root" />
+		<property name="password" value="1234" />
+
+</bean>
+
+
+
+<!-- 디비연결정보 객체 (hikariCP) -->	
+<!-- Data Source - DB의    연결정보 객체 (hikariCP)-->		
+<bean id="dataSource"
+		class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+		
+		<constructor-arg ref="hikariConfig"/>
+</bean>
+
+<!-- Data Source - DB의    연결정보 객체 (hikariCP)-->		
+
+<!-- SqlSessionFactory - 디비연결(Connection), SQL 실행, 
+                         MyBatis 설정, mapper 실행 -->
+<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" 
+					value="classpath:/mybatis-config.xml"/>
+		<property name="mapperLocations"
+					value="classpath:/mappers/**/*Mapper.xml "></property>
+		
+</bean>
+
+
+
+<!-- SqlSessionFactory - 디비연결(Connection), SQL 실행 ,
+							MyBatis 설정, mapper 설정 -->
+
+
+<!-- SqlSessionTemle 객체 - 자동 디비 연결(Connection)/종료,
+							트래젝션 관리, 쓰레드 처리 안정성 높임,
+							SQL 실행, MyBatis설정, mapper설정 -->
+
+<bean id="sqlSession" 
+		class="org.mybatis.spring.SqlSessionTemplate"
+		destroy-method="close">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
+
+
+</bean>
+
+
+
+
+
+<!-- SqlSessionTemle 객체 - 자동 디비 연결(Connection)/종료,
+							트래젝션 관리, 쓰레드 처리 안정성 높임,
+							SQL 실행, MyBatis설정, mapper설정 -->
+
+
+	
+	<!-- 외부에서 생성된 객체(빈)을 찾아와서 사용가능 설정 -->
+	<context:component-scan base-package="com.itwillbs.persistence" />	
+	<context:component-scan base-package="com.itwillbs.service" />	
+		
+</beans>
