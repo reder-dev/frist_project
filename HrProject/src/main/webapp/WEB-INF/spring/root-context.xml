@@ -24,7 +24,7 @@
 		<property name="dataSource" ref="dataSource"/>
 		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
 		<!-- Mapper 위치 지정 (필요 시 주석 해제) -->
-		<!-- <property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" /> -->
+		<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" />
 	</bean>
 
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
@@ -32,6 +32,7 @@
 	</bean>
 
 	<!-- 컴포넌트 스캔 설정 (Controller 제외) -->
-	<context:component-scan base-package="com.itwill" />
+	<context:component-scan base-package="com.itwill.persistence" />
+	<context:component-scan base-package="com.itwill.service" />
 
 </beans>
