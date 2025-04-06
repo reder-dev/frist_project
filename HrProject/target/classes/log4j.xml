@@ -11,8 +11,8 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.itwill.hr">
-		<level value="info" />
+	<logger name="com.itwill">
+		<level value="debug" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
