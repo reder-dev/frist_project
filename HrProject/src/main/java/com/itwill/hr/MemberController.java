@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itiwll.domain.MemberVO;
 import com.itwill.service.MemberService;
@@ -69,7 +70,7 @@ public class MemberController {
 	
 	// 로그인 POST
 	@PostMapping(value = "/login")
-	public String memberLoginPOST( /*@ModelAttribute*/ MemberVO vo,HttpSession session, Model model
+	public String memberLoginPOST( /*@ModelAttribute*/ MemberVO vo,HttpSession session, RedirectAttributes rttr
 									 /* @ModelAttribute("userid") String userid,
 									 * @RequestParam("userpw") String userpw
 									 */) {
@@ -97,8 +98,8 @@ public class MemberController {
             session.setAttribute("loginUser", vo.getEmp_id()); // 세션에 사용자 정보 저장
             return "redirect:/member/userinfo"; // 특정 페이지로 이동
         } else {
-            model.addAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
-            return "redirect:/member/main"; // 로그인 페이지로 다시 이동
+            rttr.addFlashAttribute("message", "정상 로그인 되었습니다.");
+            return "redirect:/member/main"; // 메인 페이지로 이동
         }
 		
 	}
@@ -138,6 +139,19 @@ public class MemberController {
 	public String findMemberPhonePOST(MemberVO vo) {
 		
 		return "/login";
+	}
+	
+	@RequestMapping(value = "/member/main",method = RequestMethod.GET)
+	public String MemberMainGET() {
+		logger.info(" /member/main -> MemberMainGET()호출");
+		
+		logger.info(" /member/main.jsp 페이지로 이동");
+		return "/member/main";
+	}
+	
+	@PostMapping(value = "/member/main")
+	public String memberMainPOST(MemberVO vo) {
+	    return "/member/main";
 	}
 	
 	
