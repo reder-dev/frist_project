@@ -23,12 +23,17 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
 		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
-		<!-- Mapper 위치 지정 (필요 시 주석 해제) -->
-		<!-- <property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" /> -->
+		<!-- Mapper 위치 지정 -->
+		<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" />
 	</bean>
 
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
 		<constructor-arg ref="sqlSessionFactory"/>
+	</bean>
+
+	<!-- MyBatis Mapper 인터페이스 스캔 설정 추가 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.itwill.approval.mapper" />
 	</bean>
 
 	<!-- 컴포넌트 스캔 설정 (Controller 제외) -->
