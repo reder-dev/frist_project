@@ -65,7 +65,7 @@
 	
 	<!-- 회원번호로 회원 조회 -->
 	<select id="selectByEmpId" parameterType="string" resultType="com.itiwll.domain.MemberVO">
-    SELECT * FROM MEMBER WHERE emp_id = #{empId}
+    SELECT * FROM EMPLOYEE WHERE emp_id = #{empId}
 	</select>
 	<!-- 회원번호로 회원 조회 -->
 

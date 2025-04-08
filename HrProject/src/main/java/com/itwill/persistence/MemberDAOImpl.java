@@ -164,5 +164,11 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		return memberList;
 	}
+	
+	@Override
+	public MemberVO selectByEmpId(String empId) {
+		MemberVO member = sqlSession.selectOne(NAMESPACE + "selectByEmpId");
+		return member;
+	}
 
 }

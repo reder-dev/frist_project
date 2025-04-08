@@ -69,12 +69,11 @@ public class MemberServiceImpl implements MemberService {
 		return mdao.getMemberList();
 	}
 	
-	@Inject // 또는 @Autowired
-    private MemberMapper memberMapper;
+	
 	
 	@Override
 	public MemberVO getMemberById(String empId) {
-	    return memberMapper.selectByEmpId(empId);
+	    return mdao.selectByEmpId(empId);
 	}
 
 		

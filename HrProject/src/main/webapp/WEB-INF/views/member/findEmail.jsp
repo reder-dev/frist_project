@@ -95,22 +95,23 @@
             const email = document.querySelector("input[name='email']").value;
 
             // 값 확인
-            console.log("empId:", empId, "email:", email);
+            console.log("empId:", empId, "emp_email:", email);
 
-            fetch("/member/sendCode", {
+            fetch("/auth/sendCode", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json;",
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
                     emp_id: empId,
                     email: email
                 })
             })
-            .then(res => res.text())
-            .then(mes => alert(mes))
-            .catch(err => {
-                console.err(err);
+            .then(function(res){return res.text()})
+            .then(function(msg){console.log(JSON.parse(msg).result.song2)})
+            .catch(function(err) {
+                
                 alert("인증코드 전송 실패");
             });
         });
@@ -126,9 +127,9 @@
                 },
                 body: JSON.stringify({ code: code })
             })
-            .then(res => res.text())
-            .then(msg => alert(msg))
-            .catch(err => {
+            .then(function(res){return res.text()})
+            .then(function(msg){console.log(msg)})
+            .catch(function(err){
                 console.error(err);
                 alert("인증코드 확인 실패");
             });

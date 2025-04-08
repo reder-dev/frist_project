@@ -1,5 +1,6 @@
 package com.itwill.hr;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itiwll.domain.MemberVO;
 import com.itwill.service.EmailService;
 import com.itwill.service.MemberService;
+import com.itwill.util.ResponseAPI;
 
 @Controller
 @RequestMapping("/member")
@@ -29,8 +32,6 @@ public class MemberController {
 	@Inject
 	private MemberService mService;
 	
-	@Inject
-    private EmailService emailService;
 	
 	// http://localhost:8088/web/MemberJoin.me (x)
 	// http://localhost:8088/web/member/MemberJoin.me (o)
@@ -177,43 +178,6 @@ public class MemberController {
 	}
 	
 	
-	// 인증코드 전송
-	@PostMapping(value = "/sendCode", consumes = "application/json")
-	@ResponseBody
-	public String sendVerificationCode(@RequestBody Map<String, String> data, HttpSession session) {
-	    String empId = data.get("emp_id");
-	    String inputEmail = data.get("email");
-
-	    // DB에서 emp_id로 이메일 조회
-	    MemberVO member = mService.getMemberById(empId);
-
-	    if (member == null) return "사원번호가 존재하지 않습니다.";
-	    if (!inputEmail.equals(member.getEmp_email())) return "이메일이 일치하지 않습니다.";
-
-	    // 인증코드 생성
-	    String code = String.valueOf((int)(Math.random() * 900000) + 100000);
-
-	    // 메일 전송 (JavaMailSender 사용)
-	    emailService.sendEmail(inputEmail, "인증코드", "인증코드는: " + code);
-
-	    // 세션에 코드 저장
-	    session.setAttribute("authCode", code);
-	    session.setAttribute("authEmail", inputEmail);
-
-	    return "인증코드가 이메일로 전송되었습니다.";
-	}
 	
-	// 인증코드 확인
-	@PostMapping("/verifyCode")
-	@ResponseBody
-	public String verifyCode(@RequestBody Map<String, String> data, HttpSession session) {
-	    String inputCode = data.get("code");
-	    String sessionCode = (String) session.getAttribute("authCode");
-
-	    if (sessionCode == null) return "인증 요청이 없습니다.";
-	    if (!inputCode.equals(sessionCode)) return "인증코드가 일치하지 않습니다.";
-
-	    return "인증 성공!";
-	}
 	
 }

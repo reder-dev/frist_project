@@ -27,4 +27,6 @@ public interface MemberDAO {
 	
 	// 관리자 - 회원전체 목록조회
 	public List<MemberVO> getMemberList();
+
+	public MemberVO selectByEmpId(String empId);
 }
