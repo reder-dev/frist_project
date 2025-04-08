@@ -1,5 +1,7 @@
 package com.itwill.hr;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -8,21 +10,27 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itiwll.domain.MemberVO;
+import com.itwill.service.EmailService;
 import com.itwill.service.MemberService;
 
 @Controller
-@RequestMapping("/member/*")
+@RequestMapping("/member")
 public class MemberController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	@Inject
 	private MemberService mService;
+	
+	@Inject
+    private EmailService emailService;
 	
 	// http://localhost:8088/web/MemberJoin.me (x)
 	// http://localhost:8088/web/member/MemberJoin.me (o)
@@ -88,14 +96,15 @@ public class MemberController {
 		// 로그인 실패
 		if(resultVO == null) {
 			logger.info(" 로그인 실패! ");
-			return "redirect:/login";
+			rttr.addFlashAttribute("message", "로그인 실패!");
+		    return "redirect:/member/login";
 		}
 
 		// 세션 영역에 로그인 성공한 사용자의 아이디를 저장
 		session.setAttribute("id",resultVO.getEmp_id());
 		
-		if ("1234".equals(vo.getEmp_pw())) {
-            session.setAttribute("loginUser", vo.getEmp_id()); // 세션에 사용자 정보 저장
+		if ("1234".equals(resultVO.getEmp_pw())) {
+            session.setAttribute("loginUser", resultVO.getEmp_id()); // 세션에 사용자 정보 저장
             return "redirect:/member/userinfo"; // 특정 페이지로 이동
         } else {
             rttr.addFlashAttribute("message", "정상 로그인 되었습니다.");
@@ -141,7 +150,7 @@ public class MemberController {
 		return "/login";
 	}
 	
-	@RequestMapping(value = "/member/main",method = RequestMethod.GET)
+	@RequestMapping(value = "/main",method = RequestMethod.GET)
 	public String MemberMainGET() {
 		logger.info(" /member/main -> MemberMainGET()호출");
 		
@@ -149,10 +158,62 @@ public class MemberController {
 		return "/member/main";
 	}
 	
-	@PostMapping(value = "/member/main")
+	@PostMapping(value = "/main")
 	public String memberMainPOST(MemberVO vo) {
 	    return "/member/main";
 	}
 	
+	@RequestMapping(value = "/userinfo",method = RequestMethod.GET)
+	public String MemberUserinfoGET() {
+		logger.info(" /member/main -> MemberUserinfoGET()호출");
+		
+		logger.info(" /member/userinfo.jsp 페이지로 이동");
+		return "/member/userinfo";
+	}
+	
+	@PostMapping(value = "/userinfo")
+	public String memberUserinfoPOST(MemberVO vo) {
+	    return "/member/userinfo";
+	}
+	
+	
+	// 인증코드 전송
+	@PostMapping(value = "/sendCode", consumes = "application/json")
+	@ResponseBody
+	public String sendVerificationCode(@RequestBody Map<String, String> data, HttpSession session) {
+	    String empId = data.get("emp_id");
+	    String inputEmail = data.get("email");
+
+	    // DB에서 emp_id로 이메일 조회
+	    MemberVO member = mService.getMemberById(empId);
+
+	    if (member == null) return "사원번호가 존재하지 않습니다.";
+	    if (!inputEmail.equals(member.getEmp_email())) return "이메일이 일치하지 않습니다.";
+
+	    // 인증코드 생성
+	    String code = String.valueOf((int)(Math.random() * 900000) + 100000);
+
+	    // 메일 전송 (JavaMailSender 사용)
+	    emailService.sendEmail(inputEmail, "인증코드", "인증코드는: " + code);
+
+	    // 세션에 코드 저장
+	    session.setAttribute("authCode", code);
+	    session.setAttribute("authEmail", inputEmail);
+
+	    return "인증코드가 이메일로 전송되었습니다.";
+	}
+	
+	// 인증코드 확인
+	@PostMapping("/verifyCode")
+	@ResponseBody
+	public String verifyCode(@RequestBody Map<String, String> data, HttpSession session) {
+	    String inputCode = data.get("code");
+	    String sessionCode = (String) session.getAttribute("authCode");
+
+	    if (sessionCode == null) return "인증 요청이 없습니다.";
+	    if (!inputCode.equals(sessionCode)) return "인증코드가 일치하지 않습니다.";
+
+	    return "인증 성공!";
+	}
 	
 }

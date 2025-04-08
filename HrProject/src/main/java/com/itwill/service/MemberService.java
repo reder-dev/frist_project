@@ -23,7 +23,8 @@ public interface MemberService {
 	
 	// 회원정보 목록조회
 	public List<MemberVO> memberList();
-		
 	
+	// 사원번호로 회원 조회 (이메일 확인용)	
+	public MemberVO getMemberById(String empId);
 	
 }

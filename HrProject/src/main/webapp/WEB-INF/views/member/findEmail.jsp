@@ -69,8 +69,8 @@
                 <input type="text" name="emp_id" placeholder="사원번호(ID)">
             </div>
             <div class="input-group">
-                <input type="email" name="email" placeholder="Email">
-                <button type="button" class="auth-button">인증코드 보내기</button>
+                <input type="email" name="email" id="email-input" placeholder="Email">
+                <button type="button" class="auth-button" id="send-code">인증코드 보내기</button>
             </div>
             <div class="input-group">
                 <input type="text" name="auth_code" placeholder="인증코드 입력">
@@ -85,5 +85,55 @@
             <button type="submit">send</button>
         </form>
     </div>
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // 인증코드 보내기 버튼
+        document.querySelector("#send-code").addEventListener("click", function () {
+            const empId = document.querySelector("input[name='emp_id']").value;
+            const email = document.querySelector("input[name='email']").value;
+
+            // 값 확인
+            console.log("empId:", empId, "email:", email);
+
+            fetch("/member/sendCode", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    emp_id: empId,
+                    email: email
+                })
+            })
+            .then(res => res.text())
+            .then(mes => alert(mes))
+            .catch(err => {
+                console.err(err);
+                alert("인증코드 전송 실패");
+            });
+        });
+
+        // 인증코드 확인 버튼
+        document.querySelector(".verify-button").addEventListener("click", function () {
+            const code = document.querySelector("input[name='auth_code']").value;
+
+            fetch("/member/verifyCode", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(res => res.text())
+            .then(msg => alert(msg))
+            .catch(err => {
+                console.error(err);
+                alert("인증코드 확인 실패");
+            });
+        });
+    });
+    </script>
 </body>
 </html>

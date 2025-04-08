@@ -10,8 +10,8 @@ public class MemberVO {
 	//@Getter
 	private String emp_id;
 	private String emp_pw;
-	private String username;
-	private String useremail;
+	private String emp_name;
+	private String emp_email;
 	private Timestamp regdate;
 	private Timestamp updatedate;
 	

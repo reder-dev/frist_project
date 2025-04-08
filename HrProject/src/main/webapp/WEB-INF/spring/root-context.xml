@@ -34,5 +34,31 @@
 	<!-- 컴포넌트 스캔 설정 (Controller 제외) -->
 	<context:component-scan base-package="com.itwill.persistence" />
 	<context:component-scan base-package="com.itwill.service" />
+	
+	
+	<!-- JavaMailSender 설정 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com"/>
+		<property name="port" value="587"/>
+		<property name="username" value="hhsky1111@gmail.com"/> <!-- 본인 Gmail 주소 -->
+		<property name="password" value="ucexcmgwtirpyytb"/>    <!-- 앱 비밀번호 사용해야 함 -->
+	
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+	
+	<!-- MyBatis 매퍼 인터페이스 등록 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.itwill.mapper"/>
+	</bean>
+
+
 
 </beans>

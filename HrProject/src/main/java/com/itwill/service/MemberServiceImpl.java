@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.itiwll.domain.MemberVO;
+import com.itwill.mapper.MemberMapper;
 import com.itwill.persistence.MemberDAO;
 
 @Service
@@ -32,6 +33,7 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVO memberLoginCheck(MemberVO loginVO) {
 		logger.info(" memberLoginCheck() 실행 ");
 		logger.info(" DAO메서드 호출 ");
+		
 		
 		MemberVO resultVO = mdao.loginMember(loginVO);
 		logger.info(" SQL 구문 실행완료! ");
@@ -65,6 +67,14 @@ public class MemberServiceImpl implements MemberService {
 	public List<MemberVO> memberList() {
 		logger.info(" memberList() 호출 ");
 		return mdao.getMemberList();
+	}
+	
+	@Inject // 또는 @Autowired
+    private MemberMapper memberMapper;
+	
+	@Override
+	public MemberVO getMemberById(String empId) {
+	    return memberMapper.selectByEmpId(empId);
 	}
 
 		
