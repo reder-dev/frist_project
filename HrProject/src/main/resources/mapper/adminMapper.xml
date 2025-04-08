@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwill.hr.mapper.EmployeeMapper">
+    
+    
+    <!-- 직원 테이블의 모든 데이터를 가져옴 -->
+    <select id="findAll" resultType="com.itwill.hr.domain.EmployeeVO">
+        SELECT * FROM employees
+    </select>
+     <!-- 직원 테이블의 모든 데이터를 가져옴 -->
+
+	<!-- 특정직원(emp_id)로 직원정보 조회함 -->
+    <select id="findById" resultType="com.itwill.hr.domain.EmployeeVO">
+        SELECT * FROM employees WHERE emp_id = #{id}
+    </select>
+    <!-- 특정직원(emp_id)로 직원정보 조회함 -->
+	
+	<!-- 특정직원의 정보를 수정함 -->
+    <update id="update">
+        UPDATE employees
+        SET dep_id = #{depId}, dep_name = #{depName}, pos_id = #{posId}
+        WHERE emp_id = #{empId}
+    </update>
+    <!-- 특정직원의 정보를 수정함 -->
+</mapper>

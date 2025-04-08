@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
@@ -14,7 +14,7 @@
             <th>이름</th>
             <th>직급</th>
             <th>이메일</th>
-            <th>액션</th>
+            <th>조회</th>
         </tr>
     </thead>
     <tbody>
@@ -24,7 +24,7 @@
                 <td>${employee.position}</td>
                 <td>${employee.email}</td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/admin/employees/edit/${employee.id}">수정</a>
+                    <a href="${pageContext.request.contextPath}/admin/employees/edit/${employee.id}">조회</a>
                 </td>
             </tr>
         </c:forEach>

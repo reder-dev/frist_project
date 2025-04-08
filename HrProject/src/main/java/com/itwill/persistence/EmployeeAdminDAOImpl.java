@@ -1,32 +1,34 @@
 package com.itwill.persistence;
 
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.itwill.domain.EmployeeVO;
 
 @Repository
-public class EmployeeAdminDAOImpl implements EmployeeAdminDao {
-    
+public class EmployeeAdminDAOImpl implements EmployeeAdminDAO {
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Employee> findAll() {
+    public List<EmployeeVO> findAll() {
         String sql = "SELECT * FROM employees";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Employee.class));
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(EmployeeVO.class));
     }
 
     @Override
-    public Employee findById(Long id) {
-        String sql = "SELECT * FROM employees WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Employee.class), id);
+    public EmployeeVO findById(Long id) {
+        String sql = "SELECT * FROM employees WHERE emp_id = ?";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(EmployeeVO.class), id);
     }
 
     @Override
-    public void update(Employee employee) {
-        String sql = "UPDATE employees SET name = ?, position = ?, email = ? WHERE id = ?";
-        jdbcTemplate.update(sql, employee.getName(), employee.getPosition(), employee.getEmail(), employee.getId());
+    public void update(EmployeeVO employee) {
+        String sql = "UPDATE employees SET dep_id = ?, dep_name = ?, pos_id = ?, rank_id = ?, emp_modifydate = ?, emp_modifier = ? WHERE emp_id = ?";
+        jdbcTemplate.update(sql, employee.dep_id(), employee.dep_name(), employee.pos_id(),
+                employee.rank_id(), employee.emp_modifydate(), employee.emp_modifier(), employee.emp_id());
     }
 }
