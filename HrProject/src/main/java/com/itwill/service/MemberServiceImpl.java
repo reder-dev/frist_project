@@ -69,12 +69,17 @@ public class MemberServiceImpl implements MemberService {
 		return mdao.getMemberList();
 	}
 	
-	
-	
 	@Override
 	public MemberVO getMemberById(String empId) {
 	    return mdao.selectByEmpId(empId);
 	}
+
+	@Override
+	public int updatePassword(String empId, String newPassword) {
+	    return mdao.updatePassword(empId, newPassword); // ✅ 정확하게 분리된 메서드로!
+	}
+	
+	
 
 		
 }

@@ -1,5 +1,7 @@
 package com.itwill.persistence;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -167,8 +169,14 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	@Override
 	public MemberVO selectByEmpId(String empId) {
-		MemberVO member = sqlSession.selectOne(NAMESPACE + "selectByEmpId");
+		MemberVO member = sqlSession.selectOne(NAMESPACE + "selectByEmpId", empId);
 		return member;
+	}
+	
+	@Override
+	public int updatePassword(String empId, String newPassword) {
+		return sqlSession.update(NAMESPACE + "updatePassword", 
+		        Map.of("empId", empId, "newPassword", newPassword));
 	}
 
 }

@@ -22,7 +22,7 @@ public class EmailService {
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(content, true);
-            helper.setFrom("your_email@example.com"); // 네 이메일 주소로 설정
+            helper.setFrom("hhsky1111@gmail.com"); // 네 이메일 주소로 설정
 
             mailSender.send(message);
         } catch (MessagingException e) {

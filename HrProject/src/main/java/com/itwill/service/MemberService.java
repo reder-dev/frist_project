@@ -27,4 +27,7 @@ public interface MemberService {
 	// 사원번호로 회원 조회 (이메일 확인용)	
 	public MemberVO getMemberById(String empId);
 	
+	// 비밀번호만 수정하는 메서드 추가
+	public int updatePassword(String empId, String newPassword);
+	
 }

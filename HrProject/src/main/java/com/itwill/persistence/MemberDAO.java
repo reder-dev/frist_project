@@ -2,6 +2,8 @@ package com.itwill.persistence;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.itiwll.domain.MemberVO;
 
 public interface MemberDAO {
@@ -29,4 +31,6 @@ public interface MemberDAO {
 	public List<MemberVO> getMemberList();
 
 	public MemberVO selectByEmpId(String empId);
+	
+	public int updatePassword(@Param("emp_id") String emp_id, @Param("emp_pw") String emp_pw);
 }

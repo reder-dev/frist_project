@@ -100,7 +100,7 @@
             fetch("/auth/sendCode", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json;",
+                    "Content-Type": "application/json",
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
@@ -108,10 +108,11 @@
                     email: email
                 })
             })
-            .then(function(res){return res.text()})
-            .then(function(msg){console.log(JSON.parse(msg).result.song2)})
+            .then(function(res){return res.json();})
+            .then(function(data){alert(data.result.message);})
+            //.then(function(msg){console.log(JSON.parse(msg).result.song2)})
             .catch(function(err) {
-                
+            	console.error(err);
                 alert("인증코드 전송 실패");
             });
         });
@@ -120,20 +121,59 @@
         document.querySelector(".verify-button").addEventListener("click", function () {
             const code = document.querySelector("input[name='auth_code']").value;
 
-            fetch("/member/verifyCode", {
+            fetch("/auth/verifyCode", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({ code: code })
             })
-            .then(function(res){return res.text()})
-            .then(function(msg){console.log(msg)})
+            .then(function(res){return res.json();})
+            .then(function(data){alert(data.result.message);})
             .catch(function(err){
-                console.error(err);
+            	console.error(err);
                 alert("인증코드 확인 실패");
             });
         });
+        
+     // send 버튼
+        document.querySelector("form").addEventListener("submit", function (e) {
+            e.preventDefault(); // 폼 전송 막기
+
+            const newPassword = document.querySelector("input[name='new_password']").value;
+            const confirmPassword = document.querySelector("input[name='confirm_password']").value;
+
+            if (newPassword !== confirmPassword) {
+                alert("비밀번호가 일치하지 않습니다.");
+                return;
+            }
+
+            fetch("/auth/resetPassword", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    newPassword: newPassword
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.result.message);
+                if (data.result.status === "SUCCESS") {
+                    // 비밀번호 변경 성공 시 로그인 페이지로 이동
+                    window.location.href = "/member/login";
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("비밀번호 변경 실패");
+            });
+        });
+        
+        
     });
     </script>
 </body>
