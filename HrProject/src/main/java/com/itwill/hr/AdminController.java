@@ -1,48 +1,47 @@
 package com.itwill.hr;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.itwill.domain.EmployeeVO;
-import com.itwill.serivce.EmployeeAdminService;
+import com.itwill.service.EmployeeAdminService;
 
 
 @Controller
-@RequestMapping("/admin/employees")  // 기본 경로 설정
 public class AdminController {
 
-    @Autowired
+	@Autowired
     private EmployeeAdminService employeeService;
 
-    // 전체 직원 목록 조회
-    @GetMapping("/list")
+    @GetMapping("/employees")
     public String listEmployees(Model model) {
-        model.addAttribute("employees", employeeService.findAll());
-        return "admin/employeeList"; // JSP 페이지로 이동
+        List<EmployeeVO> employees = employeeService.getAllEmployees();
+        model.addAttribute("employees", employees);
+        return "admin/employeeList";
     }
 
-    // 특정 직원 상세 조회
-    @GetMapping("/{id}")
-    public String viewEmployee(@PathVariable Long id, Model model) {
-        EmployeeVO employee = employeeService.findById(id);
+    @GetMapping("/employees/edit/{empId}")
+    public String editEmployeeForm(@PathVariable("empId") String empId, Model model) {
+        EmployeeVO employee = employeeService.getEmployeeById(empId);
         model.addAttribute("employee", employee);
-        return "admin/employees"; // JSP 페이지로 이동
+        
+        return "admin/editemployee";
     }
 
-    // 특정 직원 수정 페이지 이동
-    @GetMapping("/edit/{id}")
-    public String editEmployee(@PathVariable Long id, Model model) {
-        EmployeeVO employee = employeeService.findById(id);
+    @PostMapping("/employees/edit")
+    public String updateEmployee(@ModelAttribute("employee") EmployeeVO employee) {
+        employeeService.updateEmployee(employee);
+        return "admin/redirect:/employees";
+    }
+
+    @GetMapping("/employees/view/{empId}")
+    public String viewEmployeeDetail(@PathVariable("empId") String empId, Model model) {
+        EmployeeVO employee = employeeService.getEmployeeById(empId);
         model.addAttribute("employee", employee);
-        return "admin/editemployee"; // JSP 페이지로 이동
-    }
-
-    // 특정 직원 정보 업데이트
-    @PostMapping("/update")
-    public String updateEmployee(@ModelAttribute EmployeeVO employee) {
-        employeeService.update(employee);
-        return "redirect:/admin/employees/list"; // 수정 후 목록 페이지로 이동
+        return "admin/admin/employees";
     }
 }

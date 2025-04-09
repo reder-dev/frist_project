@@ -37,8 +37,8 @@
 		<property name="driverClassName" 
 				value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
 		<property name="jdbcUrl"
-					value="jdbc:log4jdbc:mysql://localhost:3306/springdb" />
-		<property name="username" value="root" />
+					value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c6d2412t1p1" />
+		<property name="username" value="c6d2412t1p1" />
 		<property name="password" value="1234" />
 
 </bean>

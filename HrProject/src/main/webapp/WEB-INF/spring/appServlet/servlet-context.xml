@@ -22,7 +22,8 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.itwill.hr" />
-	
+	<context:component-scan base-package="com.itwill.service" />
+	<context:component-scan base-package="com.itwill.persistence" />
 	
 	
 </beans:beans>

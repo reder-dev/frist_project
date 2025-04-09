@@ -1,4 +1,4 @@
-package com.itwill.serivce;
+package com.itwill.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,17 +14,17 @@ public class EmployeeAdminServiceImpl implements EmployeeAdminService {
     private EmployeeAdminDAO employeeDAO;
 
     @Override
-    public List<EmployeeVO> findAll() {
-        return employeeDAO.findAll();
+    public List<EmployeeVO> getAllEmployees() {
+        return employeeDAO.getAllEmployees();
     }
 
     @Override
-    public EmployeeVO findById(Long id) {
-        return employeeDAO.findById(id);
+    public EmployeeVO getEmployeeById(String emp_id) {
+        return employeeDAO.getEmployeeById(emp_id);
     }
 
     @Override
-    public void update(EmployeeVO employee) {
-        employeeDAO.update(employee);
+    public void updateEmployee(EmployeeVO employee) {
+        employeeDAO.updateEmployee(employee);
     }
 }

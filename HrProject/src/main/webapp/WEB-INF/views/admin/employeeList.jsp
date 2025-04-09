@@ -20,11 +20,11 @@
     <tbody>
         <c:forEach var="employee" items="${employees}">
             <tr>
-                <td>${employee.name}</td>
-                <td>${employee.position}</td>
-                <td>${employee.email}</td>
+                <td>${employee.emp_id}</td>
+                <td>${employee.rank_id}</td>
+                <td>${employee.emp_email}</td>
                 <td>
-                    <a href="${pageContext.request.contextPath}/admin/employees/edit/${employee.id}">조회</a>
+                    <a href="${pageContext.request.contextPath}/admin/employees/edit/${employee.emp_id}">조회</a>
                 </td>
             </tr>
         </c:forEach>

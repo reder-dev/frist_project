@@ -1,12 +1,15 @@
 package com.itwill.domain;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Getter
 @Setter
-@Accessors(fluent = true)
+@Accessors(chain = true)
 
 public class EmployeeVO {
 	private String emp_id;
@@ -17,15 +20,15 @@ public class EmployeeVO {
 	private String emp_phone;
 	private String emp_email;
 	private String emp_address;
-	private String emp_jd;
-	private String emp_qd;
+	private Date emp_jd;
+	private Date emp_qd;
 	private String dep_id;
 	private String dep_name;
 	private String pos_id;
 	private String rank_id;
-	private String emp_registdate;
+	private Timestamp emp_registdate;
 	private String emp_regoster;
-	private String emp_modifydate;
+	private Timestamp emp_modifydate;
 	private String emp_modifier;
 	private String emp_pht;
 	private String emp_cn;
