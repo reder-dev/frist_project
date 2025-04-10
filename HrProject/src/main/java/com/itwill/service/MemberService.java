@@ -2,12 +2,13 @@ package com.itwill.service;
 
 import java.util.List;
 
+import com.itiwll.domain.LoginHistoryVO;
 import com.itiwll.domain.MemberVO;
 
 public interface MemberService {
 
-	// 회원가입 처리동작
-	public void memberJoin(MemberVO vo);
+//	// 회원가입 처리동작
+//	public void memberJoin(MemberVO vo);
 	
 	// 회원정보 로그인 체크동작
 	public MemberVO memberLoginCheck(MemberVO loginVO);
@@ -15,8 +16,8 @@ public interface MemberService {
 	// 회원정보 조회
 	public MemberVO memberInfo(String userid);
 	
-	// 회원정보 수정
-	public int memberUpdate(MemberVO updateVO);
+//	// 회원정보 수정
+//	public int memberUpdate(MemberVO updateVO);
 	
 	// 회원정보 삭제
 	public int memberDelete(MemberVO deleteVO);
@@ -29,5 +30,7 @@ public interface MemberService {
 	
 	// 비밀번호만 수정하는 메서드 추가
 	public int updatePassword(String empId, String newPassword);
+
+	
 	
 }

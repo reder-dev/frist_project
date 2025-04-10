@@ -136,15 +136,15 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 
-	@Override
-	public int updateMember(MemberVO updateVO) {
-		logger.info(" updateMember(MemberVO updateVO) 호출  ");
-		
-		int result = 
-		  sqlSession.update(NAMESPACE + "updateMember",updateVO);
-		
-		return result;
-	}
+//	@Override
+//	public int updateMember(MemberVO updateVO) {
+//		logger.info(" updateMember(MemberVO updateVO) 호출  ");
+//		
+//		int result = 
+//		  sqlSession.update(NAMESPACE + "updateMember",updateVO);
+//		
+//		return result;
+//	}
 
 
 	@Override
@@ -178,5 +178,8 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.update(NAMESPACE + "updatePassword", 
 		        Map.of("empId", empId, "newPassword", newPassword));
 	}
+	
+	
+	
 
 }

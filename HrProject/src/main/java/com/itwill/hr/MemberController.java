@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -18,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itiwll.domain.LoginHistoryVO;
 import com.itiwll.domain.MemberVO;
+import com.itwill.persistence.LoginHistoryDAO;
 import com.itwill.service.EmailService;
+import com.itwill.service.LoginHistoryService;
 import com.itwill.service.MemberService;
 import com.itwill.util.ResponseAPI;
 
@@ -32,32 +36,8 @@ public class MemberController {
 	@Inject
 	private MemberService mService;
 	
-	
-	// http://localhost:8088/web/MemberJoin.me (x)
-	// http://localhost:8088/web/member/MemberJoin.me (o)
-	// http://localhost:8088/web/member/join (o)
-	// http://localhost:8088/member/join (o)
-	 /*// 회원가입 - 정보입력(GET)
-	
-	 * @RequestMapping(value = "/join",method = RequestMethod.GET) public void
-	 * memberJoinGET() { logger.info("/member/join -> memberJoinGET() 호출");
-	 * 
-	 * //연결된 JSP 뷰페이지로 이동 logger.info(" /WEB-INF/views/member/join.jsp 페이지 이동  "); }
-	 * // http://localhost:8088/web/member/MemberJoinAction.me (o) //
-	 * http://localhost:8088/web/member/join (o) // 회원가입 - 정보처리(POST)
-	 * 
-	 * @RequestMapping(value = "/join",method = RequestMethod.POST) public String
-	 * memberJoinPOST(MemberVO vo) { logger.info("memberJoinPOST() 호출");
-	 * 
-	 * //폼태그 전달정보 저장 logger.info(" vo : "+vo);
-	 * 
-	 * //전달받은 정보를 처리 => 디비에 정보를 저장 //MemberDAO mdao = new MemberDAOImpl();(X)
-	 * //mdao.insertMember(vo); (x) // 서비스 호출 (DAO 대신 호출) mService.memberJoin(vo);
-	 * 
-	 * logger.info(" 회원가입 성공! ");
-	 * 
-	 * // 로그인 페이지로 이동 return "redirect:/member/login"; }
-	 */
+	@Inject
+	private LoginHistoryService lService;
 	
 	// 로그인
 	@RequestMapping(value = "/login",method = RequestMethod.GET)
@@ -79,7 +59,7 @@ public class MemberController {
 	
 	// 로그인 POST
 	@PostMapping(value = "/login")
-	public String memberLoginPOST( /*@ModelAttribute*/ MemberVO vo,HttpSession session, RedirectAttributes rttr
+	public String memberLoginPOST( /*@ModelAttribute*/ MemberVO vo,HttpSession session, RedirectAttributes rttr, HttpServletRequest request
 									 /* @ModelAttribute("userid") String userid,
 									 * @RequestParam("userpw") String userpw
 									 */) {
@@ -92,14 +72,57 @@ public class MemberController {
 		
 		// 서비스에 로그인체크 동작을 호출해서 확인
 		MemberVO resultVO = mService.memberLoginCheck(vo);
+		String clientIp = request.getRemoteAddr();
 		logger.info(" 결과 : {}",resultVO);
+		
+		
+		// IPv6 로컬 주소일 경우 IPv4로 변환
+		if ("0:0:0:0:0:0:0:1".equals(clientIp)) {
+		    clientIp = "127.0.0.1";
+		}
+		
+		// 이력 객체 생성
+	    LoginHistoryVO history = new LoginHistoryVO();
+	    history.setEmp_id(vo.getEmp_id());
+	    history.setLogin_ip(clientIp);
 		
 		// 로그인 실패
 		if(resultVO == null) {
 			logger.info(" 로그인 실패! ");
-			rttr.addFlashAttribute("message", "로그인 실패!");
+			
+			// 실패 시 기록
+	        history.setLogin_status("INACTIVE");
+	        history.setLogin_result("FAIL");
+	        lService.insertLoginHistory(history);
+	        
+	        // 최근 실패 횟수 확인
+	        int failCount = lService.countRecentFailedLogins(vo.getEmp_id());
+	        logger.info("최근 실패 횟수: {}", failCount);
+			
+	        
+	        if (failCount >= 5) {
+	            logger.info("계정 잠금 처리!");
+	            
+	            // 상태를 LOCKED로 기록
+	            history.setLogin_status("LOCKED"); // 👈 요거 추가
+	            history.setLogin_result("FAIL");   // 실패지만 잠금임
+	            lService.insertLoginHistory(history); // 다시 기록!
+	            
+	            
+	            rttr.addFlashAttribute("message", "계정이 잠금되었습니다. 관리자에게 문의하세요.");
+	        } else {
+	            rttr.addFlashAttribute("message", "로그인 실패! (" + failCount + "회 실패)[5회 실패시 잠금]");
+	        }
+			
 		    return "redirect:/member/login";
 		}
+		
+		
+		// 로그인 성공 시 기록
+	    history.setLogin_status("ACTIVE");
+	    history.setLogin_result("SUCCESS");
+	    lService.insertLoginHistory(history);
+	    
 
 		// 세션 영역에 로그인 성공한 사용자의 아이디를 저장
 		session.setAttribute("id",resultVO.getEmp_id());
@@ -137,19 +160,18 @@ public class MemberController {
 		return "/login";
 	}
 	
-	@RequestMapping(value = "/find/phone",method = RequestMethod.GET)
-	public String findMemberPhoneGET() {
-		logger.info(" /findEmail -> findMemberPhoneGET()호출");
-		
-		logger.info(" /findEmail.jsp 페이지로 이동");
-		return "/member/findPhone";
-	}
-	
-	@PostMapping(value = "/find/phone")
-	public String findMemberPhonePOST(MemberVO vo) {
-		
-		return "/login";
-	}
+	/*
+	 * @RequestMapping(value = "/find/phone",method = RequestMethod.GET) public
+	 * String findMemberPhoneGET() {
+	 * logger.info(" /findEmail -> findMemberPhoneGET()호출");
+	 * 
+	 * logger.info(" /findEmail.jsp 페이지로 이동"); return "/member/findPhone"; }
+	 * 
+	 * @PostMapping(value = "/find/phone") public String
+	 * findMemberPhonePOST(MemberVO vo) {
+	 * 
+	 * return "/login"; }
+	 */
 	
 	@RequestMapping(value = "/main",method = RequestMethod.GET)
 	public String MemberMainGET() {

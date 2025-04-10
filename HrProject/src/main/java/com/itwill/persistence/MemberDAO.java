@@ -21,8 +21,8 @@ public interface MemberDAO {
 	// 내정보 보기(정보 조회)
 	public MemberVO getMemberInfo(String eid);
 	
-	// 회원정보 수정
-	public int updateMember(MemberVO updateVO);
+//	// 회원정보 수정
+//	public int updateMember(MemberVO updateVO);
 	
 	// 회원정보 삭제
 	public int deleteMember(MemberVO deleteVO);
@@ -30,7 +30,12 @@ public interface MemberDAO {
 	// 관리자 - 회원전체 목록조회
 	public List<MemberVO> getMemberList();
 
+	// 
 	public MemberVO selectByEmpId(String empId);
 	
+	// 아아디/ 비밀번호 찾기 -> 비밀번호 변경
 	public int updatePassword(@Param("emp_id") String emp_id, @Param("emp_pw") String emp_pw);
+	
+	
+	
 }

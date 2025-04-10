@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.itiwll.domain.LoginHistoryVO;
 import com.itiwll.domain.MemberVO;
 import com.itwill.mapper.MemberMapper;
 import com.itwill.persistence.MemberDAO;
@@ -23,11 +24,11 @@ public class MemberServiceImpl implements MemberService {
 	@Inject
 	private MemberDAO mdao;
 	
-	@Override
-	public void memberJoin(MemberVO vo) {
-		logger.info(" 회원가입 실행 -> DAO 메서드 호출 ");
-		mdao.insertMember(vo);
-	}
+//	@Override
+//	public void memberJoin(MemberVO vo) {
+//		logger.info(" 회원가입 실행 -> DAO 메서드 호출 ");
+//		mdao.insertMember(vo);
+//	}
 
 	@Override
 	public MemberVO memberLoginCheck(MemberVO loginVO) {
@@ -49,12 +50,12 @@ public class MemberServiceImpl implements MemberService {
 		return mdao.getMemberInfo(userid);
 	}
 
-	@Override
-	public int memberUpdate(MemberVO updateVO) {
-		logger.info(" memberUpdate(MemberVO updateVO) 호출 ");
-		
-		return mdao.updateMember(updateVO);
-	}
+//	@Override
+//	public int memberUpdate(MemberVO updateVO) {
+//		logger.info(" memberUpdate(MemberVO updateVO) 호출 ");
+//		
+//		return mdao.updateMember(updateVO);
+//	}
 
 	@Override
 	public int memberDelete(MemberVO deleteVO) {
@@ -78,8 +79,8 @@ public class MemberServiceImpl implements MemberService {
 	public int updatePassword(String empId, String newPassword) {
 	    return mdao.updatePassword(empId, newPassword); // ✅ 정확하게 분리된 메서드로!
 	}
-	
-	
 
+	
+	
 		
 }

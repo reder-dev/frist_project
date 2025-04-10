@@ -55,10 +55,10 @@
             <img src="email-icon.png" alt="이메일 인증">
             <p>등록한 e-mail 주소 인증 후 재발급</p>
         </div>
-        <div class="option" onclick="location.href='/member/find/phone'">
+        <!-- <div class="option" onclick="location.href='/member/find/phone'">
             <img src="phone-icon.png" alt="휴대폰 인증">
             <p>등록한 휴대폰 번호 인증 후 재발급</p>
-        </div>
+        </div> -->
     </div>
 </div>
 
