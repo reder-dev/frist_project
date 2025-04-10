@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
-  
-  <!-- MyBatis 설정파일 -->
-  <configuration>
-  
-  
-  
-  </configuration>
+
+<configuration>
+  <!-- DTO 클래스들이 위치한 패키지를 등록 (MyBatis가 alias로 인식 가능하게 함) -->
+  <typeAliases>
+    <package name="com.itwill.approval.dto" />
+  </typeAliases>
+</configuration>
