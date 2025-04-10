@@ -4,8 +4,14 @@
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-  <!-- DTO 클래스들이 위치한 패키지를 등록 (MyBatis가 alias로 인식 가능하게 함) -->
+  <!-- DTO 클래스들이 위치한 패키지를 등록 -->
   <typeAliases>
+    <package name="com.itwill.attendance" />
     <package name="com.itwill.approval.dto" />
   </typeAliases>
+
+  <mappers>
+    <mapper resource="mappers/attendance-mapper.xml"/>
+    <!-- 추가로 approval 관련 매퍼가 있다면 여기에 등록 -->
+  </mappers>
 </configuration>
