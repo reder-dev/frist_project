@@ -27,7 +27,7 @@ public class EmployeeVO {
 	private String pos_id;
 	private String rank_id;
 	private Timestamp emp_registdate;
-	private String emp_regoster;
+	private String emp_register;
 	private Timestamp emp_modifydate;
 	private String emp_modifier;
 	private String emp_pht;
