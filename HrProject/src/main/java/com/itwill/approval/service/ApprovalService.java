@@ -26,5 +26,8 @@ public interface ApprovalService {
 	
 	// 템플릿 이름이 이미 존재하는지 여부 반환 (true = 중복)
 	boolean isTemplateNameDuplicate(String name);
+	
+	// 소유자 ID로 템플릿과 상세 결재자 목록을 함께 조회
+	List<ApprovalLineTemplateListDTO> getTemplatesWithDetails(String ownerId);
 
 }

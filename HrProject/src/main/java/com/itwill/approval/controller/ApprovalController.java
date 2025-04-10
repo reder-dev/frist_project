@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -26,25 +29,49 @@ public class ApprovalController {
 	// 결재 신청 처리 (첨부파일 다중 업로드 추가됨)
 	@PostMapping("/apply")
 	public String submitApprovalRequest(
-			@ModelAttribute ApprovalApplyDTO dto,
-			@RequestParam("attachmentFiles") List<MultipartFile> files,  // ✅ 파일 받기
-			HttpServletRequest request
+	    HttpServletRequest request,
+	    @RequestParam("attachmentFiles") List<MultipartFile> files
 	) {
-		String category = dto.getReferenceTableName(); // LEAVE or BUSINESS
-		String referenceId = category + "_" + System.currentTimeMillis();
+	    // DTO 직접 생성 + 수동 세팅
+	    ApprovalApplyDTO dto = new ApprovalApplyDTO();
 
-		// 참조 ID 생성 및 설정
-		dto.setReferenceId(referenceId);
+	    String empId = request.getParameter("requester");
+	    String documentTitle = request.getParameter("documentTitle");
+	    String referenceTableName = request.getParameter("referenceTableName");
 
-		// 첨부파일 개수 DTO에 저장
-		dto.setAttachmentCount(files != null ? files.size() : 0); // ✅ 첨부파일 수 반영
+	    // 날짜 → ID 생성용
+	    String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-		// 결재 문서 저장 (문서 + 파일 함께)
-		approvalService.saveApprovalRequest(dto, files); // ✅ Service 계층에 파일 전달
+	    String typeCode = "04"; // 기본: 출장
+	    String referenceId = "business_trip_id";
+	    String leaveStatus = request.getParameter("leaveStatus");
 
-		// LEAVE / BUSINESS 테이블 insert는 결재 승인 시 처리할 예정
+	    if ("LEAVE".equals(referenceTableName)) {
+	        referenceId = "leave_id";
+	        if ("반차".equals(leaveStatus)) typeCode = "01";
+	        else if ("연차".equals(leaveStatus)) typeCode = "02";
+	        else if ("병가".equals(leaveStatus)) typeCode = "03";
+	        else typeCode = "00";
+	    }
 
-		return "redirect:/approval/apply"; // 추후 결재 상세 화면 등으로 변경 가능
+	    // 생성 ID
+	    String approvalId = empId + today + typeCode;
+
+	    // DTO 채우기
+	    dto.setApprovalDocumentId(approvalId);
+	    dto.setDocumentTitle(documentTitle);
+	    dto.setReferenceTableName(referenceTableName);
+	    dto.setReferenceId(referenceId);
+	    dto.setRequester(empId);
+	    dto.setRegister(empId);
+	    dto.setAttachmentCount(files != null ? files.size() : 0);
+
+	    System.out.println("📌 최종 DTO 확인: " + dto);
+
+	    // 저장 실행
+	    approvalService.saveApprovalRequest(dto, files);
+
+	    return "redirect:/approval/apply";
 	}
 
 	// 결재자 검색 (AJAX)
@@ -68,16 +95,26 @@ public class ApprovalController {
 
 		return "success";
 	}
-	
+
+	/**
+	 * 템플릿 + 상세 결재자 정보까지 포함된 목록 반환
+	 */
+	@GetMapping("/template/list-full")
+	@ResponseBody
+	public List<ApprovalLineTemplateListDTO> getTemplatesWithDetails(@RequestParam("ownerId") String ownerId) {
+		return approvalService.getTemplatesWithDetails(ownerId);
+	}
+
 	/**
 	 * 템플릿 이름 중복 여부를 확인하는 API
+	 * 
 	 * @param name 사용자가 입력한 템플릿 이름
 	 * @return true: 중복 있음, false: 중복 없음
 	 */
 	@GetMapping("/template/check-name")
 	@ResponseBody
 	public boolean checkTemplateName(@RequestParam("name") String name) {
-	    return approvalService.isTemplateNameDuplicate(name);
+		return approvalService.isTemplateNameDuplicate(name);
 	}
 
 	// 로그인 사용자 ID로 결재선 목록 조회

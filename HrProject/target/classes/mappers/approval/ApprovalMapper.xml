@@ -137,7 +137,39 @@
 		resultType="int">
 		SELECT COUNT(*)
 		FROM APP_LINE_TEMPLATE
-		WHERE template_name = #{templateName}
+		WHERE template_name =
+		#{templateName}
 	</select>
+
+	<!-- 템플릿 + 상세 결재자 라인까지 함께 가져오기 -->
+	<select id="selectTemplatesWithDetails"
+		resultMap="TemplateWithDetails" parameterType="String">
+		SELECT
+		t.template_id, t.template_name,
+		d.template_id AS d_template_id, d.approval_order, d.approver_id, d.approver_role,
+		e.emp_name, e.dep_name, e.pos_id
+		FROM APP_LINE_TEMPLATE t
+		LEFT JOIN APP_LINE_TEMPLATE_DETAIL d ON t.template_id = d.template_id
+		LEFT JOIN EMPLOYEE e ON d.approver_id = e.emp_id
+		WHERE t.owner_id = #{ownerId}
+		ORDER BY t.template_id, d.approval_order
+	</select>
+
+	<!-- resultMap: 템플릿 + 상세 결재자 라인 -->
+	<resultMap id="TemplateWithDetails"
+		type="com.itwill.approval.dto.ApprovalLineTemplateListDTO">
+		<id property="templateId" column="template_id" />
+		<result property="templateName" column="template_name" />
+		<collection property="approvers"
+			ofType="com.itwill.approval.dto.ApprovalLineDetailDTO">
+			<result property="templateId" column="d_template_id" />
+			<result property="approvalOrder" column="approval_order" />
+			<result property="approverId" column="approver_id" />
+			<result property="approverRole" column="approver_role" />
+			<result property="empName" column="emp_name" />
+			<result property="depName" column="dep_name" />
+			<result property="posId" column="pos_id" />
+		</collection>
+	</resultMap>
 
 </mapper>

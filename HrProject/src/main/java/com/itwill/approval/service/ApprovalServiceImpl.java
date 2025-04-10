@@ -1,26 +1,30 @@
 package com.itwill.approval.service;
 
 import com.itwill.approval.dto.*;
-import com.itwill.approval.mapper.*;
+import com.itwill.approval.mapper.ApprovalMapper;
+import com.itwill.approval.mapper.FileMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import javax.servlet.ServletContext;
+
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class ApprovalServiceImpl implements ApprovalService {
 
-	private final FileMapper fileMapper; // 파일 DB 저장용
-	private final String uploadDir = "/Users/jiwooahn/uploads"; // 실제 경로로 수정해야 함
-
 	private final ApprovalMapper approvalMapper;
+	private final FileMapper fileMapper;
+	private final ServletContext servletContext; // 경로 생성을 위해 필요
 
 	@Override
 	@Transactional
@@ -28,21 +32,30 @@ public class ApprovalServiceImpl implements ApprovalService {
 		// 1. 결재 문서 먼저 저장
 		approvalMapper.insertApprovalRequest(dto);
 
-		// 2. 파일 저장
+		// 2. 저장 루트 경로 (웹 기준 상대 경로)
+		String uploadFolderPath = servletContext.getRealPath("/resources/upload/approval");
+
+		// 3. 실제 폴더가 없으면 생성
+		File folder = new File(uploadFolderPath);
+		if (!folder.exists()) folder.mkdirs();
+
+		// 4. 첨부파일 저장
 		for (MultipartFile file : files) {
 			if (!file.isEmpty()) {
 				try {
-					String uuid = UUID.randomUUID().toString();
 					String originalName = file.getOriginalFilename();
-					String saveName = uuid + "_" + originalName;
-					String savePath = uploadDir + File.separator + saveName;
+					String fileId = UUID.randomUUID().toString();
+					String saveName = fileId + "_" + originalName;
+					String savePath = uploadFolderPath + File.separator + saveName;
 
+					// 저장
 					file.transferTo(new File(savePath));
 
+					// DB 저장
 					FileDTO fileDTO = new FileDTO();
-					fileDTO.setFileId(uuid);
+					fileDTO.setFileId(fileId);
 					fileDTO.setFileName(originalName);
-					fileDTO.setFilePath(savePath);
+					fileDTO.setFilePath("/resources/upload/approval/" + saveName); // 웹 경로
 					fileDTO.setFileSize(file.getSize());
 					fileDTO.setFileType(file.getContentType());
 					fileDTO.setReferenceTableId(dto.getApprovalDocumentId());
@@ -52,11 +65,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 					fileMapper.insertFile(fileDTO);
 
 				} catch (IOException e) {
-					throw new RuntimeException("파일 저장 실패", e);
+					e.printStackTrace();
+					throw new RuntimeException("파일 저장 중 오류 발생", e);
 				}
 			}
 		}
-
 	}
 
 	@Override
@@ -99,11 +112,17 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public List<ApprovalLineDetailDTO> getTemplateDetails(String templateId) {
 		return approvalMapper.selectTemplateDetails(templateId);
 	}
-	
+
 	@Override
 	public boolean isTemplateNameDuplicate(String name) {
-	    // Mapper를 통해 DB에서 중복된 템플릿명이 있는지 확인
-	    return approvalMapper.countTemplateName(name) > 0;
+		// Mapper를 통해 DB에서 중복된 템플릿명이 있는지 확인
+		return approvalMapper.countTemplateName(name) > 0;
+	}
+
+	// 소유자 ID로 템플릿 + 결재자 상세 목록 조회 서비스 로직
+	@Override
+	public List<ApprovalLineTemplateListDTO> getTemplatesWithDetails(String ownerId) {
+		return approvalMapper.selectTemplatesWithDetails(ownerId);
 	}
 
 }
