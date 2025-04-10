@@ -145,14 +145,20 @@
 	<select id="selectTemplatesWithDetails"
 		resultMap="TemplateWithDetails" parameterType="String">
 		SELECT
-		t.template_id, t.template_name,
-		d.template_id AS d_template_id, d.approval_order, d.approver_id, d.approver_role,
+		t.template_id,
+		t.template_name,
+		d.template_id AS d_template_id, d.approval_order,
+		d.approver_id, d.approver_role,
 		e.emp_name, e.dep_name, e.pos_id
-		FROM APP_LINE_TEMPLATE t
-		LEFT JOIN APP_LINE_TEMPLATE_DETAIL d ON t.template_id = d.template_id
-		LEFT JOIN EMPLOYEE e ON d.approver_id = e.emp_id
+		FROM
+		APP_LINE_TEMPLATE t
+		LEFT JOIN APP_LINE_TEMPLATE_DETAIL d ON
+		t.template_id = d.template_id
+		LEFT JOIN EMPLOYEE e ON d.approver_id =
+		e.emp_id
 		WHERE t.owner_id = #{ownerId}
-		ORDER BY t.template_id, d.approval_order
+		ORDER BY t.template_id,
+		d.approval_order
 	</select>
 
 	<!-- resultMap: 템플릿 + 상세 결재자 라인 -->
@@ -171,5 +177,30 @@
 			<result property="posId" column="pos_id" />
 		</collection>
 	</resultMap>
+
+	<insert id="insertApprovalLine" parameterType="ApprovalLineDTO">
+		INSERT INTO APPROVAL_LINE (
+		approval_line_id,
+		approval_document_id,
+		approval_order,
+		approver_id,
+		approver_role,
+		reg_date,
+		register
+		) VALUES (
+		#{approvalLineId},
+		#{approvalDocumentId},
+		#{approvalOrder},
+		#{approverId},
+		#{approverRole},
+		NOW(),
+		#{register}
+		)
+	</insert>
+
+	<select id="selectPositionByEmpId" resultType="string"
+		parameterType="string">
+		SELECT pos_id FROM EMPLOYEE WHERE emp_id = #{empId}
+	</select>
 
 </mapper>

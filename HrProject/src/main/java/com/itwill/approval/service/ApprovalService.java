@@ -23,11 +23,14 @@ public interface ApprovalService {
 
 	// 결재선 템플릿 상세 결재자 목록 조회
 	List<ApprovalLineDetailDTO> getTemplateDetails(String templateId);
-	
+
 	// 템플릿 이름이 이미 존재하는지 여부 반환 (true = 중복)
 	boolean isTemplateNameDuplicate(String name);
-	
+
 	// 소유자 ID로 템플릿과 상세 결재자 목록을 함께 조회
 	List<ApprovalLineTemplateListDTO> getTemplatesWithDetails(String ownerId);
 
+	// APPROVAL_LINE 테이블에 insert
+	void insertApprovalLine(ApprovalLineDTO lineDTO);
+	
 }

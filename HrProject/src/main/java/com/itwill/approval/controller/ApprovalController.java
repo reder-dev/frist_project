@@ -65,12 +65,13 @@ public class ApprovalController {
 	    dto.setRequester(empId);
 	    dto.setRegister(empId);
 	    dto.setAttachmentCount(files != null ? files.size() : 0);
-
+	    dto.setApproverList(request.getParameter("approverList"));
+	    
 	    System.out.println("📌 최종 DTO 확인: " + dto);
 
 	    // 저장 실행
 	    approvalService.saveApprovalRequest(dto, files);
-
+	    
 	    return "redirect:/approval/apply";
 	}
 

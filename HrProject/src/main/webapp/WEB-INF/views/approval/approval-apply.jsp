@@ -37,10 +37,12 @@
 	<h2>전자결재 신청</h2>
 	<form id="approvalForm" method="post" action="/approval/apply" enctype="multipart/form-data">
 		<!-- 문서 제목 -->
-		<label>문서 제목: <span style="color: red;">(필수)</span></label> <input type="text" name="documentTitle" id="documentTitle"><br> <br>
+		<label>문서 제목: <span style="color: red;">(필수)</span></label> 
+		<input type="text" name="documentTitle" id="documentTitle"><br> <br>
 
 		<!-- 결재 분류 -->
-		<label>결재 분류: <span style="color: red;">(필수)</span></label> <select name="referenceTableName" id="categorySelect" required>
+		<label>결재 분류: <span style="color: red;">(필수)</span></label> 
+		<select name="referenceTableName" id="categorySelect" required>
 			<option value="">-- 선택하세요 --</option>
 			<option value="LEAVE">휴가(반차/연차/병가)</option>
 			<option value="BUSINESS">출장</option>
@@ -52,7 +54,13 @@
 		<!-- 휴가 신청 영역 -->
 		<div id="leaveSection" style="display: none;">
 			<h4>휴가 신청</h4>
-			<label>휴가 구분: <span style="color: red;">(필수)</span></label> <input type="radio" name="leaveStatus" value="반차">반차 <input type="radio" name="leaveStatus" value="연차">연차 <input type="radio" name="leaveStatus" value="병가">병가<br> <br> <label>휴가 기간: <span style="color: red;">(필수)</span></label> <input type="date" name="leaveStartDate"> ~ <input type="date" name="leaveEndDate"><br> <br> <label>코멘트:</label><br>
+			<label>휴가 구분: <span style="color: red;">(필수)</span></label> 
+			<input type="radio" name="leaveStatus" value="반차">반차 
+			<input type="radio" name="leaveStatus" value="연차">연차 
+			<input type="radio" name="leaveStatus" value="병가">병가<br> <br> 
+			<label>휴가 기간: <span style="color: red;">(필수)</span></label> 
+			<input type="date" name="leaveStartDate"> ~ <input type="date" name="leaveEndDate"><br> <br> 
+			<label>코멘트:</label><br>
 			<textarea name="comment" rows="3" cols="50"></textarea>
 			<br> <br> <label>첨부파일:</label> <input type="file" id="leaveFiles" multiple><br> <br>
 			<pre id="leaveFileList" class="fileList"></pre>
@@ -61,8 +69,13 @@
 		<!-- 출장 신청 영역 -->
 		<div id="businessSection" style="display: none;">
 			<h4>출장 신청</h4>
-			<label>출장지: <span style="color: red;">(필수)</span></label> <input type="text" name="businessLocation"><br> <br> <label>출장목적: <span style="color: red;">(필수)</span>
-			</label> <input type="text" name="businessPurpose"><br> <br> <label>출장 기간: <span style="color: red;">(필수)</span></label> <input type="date" name="businessStartDate"> ~ <input type="date" name="businessEndDate"><br> <br> <label>코멘트:</label><br>
+			<label>출장지: <span style="color: red;">(필수)</span></label> 
+			<input type="text" name="businessLocation"><br> <br> 
+			<label>출장목적: <span style="color: red;">(필수)</span>
+			</label> <input type="text" name="businessPurpose"><br> <br> 
+			<label>출장 기간: <span style="color: red;">(필수)</span></label> 
+			<input type="date" name="businessStartDate"> ~ <input type="date" name="businessEndDate"><br> <br> 
+			<label>코멘트:</label><br>
 			<textarea name="comment" rows="3" cols="50"></textarea>
 			<br> <br> <label>첨부파일:</label> <input type="file" id="bizFiles" multiple><br> <br>
 			<pre id="bizFileList" class="fileList"></pre>
@@ -277,8 +290,6 @@
 
  	// 결재선 저장 버튼 클릭 시 실행
     $('#saveTemplateBtn').click(function () {
-        const name = $('#templateName').val().trim();
-
         // 1. 이름 입력 확인
         if (!name) {
             alert('결재선 저장을 위해 결재선 이름을 입력하세요.');
@@ -328,6 +339,9 @@
     });
 
     $(document).ready(function () {
+    	// 오늘 날짜 기준 min 설정
+        const today = new Date().toISOString().split('T')[0];
+
         // 템플릿 + 상세 결재자 목록을 드롭다운에 표시 (미리보기 포함)
        $.ajax({
 	    url: '/approval/template/list-full',
@@ -393,6 +407,17 @@
 	            const posId = $(this).data('pos');
 	            addApprover(empId, empName, depName, posId);
 	        });
+	     	
+	    	 // 오늘 날짜 기준으로 이전 날짜 비활성화
+	        const today = new Date().toISOString().split('T')[0];
+
+	        // 휴가 날짜
+	        $('input[name="leaveStartDate"]').attr('min', today);
+	        $('input[name="leaveEndDate"]').attr('min', today);
+
+	        // 출장 날짜
+	        $('input[name="businessStartDate"]').attr('min', today);
+	        $('input[name="businessEndDate"]').attr('min', today);
 	    }
 	});
 

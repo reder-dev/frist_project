@@ -31,7 +31,27 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public void saveApprovalRequest(ApprovalApplyDTO dto, List<MultipartFile> files) {
 		// 1. 결재 문서 먼저 저장
 		approvalMapper.insertApprovalRequest(dto);
+		
+		// 결재선 insert
+		String[] approverIds = dto.getApproverList().split(",");
+		for (int i = 0; i < approverIds.length; i++) {
+			String approverId = approverIds[i];
 
+			// 직책 조회
+			String approverRole = approvalMapper.selectPositionByEmpId(approverId);
+
+			ApprovalLineDTO line = new ApprovalLineDTO();
+			line.setApprovalLineId(dto.getApprovalDocumentId() + "_" + (i + 1));
+			line.setApprovalDocumentId(dto.getApprovalDocumentId());
+			line.setApprovalOrder(i + 1);
+			line.setApproverId(approverId);
+			line.setApproverRole(approverRole);
+			line.setRegDate(LocalDateTime.now());
+			line.setRegister(dto.getRequester());
+
+			approvalMapper.insertApprovalLine(line);
+		}
+		
 		// 2. 저장 루트 경로 (웹 기준 상대 경로)
 		String uploadFolderPath = servletContext.getRealPath("/resources/upload/approval");
 
@@ -123,6 +143,15 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public List<ApprovalLineTemplateListDTO> getTemplatesWithDetails(String ownerId) {
 		return approvalMapper.selectTemplatesWithDetails(ownerId);
+	}
+	
+	@Override
+	public void insertApprovalLine(ApprovalLineDTO dto) {
+	    // approval_line_id 생성
+	    String lineId = dto.getApprovalDocumentId() + "_" + dto.getApprovalOrder();
+	    dto.setApprovalLineId(lineId);
+
+	    approvalMapper.insertApprovalLine(dto);
 	}
 
 }

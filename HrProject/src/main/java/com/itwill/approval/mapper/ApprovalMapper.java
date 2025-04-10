@@ -35,5 +35,10 @@ public interface ApprovalMapper {
 	
 	// 결재선 템플릿과 포함된 결재자 정보를 함께 조회
 	List<ApprovalLineTemplateListDTO> selectTemplatesWithDetails(String ownerId);
+	
+	// APPROVAL_LINE 테이블에 insert
+	int insertApprovalLine(ApprovalLineDTO lineDTO);
+	
+	String selectPositionByEmpId(String empId);
 
 }
