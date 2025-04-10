@@ -177,9 +177,42 @@
 		    <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
 		    <version>1.16</version>
 		</dependency>
+				
+				<!-- JPA -->
+		<dependency>
+		    <groupId>jakarta.persistence</groupId>
+		    <artifactId>jakarta.persistence-api</artifactId>
+		    <version>3.1.0</version>
+		</dependency>
 		
+		<!-- Hibernate (JPA 구현체) -->
+		<dependency>
+		    <groupId>org.hibernate.orm</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>6.2.6.Final</version>
+		</dependency>
 		
+		<!-- MySQL 데이터베이스 드라이버 -->
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>8.0.33</version>
+		</dependency>
 		
+			<!-- Spring Data JPA (Spring 4.x 호환 버전) -->
+	<dependency>
+	    <groupId>org.springframework.data</groupId>
+	    <artifactId>spring-data-jpa</artifactId>
+	    <version>1.11.23.RELEASE</version>
+	</dependency>
+	
+	<!-- Hibernate JPA 구현체 -->
+	<dependency>
+	    <groupId>org.hibernate</groupId>
+	    <artifactId>hibernate-entitymanager</artifactId>
+	    <version>5.2.17.Final</version>
+	</dependency>
+			
 		
 		<!-- 외부 라이브러리 추가 -->
 		        
