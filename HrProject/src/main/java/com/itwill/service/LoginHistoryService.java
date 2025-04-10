@@ -9,5 +9,8 @@ public interface LoginHistoryService {
 	
 	// 로그인 실패 횟수 기록 동작
 	public int countRecentFailedLogins(String emp_id);
+
+	// 로그인 상태 LOCKED인지 확인
+	public boolean isAccountLocked(String emp_id);
 	
 }

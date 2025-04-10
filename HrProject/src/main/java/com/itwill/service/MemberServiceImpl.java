@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.itiwll.domain.LoginHistoryVO;
 import com.itiwll.domain.MemberVO;
-import com.itwill.mapper.MemberMapper;
 import com.itwill.persistence.MemberDAO;
 
 @Service

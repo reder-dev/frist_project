@@ -50,14 +50,15 @@ public class AuthController {
 				return response;
 			}
 
-			System.out.println("👉 member.getEmp_email(): " + member.getEmp_email());
-
-			System.out.println("empId: " + empId);
-			System.out.println("inputEmail: " + inputEmail);
-			System.out.println("DB email: " + member.getEmp_email());
-
-			System.out.println("👉 member: " + member); // 전체 객체 로그
-
+			/*
+			 * System.out.println("👉 member.getEmp_email(): " + member.getEmp_email());
+			 * 
+			 * System.out.println("empId: " + empId); System.out.println("inputEmail: " +
+			 * inputEmail); System.out.println("DB email: " + member.getEmp_email());
+			 * 
+			 * System.out.println("👉 member: " + member); // 전체 객체 로그
+			 */
+						
 			if (member.getEmp_email() == null || !inputEmail.equals(member.getEmp_email())) {
 				resultMap.put("status", "FAIL");
 				resultMap.put("message", "이메일이 일치하지 않습니다.");
@@ -70,6 +71,9 @@ public class AuthController {
 
 			// 메일 전송
 			emailService.sendEmail(inputEmail, "인증코드", "인증코드는: " + code);
+			
+			
+			
 
 			// 세션에 저장
 			session.setAttribute("authCode", code);

@@ -9,5 +9,7 @@ public interface LoginHistoryDAO {
     
     // 로그인 실패 기록
     public int countRecentFailedLogins(String emp_id);
+
+	public boolean isAccountLocked(String emp_id);
     
 }

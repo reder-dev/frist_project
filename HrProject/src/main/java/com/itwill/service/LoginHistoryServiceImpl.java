@@ -25,4 +25,9 @@ public class LoginHistoryServiceImpl implements LoginHistoryService {
 	    return LHdao.countRecentFailedLogins(emp_id);
 	}
 	
+	@Override
+	public boolean isAccountLocked(String emp_id) {
+		return LHdao.isAccountLocked(emp_id);
+	}
+	
 }
