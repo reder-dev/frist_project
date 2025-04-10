@@ -1,5 +1,6 @@
 package com.itwill.hr;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itiwll.domain.EmailVerificationVO;
 import com.itiwll.domain.MemberVO;
 import com.itwill.service.EmailService;
+import com.itwill.service.EmailVerificationService;
 import com.itwill.service.MemberService;
 import com.itwill.util.ResponseAPI;
 
@@ -26,6 +29,10 @@ public class AuthController {
 
 	@Inject
 	private EmailService emailService;
+	
+	@Inject
+	private EmailVerificationService emailVService;
+	
 
 	// 인증코드 전송
 	@PostMapping(value = "/sendCode")
@@ -72,7 +79,14 @@ public class AuthController {
 			// 메일 전송
 			emailService.sendEmail(inputEmail, "인증코드", "인증코드는: " + code);
 			
-			
+			// 인증 정보를 EMAIL_VERIFICATION 테이블에 저장
+	        EmailVerificationVO verification = new EmailVerificationVO();
+	        verification.setEmp_id(empId);
+	        verification.setEmail(inputEmail);
+	        verification.setVerificationCode(code);
+	        verification.setCreated_at(LocalDateTime.now()); // 인증 요청 시간 저장
+	        verification.setVerexp_at(LocalDateTime.now().plusMinutes(5)); // 인증 만료 시간 5분 후
+	        verification.setVerified(false);
 			
 
 			// 세션에 저장
@@ -190,6 +204,25 @@ public class AuthController {
 			response.setResult(resultMap);
 			return response;
 		}
+		
+		// EMAIL_VERIFICATION 테이블에서 인증 정보 조회
+	    EmailVerificationVO verification = emailVService.getVerificationByEmpId(empId);
+
+	    if (verification == null) {
+	        resultMap.put("status", "FAIL");
+	        resultMap.put("message", "인증 정보를 찾을 수 없습니다.");
+	        response.setResult(resultMap);
+	        return response;
+	    }
+
+	    // 인증 코드 만료 확인
+	    if (verification.getVerexp_at().isBefore(LocalDateTime.now())) {
+	        resultMap.put("status", "FAIL");
+	        resultMap.put("message", "인증번호가 만료되었습니다.");
+	        response.setResult(resultMap);
+	        return response;
+	    }
+		
 
 		String newPassword = data.get("newPassword");
 		String pwPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).{8,16}$";
