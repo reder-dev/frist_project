@@ -10,15 +10,15 @@
     <version>1.0.0-BUILD-SNAPSHOT</version>
     <packaging>war</packaging> <!-- 웹 프로젝트인 경우 필요 -->
 
-    <name>SpringProjectFirst</name>
-
-    <properties>
-        <java-version>11</java-version>
-        <org.springframework-version>4.3.8.RELEASE</org.springframework-version>
-        <org.aspectj-version>1.6.10</org.aspectj-version>
-    </properties>
-
-    <dependencies>
+	    <name>SpringProjectFirst</name>
+	
+	    <properties>
+	        <java-version>11</java-version>
+	        <org.springframework-version>4.3.8.RELEASE</org.springframework-version>
+	        <org.aspectj-version>1.6.10</org.aspectj-version>
+	    </properties>
+	
+	    <dependencies>
         <!-- Spring Core -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -84,25 +84,25 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Hibernate Core -->
-<dependency>
-    <groupId>org.hibernate</groupId>
-    <artifactId>hibernate-core</artifactId>
-    <version>5.6.15.Final</version>
-</dependency>
-
-<!-- Jakarta Persistence API -->
-<dependency>
-    <groupId>jakarta.persistence</groupId>
-    <artifactId>jakarta.persistence-api</artifactId>
-    <version>3.1.0</version>
-</dependency>
-
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-jpa</artifactId>
-    <version>2.7.0</version> <!-- 또는 프로젝트에 맞는 버전 -->
-</dependency>
+	        <!-- Hibernate Core -->
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>5.6.15.Final</version>
+		</dependency>
+	
+	<!-- Jakarta Persistence API -->
+		<dependency>
+		    <groupId>jakarta.persistence</groupId>
+		    <artifactId>jakarta.persistence-api</artifactId>
+		    <version>3.1.0</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-jpa</artifactId>
+		    <version>2.7.0</version>
+		</dependency>
 
         
         <!-- Jakarta Persistence API -->
