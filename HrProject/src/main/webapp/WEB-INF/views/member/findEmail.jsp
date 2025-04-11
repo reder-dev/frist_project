@@ -159,16 +159,15 @@
                     newPassword: newPassword
                 })
             })
-            .then(res => res.json())
-            .then(data => {
-                alert(data.result.message);
+            .then(function(res){return res.json();})
+            .then(function(data){alert(data.result.message);
                 if (data.result.status === "SUCCESS") {
                     // 비밀번호 변경 성공 시 로그인 페이지로 이동
                     window.location.href = "/member/login";
                 }
             })
-            .catch(err => {
-                console.error(err);
+            .catch(function(err){
+            	console.error(err);
                 alert("비밀번호 변경 실패");
             });
         });

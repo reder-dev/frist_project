@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.itiwll.domain.LoginHistoryVO;
+import com.itwill.domain.LoginHistoryVO;
 import com.itwill.persistence.LoginHistoryDAO;
 
 @Service

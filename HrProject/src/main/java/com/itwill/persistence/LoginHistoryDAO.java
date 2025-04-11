@@ -1,6 +1,6 @@
 package com.itwill.persistence;
 
-import com.itiwll.domain.LoginHistoryVO;
+import com.itwill.domain.LoginHistoryVO;
 
 public interface LoginHistoryDAO {
 	

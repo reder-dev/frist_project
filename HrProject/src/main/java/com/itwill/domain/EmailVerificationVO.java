@@ -1,4 +1,4 @@
-package com.itiwll.domain;
+package com.itwill.domain;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +9,6 @@ public class EmailVerificationVO {
 
 	private String emp_id;
     private String email;
-    private String verificationCode;
     private LocalDateTime verexp_at;
     private boolean verified;
     private String unlock_code;

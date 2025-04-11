@@ -6,7 +6,7 @@
 <mapper namespace="com.itwillbs.mapper.LoginHistoryMapper">
 
 	<insert id="insertLoginHistory"
-		parameterType="com.itiwll.domain.LoginHistoryVO">
+		parameterType="com.itwill.domain.LoginHistoryVO">
 		INSERT INTO USER_LOGIN_HISTORY (
 		emp_id,
 		login_ip,

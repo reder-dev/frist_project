@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.itiwll.domain.MemberVO;
+import com.itwill.domain.MemberVO;
 
 public interface MemberDAO {
 	

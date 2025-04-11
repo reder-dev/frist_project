@@ -72,10 +72,12 @@
     <c:if test="${not empty message}">
     <script>
         window.onload = function () {
+        	const message = "${message}";
+
             const popup = document.createElement('div');
             popup.className = 'popup-alert';
             popup.innerHTML = `
-                <div class="popup-content">
+                <div class="popup-content">	
                     <p>${message}</p>
                     <button onclick="document.body.removeChild(this.parentNode.parentNode)">확인</button>
                 </div>

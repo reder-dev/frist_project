@@ -8,8 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.itiwll.domain.LoginHistoryVO;
-import com.itiwll.domain.MemberVO;
+import com.itwill.domain.MemberVO;
 import com.itwill.persistence.MemberDAO;
 
 @Service

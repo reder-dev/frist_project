@@ -2,8 +2,7 @@ package com.itwill.service;
 
 import java.util.List;
 
-import com.itiwll.domain.LoginHistoryVO;
-import com.itiwll.domain.MemberVO;
+import com.itwill.domain.MemberVO;
 
 public interface MemberService {
 

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.itiwll.domain.EmailVerificationVO;
-import com.itiwll.domain.MemberVO;
+import com.itwill.domain.EmailVerificationVO;
+import com.itwill.domain.MemberVO;
 import com.itwill.service.EmailService;
 import com.itwill.service.EmailVerificationService;
 import com.itwill.service.MemberService;
@@ -83,11 +83,12 @@ public class AuthController {
 	        EmailVerificationVO verification = new EmailVerificationVO();
 	        verification.setEmp_id(empId);
 	        verification.setEmail(inputEmail);
-	        verification.setVerificationCode(code);
+	        verification.setUnlock_code(code);
 	        verification.setCreated_at(LocalDateTime.now()); // 인증 요청 시간 저장
 	        verification.setVerexp_at(LocalDateTime.now().plusMinutes(5)); // 인증 만료 시간 5분 후
 	        verification.setVerified(false);
-			
+	        
+	        emailVService.saveVerification(verification); // 인증 정보 저장
 
 			// 세션에 저장
 			session.setAttribute("authCode", code);
@@ -160,33 +161,52 @@ public class AuthController {
 	@PostMapping("/verifyCode")
 	@ResponseBody
 	public ResponseAPI verifyCode(@RequestBody Map<String, String> data, HttpSession session) {
-		String inputCode = data.get("code");
-		String sessionCode = (String) session.getAttribute("authCode");
+		String empId = (String) session.getAttribute("empId");
+	    String inputCode = data.get("code");
 
 		ResponseAPI response = new ResponseAPI();
 		Map<String, Object> resultMap = new HashMap<>();
 
-		if (sessionCode == null) {
-			resultMap.put("status", "FAIL");
-			resultMap.put("message", "인증 요청이 없습니다.");
-			response.setResult(resultMap);
-			return response;
-		}
+		if (empId == null) {
+	        resultMap.put("status", "FAIL");
+	        resultMap.put("message", "인증 요청이 없습니다.");
+	        response.setResult(resultMap);
+	        return response;
+	    }
 
-		if (!inputCode.equals(sessionCode)) {
-			resultMap.put("status", "FAIL");
-			resultMap.put("message", "인증코드가 일치하지 않습니다.");
-			response.setResult(resultMap);
-			return response;
-		}
+	    // DB에서 인증 정보 조회
+	    EmailVerificationVO verification = emailVService.getVerificationByEmpId(empId);
+		
+	    if (verification == null) {
+	        resultMap.put("status", "FAIL");
+	        resultMap.put("message", "인증 정보를 찾을 수 없습니다.");
+	        response.setResult(resultMap);
+	        return response;
+	    }
+		
+
+	    // 인증 코드 만료 체크
+	    if (verification.getVerexp_at().isBefore(LocalDateTime.now())) {
+	        resultMap.put("status", "FAIL");
+	        resultMap.put("message", "인증번호가 만료되었습니다.");
+	        response.setResult(resultMap);
+	        return response;
+	    }
+
+	    // 인증 코드 비교
+	    if (!inputCode.equals(verification.getUnlock_code())) {
+	        resultMap.put("status", "FAIL");
+	        resultMap.put("message", "인증코드가 일치하지 않습니다.");
+	        response.setResult(resultMap);
+	        return response;
+	    }
 
 		// 인증 성공 시 세션에 인증 상태 저장
-		session.setAttribute("verified", true);
-
-		resultMap.put("status", "SUCCESS");
-		resultMap.put("message", "인증코드가 확인되었습니다.");
-		response.setResult(resultMap);
-		return response;
+	    session.setAttribute("verified", true);
+	    resultMap.put("status", "SUCCESS");
+	    resultMap.put("message", "인증코드가 확인되었습니다.");
+	    response.setResult(resultMap);
+	    return response;
 	}
 
 	@PostMapping("/resetPassword")

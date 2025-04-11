@@ -1,6 +1,6 @@
 package com.itwill.service;
 
-import com.itiwll.domain.EmailVerificationVO;
+import com.itwill.domain.EmailVerificationVO;
 
 public interface EmailVerificationService {
 	
@@ -12,5 +12,8 @@ public interface EmailVerificationService {
 
     // 인증 코드 만료 확인
     public boolean isVerificationExpired(EmailVerificationVO verification);
+    
+    // 인증 데이터 db저장
+    public void saveVerification(EmailVerificationVO verification);
 	
 }

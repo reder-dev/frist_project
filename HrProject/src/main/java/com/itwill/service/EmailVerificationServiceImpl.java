@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-import com.itiwll.domain.EmailVerificationVO;
+import com.itwill.domain.EmailVerificationVO;
 import com.itwill.persistence.EmailVerificationDAO;
 
 @Service
@@ -26,5 +26,10 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     @Override
     public boolean isVerificationExpired(EmailVerificationVO verification) {
         return verification.getVerexp_at().isBefore(java.time.LocalDateTime.now());
+    }
+    
+    @Override
+    public void saveVerification(EmailVerificationVO verification) {
+    	emaildao.insertVerification(verification);
     }
 }

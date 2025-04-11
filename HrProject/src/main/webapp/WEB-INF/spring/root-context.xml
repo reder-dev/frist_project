@@ -25,6 +25,9 @@
 		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
 		<!-- Mapper 위치 지정 (필요 시 주석 해제) -->
 		<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" />
+		
+		<!-- 이 부분 추가! VO 경로로 설정 -->
+		<property name="typeAliasesPackage" value="com.itwill.domain"/>
 	</bean>
 
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">

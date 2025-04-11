@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.itiwll.domain.LoginHistoryVO;
+import com.itwill.domain.LoginHistoryVO;
 
 @Repository
 public class LoginHistoryDAOImpl implements LoginHistoryDAO {
