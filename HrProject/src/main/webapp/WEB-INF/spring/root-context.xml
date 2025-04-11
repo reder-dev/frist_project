@@ -21,9 +21,17 @@
 
 	<!-- MyBatis 설정 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
+		<!-- Mapper 위치 지정 (필요 시 주석 해제) -->
 		<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" />
+		
+		<!-- 이 부분 추가! VO 경로로 설정 -->
+		<property name="typeAliasesPackage" value="com.itwill.domain"/>
+
+		
+<!-- 2e9e7072b8ac72dc38ef48c718a15bac0a636c90 --> 
 	</bean>
 
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
@@ -34,6 +42,37 @@
 		<property name="basePackage" value="com.itwill.approval.mapper" />
 	</bean>
 
+
+	<!-- 컴포넌트 스캔 설정 (Controller 제외) -->
 	<context:component-scan base-package="com.itwill" />
+	
+	
+	<!-- JavaMailSender 설정 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com"/>
+		<property name="port" value="587"/>
+		<property name="username" value="hhsky1111@gmail.com"/> <!-- 본인 Gmail 주소 -->
+		<property name="password" value="ucexcmgwtirpyytb"/>    <!-- 앱 비밀번호 사용해야 함 -->
+	
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+	
+	<!-- MyBatis 매퍼 인터페이스 등록 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.itwill.mapper"/>
+	</bean>
+
+
+
+	
+
 
 </beans>
