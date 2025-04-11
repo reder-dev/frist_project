@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
             	
     
@@ -36,3 +37,6 @@
 
 
 </project-modules>
+=======
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId"/>
+>>>>>>> 46a554ef842519490d472853cdbfbc9f074f8748
