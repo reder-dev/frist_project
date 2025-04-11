@@ -1,5 +1,6 @@
 package com.itwill.hr;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.itwill.service.EmployeeAdminService;
 
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
 	@Autowired
@@ -34,14 +36,15 @@ public class AdminController {
 
     @PostMapping("/employees/edit")
     public String updateEmployee(@ModelAttribute("employee") EmployeeVO employee) {
-        employeeService.updateEmployee(employee);
-        return "admin/redirect:/employees";
+    	employee.setEmp_modifydate(new Timestamp(System.currentTimeMillis())); // 현재 시각으로 세팅
+    	employeeService.updateEmployee(employee);
+        return "redirect:/admin/employees";
     }
 
     @GetMapping("/employees/view/{empId}")
     public String viewEmployeeDetail(@PathVariable("empId") String empId, Model model) {
         EmployeeVO employee = employeeService.getEmployeeById(empId);
         model.addAttribute("employee", employee);
-        return "admin/admin/employees";
+        return "admin/employees";
     }
 }

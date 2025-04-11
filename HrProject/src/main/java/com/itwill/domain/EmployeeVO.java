@@ -3,6 +3,8 @@ package com.itwill.domain;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -20,14 +22,22 @@ public class EmployeeVO {
 	private String emp_phone;
 	private String emp_email;
 	private String emp_address;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")	
 	private Date emp_jd;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date emp_qd;
 	private String dep_id;
 	private String dep_name;
 	private String pos_id;
 	private String rank_id;
-	private Timestamp emp_registdate;
+	
+	
+	private String emp_registdate;
 	private String emp_register;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Timestamp emp_modifydate;
 	private String emp_modifier;
 	private String emp_pht;

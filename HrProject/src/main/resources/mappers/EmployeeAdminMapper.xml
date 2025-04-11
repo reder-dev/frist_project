@@ -27,7 +27,7 @@
             rank_id = #{rank_id},
             emp_cn = #{emp_cn},
             emp_modifier = #{emp_modifier},
-            emp_modifydate = CURRENT_TIMESTAMP
+            emp_modifydate = #{emp_modifydate}
         WHERE emp_id = #{emp_id}
     </update>
     <!-- 특정직원의 정보를 수정함 -->

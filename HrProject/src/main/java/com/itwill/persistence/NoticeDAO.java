@@ -1,7 +1,10 @@
 package com.itwill.persistence;
 
 import java.util.List;
+
+
 import com.itwill.domain.NoticeVO;
+
 
 public interface NoticeDAO {
     public List<NoticeVO> getNoticeList();

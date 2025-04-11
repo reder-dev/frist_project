@@ -53,7 +53,9 @@
 	<!-- 한글 처리 인코딩 -->
 	
 	
-	
+	<welcome-file-list>
+    	<welcome-file>home.jsp</welcome-file>
+	</welcome-file-list>
 	
 	
 	

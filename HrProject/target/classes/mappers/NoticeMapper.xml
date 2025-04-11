@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwill.persistence.NoticeDAO">
 
-    <select id="getNoticeList" resultType="com.itwill.domain.NoticeDTO">
+    <select id="getNoticeList" resultType="com.itwill.domain.NoticeVO">
         SELECT * FROM notice ORDER BY not_registdate DESC
     </select>
 
-    <insert id="insertNotice" parameterType="com.itwill.domain.NoticeDTO">
+    <insert id="insertNotice" parameterType="com.itwill.domain.NoticeVO">
         INSERT INTO notice (not_ti, not_cn, not_file, emp_id, not_registdate, not_register)
         VALUES (#{not_ti}, #{not_cn}, #{not_file}, #{emp_id}, NOW(), #{not_register})
     </insert>
 
-    <select id="getNotice" resultType="com.itwill.domain.NoticeDTO" parameterType="int">
+    <select id="getNotice" resultType="com.itwill.domain.NoticeVO" parameterType="int">
         SELECT * FROM notice WHERE not_id = #{not_id}
     </select>
 
-    <update id="updateNotice" parameterType="com.itwill.domain.NoticeDTO">
+    <update id="updateNotice" parameterType="com.itwill.domain.NoticeVO">
         UPDATE notice
         SET not_ti = #{not_ti}, not_cn = #{not_cn}, not_file = #{not_file},
             not_modifydate = NOW(), not_modifier = #{not_modifier}

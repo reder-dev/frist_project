@@ -29,7 +29,7 @@
 	<p><strong>회사명:</strong> ${employee.emp_cn}</p>
 	
 
-	<a href="${pageContext.request.contextPath}/admin/employees/edit/${employee.id}">
+	<a href="${pageContext.request.contextPath}/admin/employees/edit/${employee.emp_id}">
 	
     	<button>수정</button>
 	</a>
