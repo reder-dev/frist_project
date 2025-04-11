@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- HikariCP 설정 -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
-		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c6d2412t1p1"/>
-		<property name="username" value="c6d2412t1p1"/>
-		<property name="password" value="1234"/>
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c6d2412t1p1" />
+		<property name="username" value="c6d2412t1p1" />
+		<property name="password" value="1234" />
 	</bean>
 
 	<!-- DataSource 설정 -->
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-		<constructor-arg ref="hikariConfig"/>
+		<constructor-arg ref="hikariConfig" />
 	</bean>
 
 	<!-- MyBatis 설정 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+
 		<property name="dataSource" ref="dataSource"/>
 		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
 		<!-- Mapper 위치 지정 (필요 시 주석 해제) -->
@@ -28,15 +29,22 @@
 		
 		<!-- 이 부분 추가! VO 경로로 설정 -->
 		<property name="typeAliasesPackage" value="com.itwill.domain"/>
+
+		
+<!-- 2e9e7072b8ac72dc38ef48c718a15bac0a636c90 --> 
 	</bean>
 
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
-		<constructor-arg ref="sqlSessionFactory"/>
+		<constructor-arg ref="sqlSessionFactory" />
 	</bean>
 
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.itwill.approval.mapper" />
+	</bean>
+
+
 	<!-- 컴포넌트 스캔 설정 (Controller 제외) -->
-	<context:component-scan base-package="com.itwill.persistence" />
-	<context:component-scan base-package="com.itwill.service" />
+	<context:component-scan base-package="com.itwill" />
 	
 	
 	<!-- JavaMailSender 설정 -->
@@ -62,6 +70,9 @@
 		<property name="basePackage" value="com.itwill.mapper"/>
 	</bean>
 
+
+
+	
 
 
 </beans>
