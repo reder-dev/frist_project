@@ -12,4 +12,5 @@ public class ApprovalLineDTO {
     private String approverRole;           // 결재자의 직책 ← 이게 필요해!
     private LocalDateTime regDate;         // 등록일
     private String register;               // 등록자
+    private String approvalStatus; // "대기", "승인", "반려"
 }

@@ -13,4 +13,5 @@ public class ApprovalApplyDTO {
     private int attachmentCount;           // 첨부파일 수 (0이면 기본값)
     private String register;               // 등록자 (보통은 = requester)
     private String approverList; 		   // "15100002,10100001" 이런 식으로 전달됨
+    private String requestComment;
 }

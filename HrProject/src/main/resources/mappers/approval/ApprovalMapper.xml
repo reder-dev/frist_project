@@ -4,7 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwill.approval.mapper.ApprovalMapper">
-
+	
+	<select id="countApprovalByPrefix" parameterType="string" resultType="int">
+	  SELECT COUNT(*)
+	  FROM APPROVAL_REQ
+	  WHERE approval_document_id LIKE CONCAT(#{prefix}, '%')
+	</select>
+	
 	<!-- 결재 신청 등록 -->
 	<insert id="insertApprovalRequest"
 		parameterType="com.itwill.approval.dto.ApprovalApplyDTO">
@@ -16,9 +22,11 @@
 		requester,
 		request_date,
 		attachment_count,
+		request_comment,
 		reg_date,
 		register
-		) VALUES (
+		)
+		VALUES (
 		#{approvalDocumentId},
 		#{documentTitle},
 		#{referenceTableName},
@@ -26,6 +34,7 @@
 		#{requester},
 		NOW(),
 		#{attachmentCount},
+		#{requestComment},
 		NOW(),
 		#{register}
 		)
@@ -67,39 +76,6 @@
 		) VALUES (
 		#{templateId},
 		#{approvalOrder}, #{approverId}, #{approverRole}
-		)
-	</insert>
-
-	<!-- 휴가 INSERT -->
-	<insert id="insertLeave"
-		parameterType="com.itwill.approval.dto.LeaveDTO">
-		INSERT INTO LEAVE (
-		leave_id, emp_id, leave_status,
-		leave_start_date, leave_end_date,
-		leave_unn, leave_days, created_at,
-		updated_at
-		) VALUES (
-		#{leaveId}, #{empId}, #{leaveStatus},
-		#{leaveStartDate}, #{leaveEndDate},
-		#{leaveUnn}, #{leaveDays}, NOW(),
-		NOW()
-		)
-	</insert>
-
-	<!-- 출장 INSERT -->
-	<insert id="insertBusiness"
-		parameterType="com.itwill.approval.dto.BusinessDTO">
-		INSERT INTO BUSINESS (
-		business_trip_id, emp_id,
-		business_trip_start, business_trip_end,
-		trip_location,
-		business_trip_purpose,
-		app_register, created_at, updated_at
-		) VALUES (
-		#{businessTripId}, #{empId},
-		#{businessTripStart}, #{businessTripEnd},
-		#{tripLocation}, #{businessTripPurpose},
-		#{appRegister}, NOW(), NOW()
 		)
 	</insert>
 
@@ -179,7 +155,8 @@
 	</resultMap>
 
 	<insert id="insertApprovalLine" parameterType="ApprovalLineDTO">
-		INSERT INTO APPROVAL_LINE (
+		INSERT INTO
+		APPROVAL_LINE (
 		approval_line_id,
 		approval_document_id,
 		approval_order,
@@ -201,6 +178,385 @@
 	<select id="selectPositionByEmpId" resultType="string"
 		parameterType="string">
 		SELECT pos_id FROM EMPLOYEE WHERE emp_id = #{empId}
+	</select>
+
+	<!-- 휴가 신청 INSERT -->
+	<insert id="insertLeaveReq"
+		parameterType="com.itwill.approval.dto.LeaveReqDTO">
+		INSERT INTO LEAVE_REQ (
+		leave_id,
+		emp_id,
+		leave_status,
+		leave_start_date,
+		leave_end_date,
+		leave_days,
+		approval_confirmed
+		) VALUES
+		(
+		#{leaveId},
+		#{empId},
+		#{leaveStatus},
+		#{leaveStartDate},
+		#{leaveEndDate},
+		#{leaveDays},
+		#{approvalConfirmed}
+		)
+	</insert>
+
+	<!-- 출장 신청 INSERT -->
+	<insert id="insertBusinessReq"
+		parameterType="com.itwill.approval.dto.BusinessReqDTO">
+		INSERT INTO BUSINESS_REQ (
+		business_trip_id,
+		emp_id,
+		trip_location,
+		business_trip_purpose,
+		business_trip_start,
+		business_trip_end,
+		approval_confirmed
+		) VALUES (
+		#{businessTripId},
+		#{empId},
+		#{tripLocation},
+		#{businessTripPurpose},
+		#{businessTripStart},
+		#{businessTripEnd},
+		#{approvalConfirmed}
+		)
+	</insert>
+
+	<!-- ///////////////////////////// 관리자 ///////////////////////////// -->
+	<resultMap id="PendingApprovalResultMap"
+		type="com.itwill.approval.dto.PendingApprovalDTO">
+		<result property="approvalDocumentId"
+			column="approval_document_id" />
+		<result property="documentTitle" column="document_title" />
+		<result property="requestDate" column="request_date" />
+		<result property="requester" column="requester" />
+		<result property="requesterName" column="requester_name" />
+		<result property="requesterDept" column="requester_dept" />
+		<result property="requesterPosition"
+			column="requester_position" />
+		<result property="approvalOrder" column="approval_order" />
+		<result property="approvalLineId" column="approval_line_id" />
+		<result property="approverId" column="approver_id" />
+		<result property="approverRole" column="approver_role" />
+		<result property="approvalStatus" column="approval_status" />
+	</resultMap>
+
+	<!-- 결재 대기 문서 목록 조회 쿼리 -->
+	<select id="selectPendingApprovals" parameterType="string"
+	        resultMap="PendingApprovalResultMap">
+	  SELECT
+	      ar.approval_document_id,
+	      ar.document_title,
+	      ar.request_date,
+	      ar.requester,
+	      e.emp_name AS requester_name,
+	      d.dep_name AS requester_dept,
+	      e.pos_id AS requester_position,
+	      al.approval_order,
+	      al.approval_line_id,
+	      al.approver_id,
+	      al.approver_role,
+	      aa.approval_status AS approval_status
+	  FROM APPROVAL_REQ ar
+	  JOIN APPROVAL_LINE al ON ar.approval_document_id = al.approval_document_id
+	  JOIN EMPLOYEE e ON ar.requester = e.emp_id
+	  JOIN DEPARTMENT d ON CAST(e.dep_id AS UNSIGNED) = d.dep_id
+	  LEFT JOIN APPROVAL_APP aa ON aa.approval_document_id = al.approval_document_id
+	                           AND aa.approver_id = al.approver_id
+	  WHERE al.approver_id = #{approverId}
+	    AND (
+	      (
+	        al.approval_order = (
+	          SELECT MIN(al2.approval_order)
+	          FROM APPROVAL_LINE al2
+	          LEFT JOIN APPROVAL_APP aa2
+	            ON al2.approval_document_id = aa2.approval_document_id
+	           AND al2.approver_id = aa2.approver_id
+	          WHERE al2.approval_document_id = ar.approval_document_id
+	            AND aa2.approval_id IS NULL
+	        )
+	      )
+	      OR EXISTS (
+	        SELECT 1 FROM APPROVAL_APP aa3
+	        WHERE aa3.approval_document_id = al.approval_document_id
+	          AND aa3.approver_id = #{approverId}
+	      )
+	    )
+	    AND NOT EXISTS (
+	      SELECT 1
+	      FROM APPROVAL_APP aa4
+	      JOIN APPROVAL_LINE al4
+	        ON aa4.approver_id = al4.approver_id
+	       AND aa4.approval_document_id = al4.approval_document_id
+	      WHERE aa4.approval_status = '반려'
+	        AND al4.approval_document_id = ar.approval_document_id
+	        AND al4.approval_order &lt; al.approval_order
+	    )
+	  ORDER BY ar.request_date DESC
+	</select>
+
+	<select id="selectApprovalResults" parameterType="string"
+		resultType="com.itwill.approval.dto.ApprovalAppDTO">
+		SELECT *
+		FROM APPROVAL_APP
+		WHERE approval_document_id =
+		#{approvalDocumentId}
+	</select>
+
+	<select id="selectEmployeeInfo" parameterType="string"
+		resultType="com.itwill.approval.dto.ApprovalSearchDTO">
+		SELECT
+		e.emp_id AS empId,
+		e.emp_name AS empName,
+		d.dep_name AS
+		depName,
+		e.pos_id AS posId
+		FROM EMPLOYEE e
+		JOIN DEPARTMENT d ON
+		CAST(e.dep_id AS UNSIGNED) = d.dep_id
+		WHERE e.emp_id = #{empId}
+	</select>
+
+	<select id="selectFilesByReferenceId" parameterType="string"
+		resultType="com.itwill.approval.dto.FileDTO">
+		SELECT
+		file_id AS fileId,
+		file_name AS fileName,
+		file_path AS
+		filePath,
+		file_size AS fileSize,
+		file_type AS fileType,
+		reference_table_id AS referenceTableId,
+		reference_table_name AS
+		referenceTableName,
+		upload_date AS uploadDate,
+		file_description AS
+		fileDescription
+		FROM FILE
+		WHERE reference_table_id = #{referenceId}
+	</select>
+
+	<resultMap id="ApprovalLineMap"
+		type="com.itwill.approval.dto.ApprovalLineDTO">
+		<result property="approvalLineId" column="approval_line_id" />
+		<result property="approvalDocumentId"
+			column="approval_document_id" />
+		<result property="approvalOrder" column="approval_order" />
+		<result property="approverId" column="approver_id" />
+		<result property="approverRole" column="approver_role" />
+		<result property="approvalStatus" column="approval_status" />
+		<result property="regDate" column="reg_date" />
+		<result property="register" column="register" />
+	</resultMap>
+	<select id="selectApprovalLines" parameterType="string"
+	    resultMap="ApprovalLineResultMap">
+	  SELECT
+	    approval_line_id,
+	    approval_document_id,
+	    approval_order,
+	    approver_id,
+	    approver_role,
+	    approval_status,  <!-- 이 줄 추가 -->
+	    reg_date,
+	    register
+	  FROM APPROVAL_LINE
+	  WHERE approval_document_id = #{documentId}
+	  ORDER BY approval_order
+	</select>
+	
+	<resultMap id="ApprovalLineResultMap" type="com.itwill.approval.dto.ApprovalLineDTO">
+	  <result property="approvalLineId" column="approval_line_id"/>
+	  <result property="approvalDocumentId" column="approval_document_id"/>
+	  <result property="approvalOrder" column="approval_order"/>
+	  <result property="approverId" column="approver_id"/>
+	  <result property="approverRole" column="approver_role"/>
+	  <result property="approvalStatus" column="approval_status"/> <!-- 매핑 추가 -->
+	  <result property="regDate" column="reg_date"/>
+	  <result property="register" column="register"/>
+	</resultMap>
+
+	<select id="selectApprovalDocument" parameterType="string"
+		resultType="com.itwill.approval.dto.ApprovalApplyDTO">
+		SELECT
+		approval_document_id AS approvalDocumentId,
+		document_title AS documentTitle,
+		reference_table_name AS
+		referenceTableName,
+		reference_id AS referenceId,
+		requester,
+		attachment_count AS attachmentCount,
+		request_comment AS requestComment,
+		register
+		FROM APPROVAL_REQ
+		WHERE approval_document_id =
+		#{approvalDocumentId}
+	</select>
+
+	<select id="selectLeaveReqByDocId" parameterType="string"
+		resultType="com.itwill.approval.dto.LeaveReqDTO">
+		SELECT
+		leave_id AS leaveId,
+		emp_id AS empId,
+		leave_status AS
+		leaveStatus,
+		leave_start_date AS leaveStartDate,
+		leave_end_date AS
+		leaveEndDate,
+		leave_days AS leaveDays,
+		approval_confirmed AS
+		approvalConfirmed
+		FROM LEAVE_REQ
+		WHERE leave_id = #{approvalDocumentId}
+	</select>
+	
+	<select id="selectBusinessReqByDocId" parameterType="string"
+	        resultType="com.itwill.approval.dto.BusinessReqDTO">
+	    SELECT 
+	        business_trip_id AS businessTripId,
+	        emp_id AS empId,
+	        trip_location AS tripLocation,
+	        business_trip_purpose AS businessTripPurpose,
+	        business_trip_start AS businessTripStart,
+	        business_trip_end AS businessTripEnd,
+	        approval_confirmed AS approvalConfirmed
+	    FROM BUSINESS_REQ
+	    WHERE business_trip_id = #{approvalDocumentId}
+	</select>
+
+	<select id="selectFileById" parameterType="string"
+		resultType="com.itwill.approval.dto.FileDTO">
+		SELECT
+		file_id AS fileId,
+		file_name AS fileName,
+		file_path AS
+		filePath,
+		file_size AS fileSize,
+		file_type AS fileType,
+		reference_table_id AS referenceTableId,
+		reference_table_name AS
+		referenceTableName,
+		upload_date AS uploadDate,
+		file_description AS
+		fileDescription
+		FROM FILE
+		WHERE file_id = #{fileId}
+	</select>
+
+	<!-- 1. 결재 결과 INSERT -->
+	<insert id="insertApprovalResult" parameterType="ApprovalAppDTO">
+		INSERT INTO
+		APPROVAL_APP (
+		approval_id,
+		approval_document_id,
+		approver_id,
+		approval_order,
+		approval_status,
+		approval_date,
+		approval_comment,
+		reg_date,
+		register,
+		mod_date,
+		modifier
+		) VALUES (
+		#{approvalLineId},
+		#{approvalDocumentId},
+		#{approverId},
+		#{approvalOrder},
+		#{approvalStatus},
+		NOW(),
+		#{comment},
+		NOW(),
+		#{register},
+		NOW(),
+		#{modifier}
+		)
+	</insert>
+
+	<!-- 2. 결재 순서 조회 -->
+	<select id="selectApprovalOrder" parameterType="map"
+		resultType="int">
+		SELECT approval_order
+		FROM APPROVAL_LINE
+		WHERE
+		approval_document_id = #{documentId}
+		AND approver_id = #{approverId}
+	</select>
+	
+	<select id="selectApprovalLinesByDocId"
+	        parameterType="string"
+	        resultMap="ApprovalLineMap">
+	  SELECT approval_line_id, approval_document_id, approval_order,
+	         approver_id, approver_role, approval_status,
+	         reg_date, register
+	  FROM APPROVAL_LINE
+	  WHERE approval_document_id = #{approvalDocumentId}
+	  ORDER BY approval_order
+	</select>
+	
+	<!-- 3. 다음 결재자 활성화 -->
+	<update id="activateNextApprover">
+		UPDATE APPROVAL_LINE
+		SET approval_status = '대기'
+		WHERE
+		approval_document_id = #{documentId}
+		AND approval_order = #{nextOrder}
+	</update>
+	
+	<update id="updateLineStatus">
+	  UPDATE APPROVAL_LINE
+	  SET approval_status = #{status}
+	  WHERE approval_line_id = #{approvalLineId}
+	</update>
+
+	<!-- 4. 결재 상태 목록 조회 -->
+	<select id="selectApprovalStatuses" parameterType="string"
+		resultType="string">
+		SELECT approval_status
+		FROM APPROVAL_APP 
+		WHERE
+		approval_document_id = #{approvalDocumentId}
+	</select>
+
+	<!-- 5. 휴가 확정 처리 -->
+	<update id="updateLeaveApprovalConfirmed" parameterType="string">
+		UPDATE
+		LEAVE_REQ
+		SET approval_confirmed = TRUE
+		WHERE leave_id = #{leaveId}
+	</update>
+
+	<!-- 6. 출장 확정 처리 -->
+	<update id="updateBusinessApprovalConfirmed"
+		parameterType="string">
+		UPDATE BUSINESS_REQ
+		SET approval_confirmed = TRUE
+		WHERE
+		business_trip_id = #{tripId}
+	</update>
+	
+	<!-- 전체 결재자 수 -->
+	<select id="countApprovalLinesByDocId" parameterType="string" resultType="int">
+	  SELECT COUNT(*)
+	  FROM APPROVAL_LINE
+	  WHERE approval_document_id = #{approvalDocumentId}
+	</select>
+	
+	<!-- 승인된 결재자 수 -->
+	<select id="countApprovedLinesByDocId" parameterType="string" resultType="int">
+	  SELECT COUNT(*)
+	  FROM APPROVAL_LINE
+	  WHERE approval_document_id = #{approvalDocumentId}
+	    AND approval_status = '승인'
+	</select>
+
+	<select id="findApprovalLineId" parameterType="map" resultType="string">
+	  SELECT approval_line_id
+	  FROM APPROVAL_LINE
+	  WHERE approval_document_id = #{documentId}
+	    AND approver_id = #{approverId}
 	</select>
 
 </mapper>

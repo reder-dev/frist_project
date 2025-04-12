@@ -190,6 +190,12 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.4</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.15.2</version> <!-- Jackson 버전에 맞춰 조정 -->
+		</dependency>
 		<!-- 외부 라이브러리 추가 -->
 
 	</dependencies>
