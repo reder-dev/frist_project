@@ -1,39 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- HikariCP 설정 -->
-	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
-		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c6d2412t1p1" />
-		<property name="username" value="c6d2412t1p1" />
-		<property name="password" value="1234" />
-	</bean>
+    <!-- HikariCP 설정 -->
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+        <property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c6d2412t1p1" />
+        <property name="username" value="c6d2412t1p1" />
+        <property name="password" value="1234" />
+    </bean>
 
-	<!-- DataSource 설정 -->
-	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-		<constructor-arg ref="hikariConfig" />
-	</bean>
+    <!-- DataSource 설정 -->
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfig" />
+    </bean>
 
-	<!-- MyBatis 설정 -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" value="classpath:/mybatis-config.xml" />
-		<property name="mapperLocations" value="classpath:/mappers/**/*.xml" />
-	</bean>
+    <!-- MyBatis 설정 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:/mybatis-config.xml" />
+        <property name="mapperLocations" value="classpath:/mappers/**/*.xml" />
+        <property name="typeAliasesPackage" value="com.itwill.domain" />
+    </bean>
 
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
-		<constructor-arg ref="sqlSessionFactory" />
-	</bean>
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
+        <constructor-arg ref="sqlSessionFactory" />
+    </bean>
 
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.itwill.approval.mapper" />
-	</bean>
+    <!-- MyBatis 매퍼 인터페이스 등록 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+      <property name="basePackage" value="com.itwill.approval.mapper, com.itwill.mapper"/>
+    </bean>
 
-	<context:component-scan base-package="com.itwill" />
+    <!-- 컴포넌트 스캔 설정 (Controller 제외) -->
+    <context:component-scan base-package="com.itwill" />
+
+    <!-- JavaMailSender 설정 -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com" />
+        <property name="port" value="587" />
+        <property name="username" value="hhsky1111@gmail.com" />
+        <property name="password" value="ucexcmgwtirpyytb" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">true</prop>
+            </props>
+        </property>
+    </bean>
 
 </beans>

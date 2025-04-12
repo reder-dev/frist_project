@@ -19,7 +19,7 @@
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
 	<!-- 4. ViewResolver 설정 (JSP 파일 위치 정의) -->
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
@@ -32,5 +32,12 @@
 		<beans:property name="defaultEncoding" value="UTF-8" />
 		<beans:property name="maxUploadSize" value="52428800" />
 	</beans:bean>
+	
+	<!-- JSON 뷰 리졸버 설정 -->
+    <beans:bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+
+    <!-- Jackson HTTP 메시지 컨버터 -->
+    <beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
 
 </beans:beans>
+

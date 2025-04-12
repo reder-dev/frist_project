@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.EmailVerificationMapper">
+	<!-- emp_id로 가장 최근 인증 정보 조회 -->
+	<select id="selectByEmpId"
+		resultType="com.itwill.domain.EmailVerificationVO">
+		SELECT emp_id, email, verexp_at, verified, unlock_code,
+		created_at, updated_at
+		FROM EMAIL_VERIFICATION
+		WHERE emp_id = #{empId}
+		ORDER BY created_at DESC
+		LIMIT 1
+	</select>
+
+	<!-- 인증 정보 업데이트 -->
+	<update id="update">
+		UPDATE EMAIL_VERIFICATION
+		SET verified = #{verified},
+		updated_at = #{updated_at}
+		WHERE emp_id = #{empId}
+	</update>
+
+	<insert id="insertVerification">
+		INSERT INTO EMAIL_VERIFICATION (
+			emp_id, email, verexp_at, verified, unlock_code
+		) VALUES (
+			#{emp_id}, #{email}, #{verexp_at}, #{verified}, #{unlock_code}
+		)
+	</insert>
+
+	<!-- 인증 코드 만료 시간 체크 -->
+	<select id="isVerificationExpired" resultType="boolean">
+		SELECT (verexp_at
+		&lt; NOW() OR verexp_at IS NULL)
+		FROM EMAIL_VERIFICATION
+		WHERE emp_id =
+		#{empId}
+	</select>
+</mapper>
