@@ -184,7 +184,20 @@
     <version>1.2</version>
 </dependency>
 		
-		
+		<dependencies>
+    <!-- Apache POI -->
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+        <version>5.2.3</version>
+    </dependency>
+
+    <!-- iText PDF -->
+    <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>itextpdf</artifactId>
+        <version>5.5.13.3</version>
+    </dependency>
 		
 		<!-- 외부 라이브러리 추가 -->
 		        
