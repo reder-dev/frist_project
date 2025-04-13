@@ -15,15 +15,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/api/admin")  // ✅ REST API 전용 경로 구분
+public class AdminApiController {
 
     private final AttendanceService attendanceService;
     private final LatenessService latenessService;
     private final LeaveService leaveService;
 
     @Autowired
-    public AdminController(
+    public AdminApiController(
         AttendanceService attendanceService,
         LatenessService latenessService,
         LeaveService leaveService
@@ -33,33 +33,30 @@ public class AdminController {
         this.leaveService = leaveService;
     }
 
-    // 모든 사원의 특정 날짜 출결 조회
+    // 출결 API
     @GetMapping("/attendance")
     public List<Attendance> getAttendanceByDate(
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
-    ) {
+        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         return attendanceService.getAllAttendanceByDate(date);
     }
 
-    // 특정 사원의 전체 출결 이력 조회
     @GetMapping("/attendance/{employeeId}")
     public List<Attendance> getAttendanceByEmployee(@PathVariable String employeeId) {
         return attendanceService.getAttendanceHistory(employeeId);
     }
 
-    // 모든 지각 기록 조회
+    // 지각 API
     @GetMapping("/lateness")
     public List<Lateness> getAllLateness() {
         return latenessService.getAllLateness();
     }
 
-    // 모든 연차 신청 내역 조회
+    // 연차 API
     @GetMapping("/leave")
     public List<Leave> getAllLeave() {
         return leaveService.getAllLeaves();
     }
 
-    // 연차 상태 변경 (승인/반려)
     @PostMapping("/leave/status/{id}")
     public Leave changeLeaveStatus(@PathVariable Long id, @RequestParam String status) {
         return leaveService.updateStatus(id, status);
