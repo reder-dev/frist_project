@@ -3,15 +3,10 @@ package com.itwill.attendance.attendance;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "attendance") // 실제 DB 테이블 이름
+@Table(name = "attendance")
 public class Attendance {
 
     @Id
@@ -28,12 +23,20 @@ public class Attendance {
     private LocalTime checkOut;
 
     @Column(nullable = false)
-    private String workType;  // 예: 일반, 출장, 결근
+    private String workType;  // 예: 일반, 출장, 결근, 외근, 지각, 휴가
 
-    //기본 생성자 (JPA 필수)
+    //지각 시간 (분 단위)
+    private Integer latenessMinutes;
+
+    //사유서 (지각 또는 결근 사유)
+    private String reason;
+
+    //관리자 승인 여부: "승인", "반려", "대기"
+    private String approvalStatus;
+
+    // 생성자
     public Attendance() {}
 
-    //생성자 (필요시)
     public Attendance(String employeeId, LocalDate date, LocalTime checkIn, LocalTime checkOut, String workType) {
         this.employeeId = employeeId;
         this.date = date;
@@ -42,8 +45,7 @@ public class Attendance {
         this.workType = workType;
     }
 
-    //Getter & Setter
-
+    // Getter & Setter
     public Long getId() {
         return id;
     }
@@ -88,16 +90,44 @@ public class Attendance {
         this.workType = workType;
     }
 
-    // 근무 상태 계산 메서드 (DTO와 동일한 로직 포함 가능)
+    public Integer getLatenessMinutes() {
+        return latenessMinutes;
+    }
+
+    public void setLatenessMinutes(Integer latenessMinutes) {
+        this.latenessMinutes = latenessMinutes;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(String approvalStatus) {
+        this.approvalStatus = approvalStatus;
+    }
+
+    // 상태 반환 로직
     public String getStatus() {
         if ("출장".equals(workType)) {
             return "출장";
+        } else if ("외근".equals(workType)) {
+            return "외근";
+        } else if ("휴가".equals(workType)) {
+            return "휴가";
         } else if ("결근".equals(workType)) {
             return "결근";
         } else if (checkIn != null && checkOut == null) {
-            return "출근";
+            return "출근 중";
         } else if (checkIn != null && checkOut != null) {
-            return "퇴근";
+            return "퇴근 완료";
         } else {
             return "미출근";
         }
