@@ -5,18 +5,16 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ApprovalService {
-	void saveApprovalRequest(ApprovalApplyDTO dto, List<MultipartFile> files);
+	void saveApprovalRequest(
+			ApprovalApplyDTO dto, 
+			List<MultipartFile> files, 
+			LeaveReqDTO leaveReq,
+		    BusinessReqDTO businessReq);
 
 	List<ApprovalSearchDTO> searchApprovers(String name);
 
 	// 결재선 템플릿 저장
 	void saveApprovalLineTemplate(ApprovalLineTemplateDTO templateDTO, List<ApprovalLineDetailDTO> detailList);
-
-	// 휴가 저장
-	void saveLeave(LeaveDTO leaveDTO);
-
-	// 출장 저장
-	void saveBusiness(BusinessDTO businessDTO);
 
 	// 결재선 템플릿 목록 조회
 	List<ApprovalLineTemplateListDTO> getTemplatesByOwner(String ownerId);
@@ -33,4 +31,33 @@ public interface ApprovalService {
 	// APPROVAL_LINE 테이블에 insert
 	void insertApprovalLine(ApprovalLineDTO lineDTO);
 	
+	///////////////// 관리자 //////////////////
+	// 결재 대기 목록 조회
+    List<PendingApprovalDTO> getPendingApprovals(String approverId);
+	
+    // 팝업 내용
+    ApprovalDetailDTO getApprovalDetail(String documentId);
+    
+    FileDTO getFileById(String fileId);
+    
+    // 1. 결재 결과 저장 (APPROVAL_APP에 insert)
+    void saveApprovalResult(ApprovalAppDTO dto);
+    
+    // 2. 각 결재자 처리 상태
+    void updateLineStatus(String lineId, String status);
+    
+    // 3. 다음 결재자 활성화 (APPROVAL_LINE 상태 '대기중')
+    void activateNextApprover(String documentId, int nextOrder);
+
+    // 4. 최종 결재 완료 시 LEAVE or BUSINESS 확정 처리
+    void processFinalApprovalIfNeeded(String approvalDocumentId);
+
+    // 5. LEAVE 확정 처리
+    void confirmLeaveApproval(String leaveId);
+
+    // 6. BUSINESS 확정 처리
+    void confirmBusinessApproval(String tripId);
+    
+    int countApprovalByPrefix(String prefix);
+
 }

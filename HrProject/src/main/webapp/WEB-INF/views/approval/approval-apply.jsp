@@ -37,8 +37,7 @@
 	<h2>전자결재 신청</h2>
 	<form id="approvalForm" method="post" action="/approval/apply" enctype="multipart/form-data">
 		<!-- 문서 제목 -->
-		<label>문서 제목: <span style="color: red;">(필수)</span></label> 
-		<input type="text" name="documentTitle" id="documentTitle"><br> <br>
+		<label>문서 제목: <span style="color: red;">(필수)</span></label> <input type="text" name="documentTitle" id="documentTitle"><br> <br>
 
 		<!-- 결재 분류 -->
 		<label>결재 분류: <span style="color: red;">(필수)</span></label> 
@@ -49,7 +48,9 @@
 		</select><br> <br>
 
 		<!-- 로그인 사용자 ID -->
-		<input type="hidden" name="requester" value="${sessionScope.loginUser.empId}" /> <input type="hidden" name="register" value="${sessionScope.loginUser.empId}" /> <input type="hidden" name="attachmentCount" id="attachmentCount" value="0" />
+		<input type="hidden" name="requester" value="${sessionScope.loginUser.empId}" />
+		<input type="hidden" name="register" value="${sessionScope.loginUser.empId}" /> 
+		<input type="hidden" name="attachmentCount" id="attachmentCount" value="0" />
 
 		<!-- 휴가 신청 영역 -->
 		<div id="leaveSection" style="display: none;">
@@ -59,23 +60,17 @@
 			<input type="radio" name="leaveStatus" value="연차">연차 
 			<input type="radio" name="leaveStatus" value="병가">병가<br> <br> 
 			<label>휴가 기간: <span style="color: red;">(필수)</span></label> 
-			<input type="date" name="leaveStartDate"> ~ <input type="date" name="leaveEndDate"><br> <br> 
-			<label>코멘트:</label><br>
+			<input type="date" id="leaveStartDate" name="leaveStartDate"> ~ <input type="date" id="leaveEndDate" name="leaveEndDate"><br> <br> <label>코멘트:</label><br>
 			<textarea name="comment" rows="3" cols="50"></textarea>
-			<br> <br> <label>첨부파일:</label> <input type="file" id="leaveFiles" multiple><br> <br>
+			<br> <br> <label>첨부파일 (최대 3개):</label> <input type="file" id="leaveFiles" multiple><br> <br>
 			<pre id="leaveFileList" class="fileList"></pre>
 		</div>
 
 		<!-- 출장 신청 영역 -->
 		<div id="businessSection" style="display: none;">
 			<h4>출장 신청</h4>
-			<label>출장지: <span style="color: red;">(필수)</span></label> 
-			<input type="text" name="businessLocation"><br> <br> 
-			<label>출장목적: <span style="color: red;">(필수)</span>
-			</label> <input type="text" name="businessPurpose"><br> <br> 
-			<label>출장 기간: <span style="color: red;">(필수)</span></label> 
-			<input type="date" name="businessStartDate"> ~ <input type="date" name="businessEndDate"><br> <br> 
-			<label>코멘트:</label><br>
+			<label>출장지: <span style="color: red;">(필수)</span></label> <input type="text" name="businessLocation"><br> <br> <label>출장목적: <span style="color: red;">(필수)</span>
+			</label> <input type="text" name="businessPurpose"><br> <br> <label>출장 기간: <span style="color: red;">(필수)</span></label> <input type="date" name="businessStartDate"> ~ <input type="date" name="businessEndDate"><br> <br> <label>코멘트:</label><br>
 			<textarea name="comment" rows="3" cols="50"></textarea>
 			<br> <br> <label>첨부파일:</label> <input type="file" id="bizFiles" multiple><br> <br>
 			<pre id="bizFileList" class="fileList"></pre>
@@ -290,53 +285,53 @@
 
  	// 결재선 저장 버튼 클릭 시 실행
     $('#saveTemplateBtn').click(function () {
-        // 1. 이름 입력 확인
-        if (!name) {
-            alert('결재선 저장을 위해 결재선 이름을 입력하세요.');
-            return;
-        }
+    let name = $('#templateName').val().trim(); // 👈 이 줄이 없어서 오류가 난 거예요!
 
-        // 2. 결재자 지정 여부 확인
-        if (selectedApprovers.length === 0) {
-            alert('결재자를 추가하세요.');
-            return;
-        }
+    if (!name) {
+        alert('결재선 저장을 위해 결재선 이름을 입력하세요.');
+        return;
+    }
 
-        // 3. 템플릿 이름 중복 여부 체크
-        $.ajax({
-            url: '/approval/template/check-name',
-            type: 'GET',
-            data: { name: name },
-            success: function (isDuplicate) {
-                if (isDuplicate) {
-                    alert("이미 존재하는 결재선 이름입니다. 다른 이름을 입력해주세요.");
-                    return;
-                }
+    if (selectedApprovers.length === 0) {
+        alert('결재자를 추가하세요.');
+        return;
+    }
 
-                // 4. 중복이 아니면 결재선 저장 요청
-                const data = {
-                    templateId: 'TMP' + Date.now(),
-                    templateName: name,
-                    ownerId: loginUserId,
-                    detailList: selectedApprovers.map((a, i) => ({
-                        approvalOrder: i + 1,
-                        approverId: a.empId,
-                        approverRole: a.posId
-                    }))
-                };
+    // 중복 확인
+    $.ajax({
+        url: '/approval/template/check-name',
+        type: 'GET',
+        data: { name: name },
+        success: function (isDuplicate) {
+            if (isDuplicate) {
+                alert("이미 존재하는 결재선 이름입니다. 다른 이름을 입력해주세요.");
+                return;
+            }
 
-                $.ajax({
-                    url: '/approval/template/save',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(data),
-                    success: res => alert(res === 'success' ? '저장 완료' : '실패'),
-                    error: () => alert('서버 오류')
-                });
-            },
-            error: () => alert("중복 확인 실패")
-        });
+            // 저장 요청
+            const data = {
+                templateId: 'TMP' + Date.now(),
+                templateName: name,
+                ownerId: loginUserId,
+                detailList: selectedApprovers.map((a, i) => ({
+                    approvalOrder: i + 1,
+                    approverId: a.empId,
+                    approverRole: a.posId
+                }))
+            };
+
+            $.ajax({
+                url: '/approval/template/save',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: res => alert(res === 'success' ? '저장 완료' : '실패'),
+                error: () => alert('서버 오류')
+            });
+        },
+        error: () => alert("중복 확인 실패")
     });
+});
 
     $(document).ready(function () {
     	// 오늘 날짜 기준 min 설정
@@ -542,6 +537,30 @@
         });
     });
    
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const start = document.getElementById('leaveStartDate');
+  const end = document.getElementById('leaveEndDate');
+
+  // 시작일이 바뀔 때
+  start.addEventListener('change', function () {
+    const selected = document.querySelector('input[name="leaveStatus"]:checked');
+    if (selected && selected.value === '반차') {
+      end.value = start.value;
+    }
+  });
+
+  // 라디오 버튼 변경 시
+  document.querySelectorAll('input[name="leaveStatus"]').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      if (radio.value === '반차') {
+        end.value = start.value;
+      }
+    });
+  });
+});
 </script>
 
 </body>
