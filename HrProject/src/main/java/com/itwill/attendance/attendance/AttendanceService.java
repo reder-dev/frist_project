@@ -1,71 +1,62 @@
 package com.itwill.attendance.attendance;
 
+import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
 
-@Service
-public class AttendanceService {
+@RestController
+@RequestMapping("/attendance")
+public class AttendanceController {
 
-    private final AttendanceRepository attendanceRepository;
+    private final AttendanceService attendanceService;
 
-    // 생성자 주입 방식
     @Autowired
-    public AttendanceService(AttendanceRepository attendanceRepository) {
-        this.attendanceRepository = attendanceRepository;
+    public AttendanceController(AttendanceService attendanceService) {
+        this.attendanceService = attendanceService;
     }
 
-    //출근 등록
-    public Attendance checkIn(String employeeId) {
-        LocalDate today = LocalDate.now();
-
-        // 이미 등록된 출근 정보 있는지 확인
-        Attendance existing = attendanceRepository.findByEmployeeIdAndDate(employeeId, today);
-        if (existing != null) {
-            throw new IllegalStateException("이미 출근한 사원입니다.");
-        }
-
-        Attendance attendance = new Attendance();
-        attendance.setEmployeeId(employeeId);
-        attendance.setDate(today);
-        attendance.setCheckIn(LocalTime.now());
-        attendance.setWorkType("일반"); // 기본값
-
-        return attendanceRepository.save(attendance);
+    //출근 기록
+    @PostMapping("/check-in")
+    public Attendance checkIn(HttpSession session) {
+        String employeeId = (String) session.getAttribute("employeeId");
+        return attendanceService.checkIn(employeeId);
     }
 
-    //퇴근 처리
-    public Attendance checkOut(String employeeId) {
-        LocalDate today = LocalDate.now();
-
-        Attendance attendance = attendanceRepository.findByEmployeeIdAndDate(employeeId, today);
-        if (attendance == null) {
-            throw new IllegalStateException("출근 기록이 없습니다.");
-        }
-
-        if (attendance.getCheckOut() != null) {
-            throw new IllegalStateException("이미 퇴근한 사원입니다.");
-        }
-
-        attendance.setCheckOut(LocalTime.now());
-        return attendanceRepository.save(attendance);
+    //퇴근 기록
+    @PostMapping("/check-out")
+    public Attendance checkOut(HttpSession session) {
+        String employeeId = (String) session.getAttribute("employeeId");
+        return attendanceService.checkOut(employeeId);
     }
 
     //오늘 내 근태 보기
-    public Attendance getTodayAttendance(String employeeId) {
-        return attendanceRepository.findByEmployeeIdAndDate(employeeId, LocalDate.now());
+    @GetMapping("/today")
+    public Attendance getToday(HttpSession session) {
+        String employeeId = (String) session.getAttribute("employeeId");
+        return attendanceService.getTodayAttendance(employeeId);
     }
 
-    //전체 출결 조회 (관리자용 등)
-    public List<Attendance> getAllAttendanceByDate(LocalDate date) {
-        return attendanceRepository.findByDate(date);
+    //날짜별 전체 출결 조회 (관리자용)
+    @GetMapping("/date")
+    public List<Attendance> getByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+        return attendanceService.getAllAttendanceByDate(date);
     }
 
-    //사원의 모든 근태 기록
-    public List<Attendance> getAttendanceHistory(String employeeId) {
-        return attendanceRepository.findByEmployeeId(employeeId);
+    //내 출결 이력 조회
+    @GetMapping("/history")
+    public List<Attendance> getHistory(HttpSession session) {
+        String employeeId = (String) session.getAttribute("employeeId");
+        return attendanceService.getAttendanceHistory(employeeId);
+    }
+
+    //특정 사원의 출결 이력 조회 (관리자용)
+    @GetMapping("/history/{employeeId}")
+    public List<Attendance> getHistoryById(@PathVariable String employeeId) {
+        return attendanceService.getAttendanceHistory(employeeId);
     }
 }
