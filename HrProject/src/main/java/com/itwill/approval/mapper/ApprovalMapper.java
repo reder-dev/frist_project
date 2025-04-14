@@ -94,5 +94,12 @@ public interface ApprovalMapper {
 	int countApprovedLinesByDocId(String approvalDocumentId); // 승인된 결재자 수
 	
 	String findApprovalLineId(@Param("documentId") String documentId, @Param("approverId") String approverId);
-
+	
+	List<ApprovalAppDTO> selectApprovalComments(String documentId);
+	
+	// 내가 결재 요청한 문서 목록
+	List<PendingApprovalDTO> selectMyDocuments(String requesterId);
+	
+	List<PendingApprovalDTO> selectRequestedApprovals(String requesterId);
+	
 }

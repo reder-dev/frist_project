@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <!-- log4jdbc-log4j2 -->
-	<logger name="jdbc.sqlonly"        level="DEBUG"/>
-    <logger name="jdbc.sqltiming"      level="INFO"/>
-    <logger name="jdbc.audit"          level="WARN"/>
-    <logger name="jdbc.resultset"      level="ERROR"/>
-    <logger name="jdbc.resultsettable" level="ERROR"/>
-    <logger name="jdbc.connection"     level="INFO"/>
-    
-    <!-- 📌 MemberController 로그 레벨 설정 (이 부분 추가!) -->
-    <logger name="com.itwill.hr" level="DEBUG"/>
-    <logger name="com.itiwll" level="DEBUG"/>
+    <!-- Spring Boot 기본 로그 설정 포함 -->
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
 
-    <!-- 📌 최상위 루트 로그 설정: 콘솔에 찍히도록 -->
+    <!-- log4jdbc-log4j2 로그 상세 설정 -->
+    <logger name="jdbc.sqlonly" level="DEBUG" />
+    <logger name="jdbc.sqltiming" level="INFO" />
+    <logger name="jdbc.audit" level="WARN" />
+    <logger name="jdbc.resultset" level="ERROR" />
+    <logger name="jdbc.resultsettable" level="ERROR" />
+    <logger name="jdbc.connection" level="INFO" />
+
+    <!-- 프로젝트 내 특정 패키지별 로그 상세 조정 -->
+    <logger name="com.itwill.hr" level="DEBUG" />
+    <logger name="com.itwill" level="DEBUG" /> <!-- 오타 수정: itiwll → itwill -->
+
+    <!-- 루트 콘솔 로그 출력 -->
     <root level="INFO">
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="CONSOLE" />
     </root>
-    
-    
-    
-    
-</configuration>
 
+</configuration>

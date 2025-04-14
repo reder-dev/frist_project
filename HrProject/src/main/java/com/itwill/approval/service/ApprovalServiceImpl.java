@@ -181,6 +181,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    dto.setDocumentTitle(doc.getDocumentTitle());
 	    dto.setReferenceTableName(doc.getReferenceTableName());
 	    dto.setComment(doc.getRequestComment() != null ? doc.getRequestComment() : "-");
+	    dto.setRequestDate(doc.getRequestDate()); 
 
 	    // 2. 문서 유형에 따라 상세 정보 매핑
 	    if ("LEAVE".equals(doc.getReferenceTableName())) {
@@ -208,6 +209,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	    dto.setFiles(approvalMapper.selectFilesByReferenceId(documentId));
 	    
 	    List<ApprovalAppDTO> results = approvalMapper.selectApprovalResults(documentId);
+	    dto.setApproverComments(results); // 결재자 코멘트 저장
 	    
 	    Map<String, String> statusMap = new HashMap<>();
 	    for (ApprovalAppDTO result : results) {
@@ -334,5 +336,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public int countApprovalByPrefix(String prefix) {
 	    return approvalMapper.countApprovalByPrefix(prefix);
+	}
+	@Override
+	public List<PendingApprovalDTO> getMyRequestedDocuments(String empId) {
+	    return approvalMapper.selectRequestedApprovals(empId);
 	}
 }

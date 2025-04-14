@@ -3,17 +3,23 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 
-
 <configuration>
+
+  <!-- 언더스코어 → 카멜케이스 자동 매핑 -->
+  <settings>
+    <setting name="mapUnderscoreToCamelCase" value="true" />
+  </settings>
+
   <!-- DTO 클래스들이 위치한 패키지를 등록 -->
   <typeAliases>
     <package name="com.itwill.attendance" />
     <package name="com.itwill.approval.dto" />
   </typeAliases>
 
+  <!-- 매퍼 등록 (MapperScannerConfigurer로 처리하는 경우 생략 가능하지만 보조적으로 유지 가능) -->
   <mappers>
-    <mapper resource="mappers/attendance-mapper.xml"/>
-    <!-- 추가로 approval 관련 매퍼가 있다면 여기에 등록 -->
+    <mapper resource="mappers/attendance-mapper.xml" />
+    <!-- 필요한 경우 추가 매퍼 직접 등록 가능 -->
   </mappers>
 
 </configuration>

@@ -24,22 +24,22 @@
         <property name="dataSource" ref="dataSource" />
         <property name="configLocation" value="classpath:/mybatis-config.xml" />
         <property name="mapperLocations" value="classpath:/mappers/**/*.xml" />
-        <property name="typeAliasesPackage" value="com.itwill.domain" />
+        <property name="typeAliasesPackage" value="com.itwill.domain, com.itwill.approval.dto, com.itwill.salary.dto" />
     </bean>
 
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
         <constructor-arg ref="sqlSessionFactory" />
     </bean>
 
-    <!-- MyBatis 매퍼 인터페이스 등록 -->
+    <!-- Mapper 스캔 설정 (모두 포함) -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-      <property name="basePackage" value="com.itwill.approval.mapper, com.itwill.mapper"/>
+        <property name="basePackage" value="com.itwill.approval.mapper, com.itwill.salary.mapper, com.itwill.mapper" />
     </bean>
 
-    <!-- 컴포넌트 스캔 설정 (Controller 제외) -->
+    <!-- 컴포넌트 스캔 (Controller 제외) -->
     <context:component-scan base-package="com.itwill" />
 
-    <!-- JavaMailSender 설정 -->
+    <!-- JavaMailSender 설정 (팀원 설정 포함) -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="smtp.gmail.com" />
         <property name="port" value="587" />

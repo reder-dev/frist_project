@@ -10,7 +10,7 @@ public class ApprovalLineDetailDTO {
     private String approverId;       // 결재자 사번
     private String approverRole;     // 결재자 직책
     
-    // 표시용 정
+    // 표시용 정보
     private String empName;
     private String depName;
     private String posId;
