@@ -1,14 +1,17 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
-<html>
-<head>
-	<title>Home</title>
-</head>
-<body>
-<h1>
-	Hello world!  
-</h1>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<%
+    String userName = (String) session.getAttribute("userName");
+    String deptTitle = (String) session.getAttribute("deptTitle");
+    request.setAttribute("userName", userName);
+    request.setAttribute("deptTitle", deptTitle);
+%>
 
-<P>  The time on the server is ${serverTime}. </P>
-</body>
-</html>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+
+<main class="main-content">
+    <h1>환영합니다</h1>
+    <p>여기는 메인 콘텐츠 영역입니다.</p>
+</main>
+
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
