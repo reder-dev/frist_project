@@ -1,7 +1,6 @@
 package com.itwill.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,41 +17,31 @@ public class UserController {
     // 인사관리 - 인사조회
     @GetMapping("/employee/info")
     public String personnelInfo() {
-        return "user/employee/info";
+        return "user/personnel/info";
     }
     
     // 인사관리 - 발령조회
     @GetMapping("/employee/appointment")
     public String personnelAppointment() {
-        return "user/employee/appointment";
+        return "user/personnel/appointment";
     }
     
     // 인사관리 - 조직도
     @GetMapping("/employee/organization")
     public String personnelOrganization() {
-        return "user/employee/organization";
+        return "user/personnel/organization";
     }
     
- // 공지사항 목록
+    // 공지사항 - 목록
     @GetMapping("/notice/list")
-    public String noticeList(Model model) {
-        // 실제로는 서비스를 통해 공지사항 목록을 가져와 모델에 추가
-        // model.addAttribute("noticeList", noticeService.getNoticeList());
+    public String noticeList() {
         return "user/notice/list";
     }
     
-    // 공지사항 상세
+    // 공지사항 - 상세
     @GetMapping("/notice/detail")
-    public String noticeDetail(@RequestParam("not_id") String notId, Model model) {
-        // 실제로는 서비스를 통해 공지사항 상세 정보를 가져와 모델에 추가
-        // NoticeVO notice = noticeService.getNoticeDetail(notId);
-        // model.addAttribute("notice", notice);
+    public String noticeDetail(@RequestParam("id") Long id) {
+        // 공지사항 상세 조회 로직
         return "user/notice/detail";
-    }
-    
-    // 첨부파일 다운로드
-    @GetMapping("/notice/download")
-    public void downloadFile(@RequestParam("fileId") String fileId) {
-        // 실제로는 파일 다운로드 로직 구현
     }
 }

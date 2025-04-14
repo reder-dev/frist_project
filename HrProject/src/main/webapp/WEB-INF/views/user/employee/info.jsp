@@ -16,9 +16,9 @@
             <table class="info-table">
                 <tr>
                     <td>이름</td>
-                    <td> ${employee.emp_name}</td>
+                    <td> 홍길동</td>
                     <td>사원번호</td>
-                    <td>${employee.emp_id}</td>
+                    <td>10100010</td>
                 </tr>
                 <tr>
                     <td>성별</td>
