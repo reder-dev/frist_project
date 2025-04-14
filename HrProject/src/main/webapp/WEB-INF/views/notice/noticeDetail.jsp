@@ -1,25 +1,25 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>°øÁö »ó¼¼</h2>
-		Á¦¸ñ: ${notice.not_ti}<br/>
-		³»¿ë: ${notice.not_cn}<br/>
-		ÀÛ¼ºÀÚ: ${notice.emp_id}<br/>
-		µî·ÏÀÏ: ${notice.not_registdate}<br/>
-		¼öÁ¤ÀÏ: ${notice.not_modifydate}<br/>
+	<h2>ê³µì§€ ìƒì„¸</h2>
+		ì œëª©: ${notice.not_ti}<br/>
+		ë‚´ìš©: ${notice.not_cn}<br/>
+		ì‘ì„±ì: ${notice.emp_id}<br/>
+		ë“±ë¡ì¼: ${notice.not_registdate}<br/>
+		ìˆ˜ì •ì¼: ${notice.not_modifydate}<br/>
 		<br/>
-		<a href="edit?not_id=${notice.not_id}">[¼öÁ¤]</a>
+		<a href="edit?not_id=${notice.not_id}">[ìˆ˜ì •]</a>
 		<form action="delete" method="post" style="display:inline;">
     		<input type="hidden" name="not_id" value="${notice.not_id}" />
-    		<input type="submit" value="»èÁ¦" />
+    		<input type="submit" value="ì‚­ì œ" />
 		</form>
-		<a href="list">[¸ñ·ÏÀ¸·Î]</a>
+		<a href="list">[ëª©ë¡ìœ¼ë¡œ]</a>
 
 </body>
 </html>

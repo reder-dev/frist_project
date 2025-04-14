@@ -1,19 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>傍瘤 累己</h2>
+	<h2>瓿奠 鞛戩劚</h2>
 		<form action="write" method="post">
-  			  力格: <input type="text" name="not_ti" /><br/>
-   			 郴侩: <textarea name="not_cn" rows="5" cols="40"></textarea><br/>
-    		梅何颇老: <input type="text" name="not_file" /><br/>
-    		荤盔锅龋: <input type="text" name="emp_id" /><br/>
-    		<input type="submit" value="殿废" />
+  			  鞝滊: <input type="text" name="not_ti" /><br/>
+   			 雮挫毄: <textarea name="not_cn" rows="5" cols="40"></textarea><br/>
+    		觳秬韺岇澕: <input type="text" name="not_file" /><br/>
+    		靷洂氩堩樃: <input type="text" name="emp_id" /><br/>
+    		<input type="submit" value="霌彪" />
 	</form>
 	
 

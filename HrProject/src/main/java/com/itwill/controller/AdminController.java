@@ -1,4 +1,4 @@
-package com.itwill.hr;
+package com.itwill.controller;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -36,7 +36,7 @@ public class AdminController {
 
     @PostMapping("/employees/edit")
     public String updateEmployee(@ModelAttribute("employee") EmployeeVO employee) {
-    	employee.setEmp_modifydate(new Timestamp(System.currentTimeMillis())); // ÇöÀç ½Ã°¢À¸·Î ¼¼ÆÃ
+    	employee.setEmp_modifydate(new Timestamp(System.currentTimeMillis())); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     	employeeService.updateEmployee(employee);
         return "redirect:/admin/employees";
     }

@@ -4,30 +4,20 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Genie - 인사관리 시스템</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="<c:url value='/resources/css/style.css'/>">
+    <title>HR Genie</title>
+    <link rel="stylesheet" href="<c:url value='/resources/css/style.css' />">
+    <script src="<c:url value='/resources/js/script.js' />"></script>
 </head>
 <body>
-    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="<c:url value='/'/>">HR Genie</a>
-        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="검색" aria-label="Search">
-        <div class="navbar-nav">
-            <div class="nav-item text-nowrap">
-                <c:choose>
-                    <c:when test="${empty sessionScope.empId}">
-                        <a class="nav-link px-3" href="<c:url value='/login'/>">로그인</a>
-                    </c:when>
-                    <c:otherwise>
-                        <span class="nav-link px-3 text-white">${sessionScope.empName}님</span>
-                        <a class="nav-link px-3" href="<c:url value='/logout'/>">로그아웃</a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+    <header class="main-header">
+        <div class="logo">
+            <a href="<c:url value='/' />">
+                <h1>HR Genie</h1>
+            </a>
+        </div>
+        <div class="user-info">
+            <span class="login-time">자동 로그인 남은시간 59:59</span>
+            <a href="<c:url value='/logout' />" class="logout-btn">로그아웃</a>
         </div>
     </header>
+    <div class="container">

@@ -1,18 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>°øÁö»çÇ× ¸ñ·Ï</h2>
+	<h2>ê³µì§€ì‚¬í•­ ëª©ë¡</h2>
 	<table border="1">
    		 <tr>
-        	<th>¹øÈ£</th><th>Á¦¸ñ</th><th>ÀÛ¼ºÀÚ</th><th>µî·ÏÀÏ</th>
+        	<th>ë²ˆí˜¸</th><th>ì œëª©</th><th>ìž‘ì„±ìž</th><th>ë“±ë¡ì¼</th>
     	</tr>
     	<c:forEach var="notice" items="${noticeList}">
         	<tr>
@@ -23,7 +23,7 @@
        		</tr>
     	</c:forEach>
 	</table>
-	<a href="write">[°øÁö ÀÛ¼º]</a>
+	<a href="write">[ê³µì§€ ìž‘ì„±]</a>
 	
 </body>
 </html>

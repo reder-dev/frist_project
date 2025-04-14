@@ -1,4 +1,4 @@
-package com.itwill.hr;
+package com.itwill.controller;
 
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,7 +25,7 @@ public class GlobalBindingInitializer {
                     try {
                         setValue(new Timestamp(sdf.parse(text).getTime()));
                     } catch (ParseException e) {
-                        setValue(null); // ¿À·ù°¡ ³ª´õ¶óµµ null Ã³¸®
+                        setValue(null); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ null Ã³ï¿½ï¿½
                     }
                 }
             }

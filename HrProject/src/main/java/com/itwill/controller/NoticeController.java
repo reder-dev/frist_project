@@ -1,4 +1,4 @@
-package com.itwill.hr;
+package com.itwill.controller;
 
 import com.itwill.domain.NoticeVO;
 import com.itwill.service.NoticeService;
@@ -16,7 +16,7 @@ public class NoticeController {
     @Autowired
     private NoticeService noticeService;
 
-    // °øÁö ¸ñ·Ï º¸±â
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     @GetMapping("/list")
     public String list(Model model) {
         List<NoticeVO> noticeList = noticeService.getNoticeList();
@@ -24,7 +24,7 @@ public class NoticeController {
         return "notice/noticeList";
     }
 
-    // °øÁö »ó¼¼ º¸±â
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     @GetMapping("/detail")
     public String detail(@RequestParam("not_id") String not_id, Model model) {
         NoticeVO notice = noticeService.getNotice(not_id);
@@ -32,21 +32,21 @@ public class NoticeController {
         return "notice/noticeDetail";
     }
 
-    // °øÁö ÀÛ¼º Æû
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ ï¿½ï¿½
     @GetMapping("/write")
     public String writeForm() {
         return "notice/noticeWrite";
     }
 
-    // °øÁö µî·Ï Ã³¸®
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
     @PostMapping("/write")
     public String write(@ModelAttribute NoticeVO vo) {
-        vo.setNot_register("admin");  // ¿¹: ¼¼¼Ç¿¡¼­ ÃßÃâ °¡´É
+        vo.setNot_register("admin");  // ï¿½ï¿½: ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         noticeService.insertNotice(vo);
         return "redirect:/notice/list";
     }
 
-    // °øÁö ¼öÁ¤ Æû
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
     @GetMapping("/edit")
     public String editForm(@RequestParam("not_id") String not_id, Model model) {
         NoticeVO notice = noticeService.getNotice(not_id);
@@ -54,15 +54,15 @@ public class NoticeController {
         return "notice/noticeEdit";
     }
 
-    // °øÁö ¼öÁ¤ Ã³¸®
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
     @PostMapping("/edit")
     public String edit(@ModelAttribute NoticeVO vo) {
-        vo.setNot_modifier("admin"); // ¿¹: ·Î±×ÀÎ »ç¿ëÀÚ ID
+        vo.setNot_modifier("admin"); // ï¿½ï¿½: ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ID
         noticeService.updateNotice(vo);
         return "redirect:/notice/detail?not_id=" + vo.getNot_id();
     }
 
-    // °øÁö »èÁ¦
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     @PostMapping("/delete")
     public String delete(@RequestParam("not_id") String not_id) {
         noticeService.deleteNotice(not_id);
