@@ -7,7 +7,7 @@
 
 	<display-name>SpringProjectFirst</display-name>
 
-	<!-- Root Context 설정 (이거 너 꺼에서 가져옴) -->
+	<!-- Spring Root Context 설정 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml</param-value>
