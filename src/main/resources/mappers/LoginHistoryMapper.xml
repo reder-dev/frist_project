@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.mapper.LoginHistoryMapper">
+
+	<insert id="insertLoginHistory"
+		parameterType="com.itwill.domain.LoginHistoryVO">
+		INSERT INTO USER_LOGIN_HISTORY (
+		emp_id,
+		login_ip,
+		login_status,
+		login_result,
+		login_time
+		) VALUES (
+		#{emp_id},
+		#{login_ip},
+		#{login_status},
+		#{login_result},
+		NOW()
+		)
+	</insert>
+
+	<!-- 로그인 상태가 locked이면 true 출력 -->
+	<select id="checkAccountLocked" parameterType="String"
+		resultType="String">
+		SELECT login_status
+		FROM USER_LOGIN_HISTORY
+		WHERE emp_id = #{emp_id}
+		ORDER BY login_time DESC
+		LIMIT 1
+	</select>
+
+	<!-- 로그인 실패 횟수 조회 -->
+	<!-- 로그인 실패 횟수를 가장 최근 success기준 5번 fail 조회 -->
+	<select id="countRecentFailedLogins" parameterType="String"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM USER_LOGIN_HISTORY
+		WHERE emp_id =
+		#{emp_id}
+		AND login_result = 'FAIL'
+		AND login_time > IFNULL((
+		SELECT
+		MAX(login_time)
+		FROM USER_LOGIN_HISTORY
+		WHERE emp_id = #{emp_id} AND
+		login_result = 'SUCCESS'
+		), '2000-01-01')
+		AND login_time >
+		DATE_SUB(NOW(), INTERVAL 1 HOUR)
+	</select>
+
+</mapper>

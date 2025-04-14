@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwill.salary.mapper.SalaryMapper">
+
+	<!-- 급여 요약 조회 -->
+	<select id="selectSalaryById" parameterType="String"
+		resultType="com.itwill.salary.dto.SalaryDetailDTO">
+		SELECT
+		s.sal_id AS salId,
+		s.emp_id AS empId,
+		e.emp_name AS
+		empName,
+		d.dep_name AS deptName,
+		s.sal_month AS salMonth,
+		s.sal_total AS
+		totalPay,
+		s.sal_ded_total AS totalDeductions,
+		s.sal_net_pay AS netPay,
+		s.sal_pay_date AS payDate
+		FROM EMP_SALARY s
+		JOIN EMPLOYEE e ON s.emp_id
+		= e.emp_id
+		JOIN DEPARTMENT d ON e.dep_id = d.dep_id
+		WHERE s.sal_id =
+		#{salId}
+	</select>
+
+	<!-- 급여 상세 항목 목록 조회 -->
+	<select id="selectSalaryDetailItems" parameterType="String"
+		resultType="com.itwill.salary.dto.SalaryDetailDTO$SalaryItemDTO">
+		SELECT
+		d.item_id AS itemId,
+		i.item_name AS itemName,
+		i.item_type AS itemType,
+		d.amount AS amount
+		FROM EMP_SALARY_DETAIL d
+		JOIN SALARY_ITEM i ON d.item_id = i.item_id
+		WHERE d.sal_id = #{salId}
+		ORDER BY
+		CASE i.item_type
+		WHEN 'P' THEN 1
+		WHEN 'D' THEN 2
+		ELSE 3
+		END,
+		i.item_id
+	</select>
+
+	<!-- //////////관리자///////// -->
+	<select id="searchEmployee" parameterType="string"
+		resultType="com.itwill.salary.dto.SalaryEmployeeDTO">
+		SELECT emp_id AS empId,
+		emp_name AS empName,
+		pos_id AS posId
+		FROM EMPLOYEE
+		WHERE emp_id LIKE CONCAT('%', #{keyword}, '%')
+		OR emp_name
+		LIKE CONCAT('%', #{keyword}, '%')
+	</select>
+
+	<!-- 근무 요약 -->
+	<select id="selectAttendanceSummary"
+		resultType="com.itwill.salary.dto.AttendanceSummaryDTO">
+		SELECT
+		COUNT(*) AS workDays,
+		SUM(work_hours) AS workHours,
+		SUM(night_work_hour) AS nightHours,
+		SUM(holiday_work_hour) AS
+		holidayHours
+		FROM ATTENDANCE
+		WHERE emp_id = #{empId}
+		AND
+		DATE_FORMAT(work_date, '%Y%m') = #{salMonth}
+	</select>
+
+	<!-- 직책 수당 -->
+	<select id="selectPositionAllowance" parameterType="string"
+		resultType="int">
+		SELECT p.pos_allow
+		FROM EMPLOYEE e
+		JOIN POSITION p ON
+		e.pos_id = p.pos_id
+		WHERE e.emp_id = #{empId}
+	</select>
+
+	<insert id="insertEmpSalary"
+		parameterType="com.itwill.salary.dto.SalaryDetailDTO">
+		INSERT INTO EMP_SALARY (
+		sal_id, emp_id, sal_month,
+		sal_total, sal_ded_total,
+		sal_net_pay,
+		sal_pay_date, sal_register
+		)
+		VALUES (
+		#{dto.salId}, #{dto.empId}, #{dto.salMonth},
+		#{dto.totalPay},
+		#{dto.totalDeductions}, #{dto.netPay},
+		NOW(), #{dto.register}
+		)
+	</insert>
+
+	<insert id="insertEmpSalaryDetail">
+		INSERT INTO EMP_SALARY_DETAIL (
+		sal_id, item_id,
+		amount
+		) VALUES (
+		#{salId}, #{item.itemId}, #{item.amount}
+		)
+	</insert>
+
+	<select id="findEmployeeInfo"
+		resultType="com.itwill.salary.dto.SalaryEmployeeDTO">
+		SELECT e.emp_id AS empId,
+		e.emp_name AS empName,
+		d.dep_name
+		AS deptName
+		FROM EMPLOYEE e
+		JOIN DEPARTMENT d ON e.dep_id = d.dep_id
+		WHERE e.emp_id = #{empId}
+	</select>
+
+	<select id="countBySalId" resultType="int">
+		SELECT COUNT(*) FROM EMP_SALARY WHERE sal_id = #{salId}
+	</select>
+
+</mapper>
