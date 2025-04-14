@@ -1,6 +1,6 @@
-package com.itwill.approval.attendance.lateness;
+package com.itwill.attendance.lateness;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -25,23 +25,33 @@ public class Lateness {
     private int latenessMinutes;  // 몇 분 지각했는지
 
     @Column(length = 255)
-    private String reason;  // 지각 사유 (선택)
+    private String reason;  // 지각 사유 (사유서 내용)
 
     @Column(length = 20)
-    private String status;  // 승인 상태: 대기, 승인, 반려 등
+    private String status;  // 대기, 승인, 반려
 
     public Lateness() {}
 
-    public Lateness(String employeeId, LocalDate date, LocalTime checkInTime, int latenessMinutes, String reason, String status) {
+    // 사유서를 보낼 때 사용할 생성자
+    public Lateness(String employeeId, LocalDate date, LocalTime checkInTime, String reason) {
         this.employeeId = employeeId;
         this.date = date;
         this.checkInTime = checkInTime;
-        this.latenessMinutes = latenessMinutes;
         this.reason = reason;
-        this.status = status;
+        this.latenessMinutes = calculateLatenessMinutes(checkInTime);
+        this.status = "대기";
     }
 
-    // Getters and Setters
+    private int calculateLatenessMinutes(LocalTime actualTime) {
+        // 기준 출근 시간: 09:00
+        LocalTime standardTime = LocalTime.of(9, 0);
+        if (actualTime.isAfter(standardTime)) {
+            return (int) java.time.Duration.between(standardTime, actualTime).toMinutes();
+        }
+        return 0;
+    }
+
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -72,6 +82,7 @@ public class Lateness {
 
     public void setCheckInTime(LocalTime checkInTime) {
         this.checkInTime = checkInTime;
+        this.latenessMinutes = calculateLatenessMinutes(checkInTime);
     }
 
     public int getLatenessMinutes() {
@@ -98,7 +109,6 @@ public class Lateness {
         this.status = status;
     }
 
-    // 상태 자동 판별 (간단 로직)
     public boolean isPending() {
         return "대기".equalsIgnoreCase(status);
     }

@@ -236,6 +236,59 @@
 		    <scope>provided</scope>
 		</dependency>
 		
+		<!-- JSTL -->
+		<dependency>
+	   	 <groupId>javax.servlet</groupId>
+	     <artifactId>jstl</artifactId>
+	     <version>1.2</version>
+		</dependency>
+		
+		<!-- javax.persistence (JPA 2.1) 의존성 추가 -->
+		<dependency>
+		    <groupId>javax.persistence</groupId>
+		    <artifactId>persistence-api</artifactId>
+		    <version>1.0.2</version>
+		</dependency>
+		
+		<dependency>
+	    <groupId>org.springframework.data</groupId>
+	    	<artifactId>spring-data-jpa</artifactId>
+	    	<version>2.7.12</version> 
+		</dependency>
+		
+		<dependency>
+	    <groupId>jakarta.persistence</groupId>
+	    	<artifactId>jakarta.persistence-api</artifactId>
+	    	<version>3.1.0</version> 
+		</dependency>
+		
+		<dependency>
+	    <groupId>jakarta.servlet</groupId>
+	   	 <artifactId>jakarta.servlet-api</artifactId>
+	   	 <version>6.0.0</version> <!-- Spring Boot 3.x 사용 중이면 이 버전 사용 -->
+	   	 <scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+    <groupId>com.itextpdf</groupId>
+    <artifactId>itextpdf</artifactId>
+    <version>5.5.13.3</version>
+</dependency>
+		
+		<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>5.2.3</version>
+</dependency>
+		
+		
+		<dependency>
+    <groupId>javax.servlet</groupId>
+	    <artifactId>javax.servlet-api</artifactId>
+	    <version>4.0.1</version> <!-- 또는 3.1.0도 가능 -->
+	    <scope>provided</scope>
+	</dependency>
+		
 		
     </dependencies>
 

@@ -1,4 +1,4 @@
-package com.itwill.approval.attendance.leave;
+package com.itwill.attendance.leave;
 
 import java.time.LocalDate;
 

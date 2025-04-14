@@ -1,4 +1,4 @@
-package com.itwill.approval.attendance.lateness;
+package com.itwill.attendance.lateness;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -7,24 +7,22 @@ public class LatenessDTO {
     private Long id;
     private String employeeId;
     private LocalDate date;
-    private LocalTime expectedTime; // 예정 출근 시간
-    private LocalTime actualTime;   // 실제 출근 시간
-    private String reason;          // 지각 사유
-    private String status;          // 상태: 신청됨, 승인, 반려
+    private LocalTime checkInTime; // 실제 출근 시간
+    private String reason;         // 지각 사유
+    private String status;         // 대기, 승인, 반려
 
     public LatenessDTO() {}
 
-    public LatenessDTO(Long id, String employeeId, LocalDate date, LocalTime expectedTime, LocalTime actualTime, String reason, String status) {
+    public LatenessDTO(Long id, String employeeId, LocalDate date, LocalTime checkInTime, String reason, String status) {
         this.id = id;
         this.employeeId = employeeId;
         this.date = date;
-        this.expectedTime = expectedTime;
-        this.actualTime = actualTime;
+        this.checkInTime = checkInTime;
         this.reason = reason;
         this.status = status;
     }
 
-    // Getter/Setter
+    // Getter / Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -34,11 +32,8 @@ public class LatenessDTO {
     public LocalDate getDate() { return date; }
     public void setDate(LocalDate date) { this.date = date; }
 
-    public LocalTime getExpectedTime() { return expectedTime; }
-    public void setExpectedTime(LocalTime expectedTime) { this.expectedTime = expectedTime; }
-
-    public LocalTime getActualTime() { return actualTime; }
-    public void setActualTime(LocalTime actualTime) { this.actualTime = actualTime; }
+    public LocalTime getCheckInTime() { return checkInTime; }
+    public void setCheckInTime(LocalTime checkInTime) { this.checkInTime = checkInTime; }
 
     public String getReason() { return reason; }
     public void setReason(String reason) { this.reason = reason; }

@@ -1,6 +1,6 @@
-package com.itwill.approval.attendance.leave;
+package com.itwill.attendance.leave;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity

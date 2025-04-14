@@ -1,9 +1,9 @@
-package com.itwill.approval.attendance.admin;
+package com.itwill.attendance.admin;
 
-import com.itwill.approval.attendance.lateness.Lateness;
-import com.itwill.approval.attendance.lateness.LatenessService;
-import com.itwill.approval.attendance.leave.Leave;
-import com.itwill.approval.attendance.leave.LeaveService;
+import com.itwill.attendance.lateness.Lateness;
+import com.itwill.attendance.lateness.LatenessService;
+import com.itwill.attendance.leave.Leave;
+import com.itwill.attendance.leave.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
