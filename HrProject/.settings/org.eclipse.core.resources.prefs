@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/itwill/controller/MainController.java=UTF-8
-encoding//src/main/webapp/WEB-INF/views/admin/editemployee.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/admin/employee/editemployee.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/common/footer.jsp=UTF-8
 encoding/<project>=UTF-8

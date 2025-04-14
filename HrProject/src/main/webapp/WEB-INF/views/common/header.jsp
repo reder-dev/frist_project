@@ -11,12 +11,17 @@
 <body>
     <header class="main-header">
         <div class="logo">
-            <a href="<c:url value='/' />">
+            <a href="<c:url value='/user/main' />">
                 <h1>HR Genie</h1>
             </a>
         </div>
         <div class="user-info">
-            <span class="login-time">자동 로그인 남은시간 59:59</span>
+            <div class="notification">
+                <a href="<c:url value='/notifications' />">
+                    <img src="<c:url value='/resources/images/bell.png' />" alt="알림">
+                </a>
+            </div>
+            <span class="login-time">로그인시간 59:59</span>
             <a href="<c:url value='/logout' />" class="logout-btn">로그아웃</a>
         </div>
     </header>

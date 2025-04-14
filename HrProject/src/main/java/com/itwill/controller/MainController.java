@@ -6,37 +6,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-    @GetMapping("/main")
-    public String mainPage() {
-        return "main"; // main.jsp�� �̵�
+    @GetMapping("/")
+    public String home() {
+        return "main/dashboard";
     }
     
-    @GetMapping("/employee")
-    public String personnel() {
-        return "employee/index";
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
     }
     
-    @GetMapping("/attendance")
-    public String attendance() {
-        return "attendance/index";
+    @GetMapping("/logout")
+    public String logout() {
+        // 로그아웃 처리 로직
+        return "redirect:/login";
     }
-    
-    @GetMapping("/salary")
-    public String salary() {
-        return "salary/index";
-    }
-    
-    @GetMapping("/approval")
-    public String approval() {
-        return "approval/index";
-    }
-    
-    @GetMapping("/notice")
-    public String notice() {
-        return "notice/index";
-    }
-    
-    
-    
 }
-

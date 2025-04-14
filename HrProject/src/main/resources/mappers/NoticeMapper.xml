@@ -6,27 +6,27 @@
 <mapper namespace="com.itwill.persistence.NoticeDAO">
 
     <select id="getNoticeList" resultType="com.itwill.domain.NoticeVO">
-        SELECT * FROM notice ORDER BY not_registdate DESC
+        SELECT * FROM NOTICE ORDER BY not_registdate DESC
     </select>
 
     <insert id="insertNotice" parameterType="com.itwill.domain.NoticeVO">
-        INSERT INTO notice (not_ti, not_cn, not_file, emp_id, not_registdate, not_register)
+        INSERT INTO NOTICE (not_ti, not_cn, not_file, emp_id, not_registdate, not_register)
         VALUES (#{not_ti}, #{not_cn}, #{not_file}, #{emp_id}, NOW(), #{not_register})
     </insert>
 
     <select id="getNotice" resultType="com.itwill.domain.NoticeVO" parameterType="int">
-        SELECT * FROM notice WHERE not_id = #{not_id}
+        SELECT * FROM NOTICE WHERE not_id = #{not_id}
     </select>
 
     <update id="updateNotice" parameterType="com.itwill.domain.NoticeVO">
-        UPDATE notice
+        UPDATE NOTICE
         SET not_ti = #{not_ti}, not_cn = #{not_cn}, not_file = #{not_file},
             not_modifydate = NOW(), not_modifier = #{not_modifier}
         WHERE not_id = #{not_id}
     </update>
 
     <delete id="deleteNotice" parameterType="int">
-        DELETE FROM notice WHERE not_id = #{not_id}
+        DELETE FROM NOTICE WHERE not_id = #{not_id}
     </delete>
 </mapper>
 
