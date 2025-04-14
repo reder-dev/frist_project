@@ -1,6 +1,6 @@
-package com.itwill.approval.attendance.leave;
+package com.itwill.attendance.leave;
 
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

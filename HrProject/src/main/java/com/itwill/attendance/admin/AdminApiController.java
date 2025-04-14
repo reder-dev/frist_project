@@ -1,11 +1,11 @@
-package com.itwill.approval.attendance.admin;
+package com.itwill.attendance.admin;
 
-import com.itwill.approval.attendance.attendance.Attendance;
-import com.itwill.approval.attendance.attendance.AttendanceService;
-import com.itwill.approval.attendance.lateness.Lateness;
-import com.itwill.approval.attendance.lateness.LatenessService;
-import com.itwill.approval.attendance.leave.Leave;
-import com.itwill.approval.attendance.leave.LeaveService;
+import com.itwill.attendance.record.Attendance;
+import com.itwill.attendance.record.AttendanceService;
+import com.itwill.attendance.lateness.Lateness;
+import com.itwill.attendance.lateness.LatenessService;
+import com.itwill.attendance.leave.Leave;
+import com.itwill.attendance.leave.LeaveService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin")  // ✅ REST API 전용 경로 구분
+@RequestMapping("/api/admin")  //REST API 전용 경로 구분
 public class AdminApiController {
 
     private final AttendanceService attendanceService;

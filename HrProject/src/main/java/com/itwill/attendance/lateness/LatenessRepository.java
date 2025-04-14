@@ -1,4 +1,4 @@
-package com.itwill.approval.attendance.lateness;
+package com.itwill.attendance.lateness;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.itwill.approval.attendance.leave;
+package com.itwill.attendance.leave;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
