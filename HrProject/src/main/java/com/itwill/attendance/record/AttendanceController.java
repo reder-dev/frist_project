@@ -12,8 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Controller;
 
-@RestController
+
+@Controller
 @RequestMapping("/attendance")
 public class AttendanceController {
 
@@ -91,6 +96,13 @@ public class AttendanceController {
     public String approveReason(@RequestParam Long attendanceId, @RequestParam String status) {
         return attendanceService.updateApprovalStatus(attendanceId, status);
     }
+    
+    @GetMapping("/page")
+    public String showAttendancePage() {
+        return "attendance/attendance"; // /WEB-INF/views/attendance.jsp를 의미함
+    }
+
+
 
     //엑셀 다운로드
     @GetMapping("/download/excel")
