@@ -5,14 +5,14 @@
     <script>
         function checkIn() {
             fetch("/attendance/check-in", { method: "POST" })
-                .then(response => response.json())
-                .then(data => alert("출근 처리 완료: " + data.checkIn));
+                .then(response = response.json())
+                .then(data = alert("출근 처리 완료: " + data.checkIn));
         }
 
         function checkOut() {
             fetch("/attendance/check-out", { method: "POST" })
-                .then(response => response.json())
-                .then(data => alert("퇴근 처리 완료: " + data.checkOut));
+                .then(response = response.json())
+                .then(data = alert("퇴근 처리 완료: " + data.checkOut));
         }
     </script>
 </head>
