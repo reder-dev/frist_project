@@ -21,106 +21,285 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <style>
-#templateSelect {
-	font-size: 16px;
-	padding: 5px;
-	width: 300px;
+<style>
+    @font-face {
+      font-family: 'Pretendard';
+      src: url('/resources/fonts/Pretendard-Regular.otf') format('opentype');
+    }
+
+    html, body {
+      font-family: 'Pretendard', sans-serif;
+    }
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background: #f9f9f9;
+  margin: 0;
+  padding: 40px;
 }
 
-#templateSelect option {
-	color: black; /* 혹시 회색이나 흰색이면 안보일 수 있어서 강제 설정 */
-	background-color: white;
+form {
+  max-width: 800px;
+  margin: auto;
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+}
+
+
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+label {
+  display: block;
+  font-weight: 400;
+  margin: 20px 0 8px;
+}
+
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input[type="date"] {
+  width: 30%;
+}
+
+button {
+  padding: 7px 16px;
+  font-size: 15px;
+  background: #f0f0f0;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+#submitBtn:enabled {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.fileList {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f3f3f3;
+  border: 1px dashed #ccc;
+  white-space: pre-wrap;
+  font-size: 0.9em;
+  color: #333;
+}
+
+#leaveSection,
+#businessSection {
+  background: #fdfdfd;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  margin-top: 20px;
+}
+
+#approverResultTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#approverResultTable th,
+#approverResultTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#selectedApprovers {
+  list-style: none;
+  padding-left: 0;
+}
+
+#selectedApprovers li {
+  background: #e9f0ff;
+  padding: 5px 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+.required {
+  color: red;
+  margin-right: 4px;
+}
+
+#leaveSection, #businessSection {
+    background: #fdfdfd;
+    padding: 0 20 20 20;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    margin-top: 20px;
+}
+
+.search-wrapper {
+  display: flex;       /* 가로 정렬 */
+  align-items: center; /* 세로 정렬 */
+  gap: 8px;            /* 입력창과 버튼 사이 간격 */
+  margin: 15px;
+}
+
+.search-input {
+  width: 100px;
+  padding: 5px;
+  font-size: 14px;
+}
+.radio-group {
+  display: flex;
+  gap: 10px;  
+  margin-top: 3px;
+}
+.radio-group label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
 }
 </style>
+
 <body>
+<h2>전자결재 신청</h2>
+<form class="form-box" id="approvalForm" method="post" action="/approval/apply" enctype="multipart/form-data">
 
-	<h2>전자결재 신청</h2>
-	<form id="approvalForm" method="post" action="/approval/apply" enctype="multipart/form-data">
-		<!-- 문서 제목 -->
-		<label>문서 제목: <span style="color: red;">(필수)</span></label> <input type="text" name="documentTitle" id="documentTitle"><br> <br>
+  <!-- 문서 정보 -->
+  <div class="form-section">
+    <label><span class="required">* </span><span style="font-weight: bold;">문서 제목</span></label>
+    <input type="text" class="form-control" name="documentTitle" id="documentTitle">
 
-		<!-- 결재 분류 -->
-		<label>결재 분류: <span style="color: red;">(필수)</span></label> 
-		<select name="referenceTableName" id="categorySelect" required>
-			<option value="">-- 선택하세요 --</option>
-			<option value="LEAVE">휴가(반차/연차/병가)</option>
-			<option value="BUSINESS">출장</option>
-		</select><br> <br>
+    <label><span class="required">* </span><span style="font-weight: bold;">결재 분류</span></label>
+    <select class="form-control" name="referenceTableName" id="categorySelect" required>
+      <option value="">-- 선택하세요 --</option>
+      <option value="LEAVE">휴가(반차/연차/병가)</option>
+      <option value="BUSINESS">출장</option>
+    </select>
 
-		<!-- 로그인 사용자 ID -->
-		<input type="hidden" name="requester" value="${sessionScope.loginUser.empId}" />
-		<input type="hidden" name="register" value="${sessionScope.loginUser.empId}" /> 
-		<input type="hidden" name="attachmentCount" id="attachmentCount" value="0" />
+    <input type="hidden" name="requester" value="${sessionScope.loginUser.empId}" />
+    <input type="hidden" name="register" value="${sessionScope.loginUser.empId}" />
+    <input type="hidden" name="attachmentCount" id="attachmentCount" value="0" />
+  </div>
 
-		<!-- 휴가 신청 영역 -->
-		<div id="leaveSection" style="display: none;">
-			<h4>휴가 신청</h4>
-			<label>휴가 구분: <span style="color: red;">(필수)</span></label> 
-			<input type="radio" name="leaveStatus" value="반차">반차 
-			<input type="radio" name="leaveStatus" value="연차">연차 
-			<input type="radio" name="leaveStatus" value="병가">병가<br> <br> 
-			<label>휴가 기간: <span style="color: red;">(필수)</span></label> 
-			<input type="date" id="leaveStartDate" name="leaveStartDate"> ~ <input type="date" id="leaveEndDate" name="leaveEndDate"><br> <br> <label>코멘트:</label><br>
-			<textarea name="comment" rows="3" cols="50"></textarea>
-			<br> <br> <label>첨부파일 (최대 3개):</label> <input type="file" id="leaveFiles" multiple><br> <br>
-			<pre id="leaveFileList" class="fileList"></pre>
-		</div>
-
-		<!-- 출장 신청 영역 -->
-		<div id="businessSection" style="display: none;">
-			<h4>출장 신청</h4>
-			<label>출장지: <span style="color: red;">(필수)</span></label> <input type="text" name="businessLocation"><br> <br> <label>출장목적: <span style="color: red;">(필수)</span>
-			</label> <input type="text" name="businessPurpose"><br> <br> <label>출장 기간: <span style="color: red;">(필수)</span></label> <input type="date" name="businessStartDate"> ~ <input type="date" name="businessEndDate"><br> <br> <label>코멘트:</label><br>
-			<textarea name="comment" rows="3" cols="50"></textarea>
-			<br> <br> <label>첨부파일:</label> <input type="file" id="bizFiles" multiple><br> <br>
-			<pre id="bizFileList" class="fileList"></pre>
-		</div>
-
-		<!-- 결재선 지정 -->
-		<h3>
-			결재선 지정 <span style="color: red; font-weight: 400; font-size: 0.8em;"> (직접 결재선 지정 또는 저장된 결재선 선택) </span>
-		</h3>
-
-		<h4>직접 결재선 지정</h4>
-		<label>이름 검색:</label> <input type="text" id="approverKeyword" placeholder="이름 입력">
-		<button type="button" id="searchApproverBtn">검색</button>
-		<br> <br>
-
-		<table border="1" id="approverResultTable">
-			<thead>
-				<tr>
-					<th>이름</th>
-					<th>부서</th>
-					<th>직책</th>
-					<th>추가</th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-		</table>
-
-		<h4>선택된 결재자</h4>
-		<ul id="selectedApprovers"></ul>
-		<input type="hidden" name="approverList" id="approverList"><br> <br>
-
-		<!-- 템플릿 저장 -->
-		<label>결재선 이름:</label> <input type="text" id="templateName" disabled>
-		<button type="button" id="saveTemplateBtn" disabled>결재선 저장</button>
-		<br> <br>
-
-		<!-- 결재선 불러오기 -->
-		<h4>저장된 결재선 선택</h4>
-		<select id="templateSelect" style="width: 1000px;">
-			<option value="">-- 결재선 선택 --</option>
-		</select><br> <br>
-
-		<button type="button" onclick="resetApprovalLine()">결재선 초기화</button>
-		<br> <br>
-
-		<button type="submit" id="submitBtn" disabled>결재 신청</button>
-	</form>
-
-	<script>
+  <!-- 휴가 영역 -->
+  <div id="leaveSection" class="form-section" style="display:none;">
+    <div class="radio-group">
+    <label style="font-size: 16px;"><span class="required">* </span>휴가 구분 : </label>
+    <label style="font-size: 16px;"><input type="radio" name="leaveStatus" value="반차" style="margin-right: 10;"> 반차</label>
+    <label style="font-size: 16px;"><input type="radio" name="leaveStatus" value="연차" style="margin-right: 10;"> 연차</label>
+    <label style="font-size: 16px;"><input type="radio" name="leaveStatus" value="병가" style="margin-right: 10;"> 병가</label>
+	</div>
 	
+    <label><span class="required">* </span>휴가 기간</label>
+    <input type="date" class="form-control half-width" name="leaveStartDate" id="leaveStartDate"> ~ 
+    <input type="date" class="form-control half-width" name="leaveEndDate" id="leaveEndDate">
+
+    <label>코멘트</label>
+    <textarea name="comment" class="form-control"></textarea>
+
+    <label>첨부파일 (최대 3개)</label>
+    <input type="file" id="leaveFiles" class="form-control" multiple>
+    <div id="leaveFileList" class="fileList"></div>
+  </div>
+
+  <!-- 출장 영역 -->
+  <div id="businessSection" class="form-section" style="display:none;">
+    <label><span class="required">* </span>출장지</label>
+    <input type="text" name="businessLocation" class="form-control">
+
+    <label><span class="required">* </span>출장 목적</label>
+    <input type="text" name="businessPurpose" class="form-control">
+
+    <label><span class="required">* </span>출장 기간</label>
+    <input type="date" class="form-control half-width" name="businessStartDate"> ~
+    <input type="date" class="form-control half-width" name="businessEndDate">
+
+    <label>코멘트</label>
+    <textarea name="comment" class="form-control"></textarea>
+
+    <label>첨부파일</label>
+    <input type="file" id="bizFiles" class="form-control" multiple>
+    <div id="bizFileList" class="fileList"></div>
+  </div>
+
+  <!-- 결재선 지정 -->
+  <div class="form-section" style="background: #fdfdfd; padding: 0 20 20 20; border-radius: 8px; border: 1px solid #e0e0e0; margin: 20px 0;">
+    <h3>결재선 지정 <span style="color: blue; font-weight: 400; font-size: 80%; margin-left: 10">(저장된 결재선 선택 또는 직접 지정)</span></h3>
+	
+    <label style="font-weight: bold;"><span class="required">* </span>저장된 결재선 선택</label>
+    <select id="templateSelect" class="form-control" style="width: 300px; margin-left: 15;">
+      <option value="">-- 결재선 선택 --</option>
+    </select>
+	
+    <h4 style="margin-bottom: 0"><span class="required">* </span>직접 결재선 지정</h4>
+    <div class="search-wrapper">
+	  <input type="text" id="approverKeyword" class="search-input" placeholder="이름 입력" style="width: 100;">
+	  <button type="button" id="searchApproverBtn">검색</button>
+	</div>
+
+	<div id="approverResultSection" style="display: none;">
+    <table style="width: 400; margin-left: 15;" id="approverResultTable">
+      <thead>
+        <tr>
+          <th style="font-weight: 400;">이름</th>
+          <th style="font-weight: 400;">부서</th>
+          <th style="font-weight: 400;">직책</th>
+          <th style="font-weight: 400;">추가</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+	</div>
+	
+	<div id="selectedApproversSection" style="display: none;">
+	<div style="display: flex; align-items: center;">
+		<h4 style="margin-bottom: 0; margin-top: 30;">선택된 결재자</h4>
+        <button type="button" onclick="resetApprovalLine()" class="btn" style="margin-left: 25; margin-top:25; display:none;" id="resetBtn">결재선 초기화</button>
+    </div>
+    <ul id="selectedApprovers"></ul>
+    <input type="hidden" name="approverList" id="approverList">
+	</div>
+	
+	<div id="saveTemplateSection" style="display: none;">
+    <label style="font-weight: bold; margin-left: 15;">결재선 이름</label>
+    <input style="width: 100; margin-left: 15;" type="text" id="templateName" class="form-control" disabled>
+    <button type="button" id="saveTemplateBtn" class="btn" disabled>결재선 저장</button>
+	</div>
+	
+  </div>
+
+  <!-- 제출 버튼 -->
+  <div style="text-align: right;">
+    <button type="submit" class="btn" id="submitBtn" disabled>결재 신청</button>
+  </div>
+</form>
+	
+	<script>
 	// 결재선 저장 버튼 활성화 제어 함수
 	function toggleTemplateInput(enabled) {
 	    $('#templateName').prop('disabled', !enabled);
@@ -168,12 +347,22 @@
     function resetApprovalLine() {
         $('#templateSelect').val('').prop('disabled', false);
         $('#approverKeyword, #searchApproverBtn').prop('disabled', false);
+        
+     	// 직접 결재선 관련 초기화 및 감춤
+        $('#approverKeyword, #searchApproverBtn').prop('disabled', false).val('');
+        $('#approverResultTable tbody').empty();
+        $('#manualApprovalSection').hide();
+        $('#approverResultSection').hide();
+        $('#selectedApproversSection').hide();
+        $('#saveTemplateSection').hide();
+        
         $('#approverResultTable button').prop('disabled', false);
         selectedApprovers.length = 0;
         renderApprovers();
         toggleSubmitButton();
         $('#approverKeyword').val(''); // 검색 입력창 비우기
         $('#approverResultTable tbody').empty(); // 검색 결과 테이블도 초기화
+        $('#resetBtn').hide();
     }
 
     // 카테고리 선택
@@ -198,16 +387,18 @@
                 tbody.empty();
 
                 if (!data || data.length === 0) {
+                	$('#approverResultSection').hide(); // 검색결과 숨김
                     alert("해당하는 사원의 이름이 없습니다. 다시 입력해주세요.");
                     return;
                 }
+                $('#approverResultSection').show(); // 검색결과 보임
 
                 data.forEach((item, index) => {
                 	const row = "<tr>"
-                        + "<td>" + item.empName + "</td>"
-                        + "<td>" + item.depName + "</td>"
-                        + "<td>" + item.posId + "</td>"
-                        + "<td><button class='addBtn' "
+                        + "<td style='text-align:center;'>" + item.empName + "</td>"
+                        + "<td style='text-align:center;'>" + item.depName + "</td>"
+                        + "<td style='text-align:center;'>" + item.posId + "</td>"
+                        + "<td style='text-align:center;'><button class='addBtn' "
                         + "data-empid='" + item.empId + "' "
                         + "data-name='" + item.empName + "' "
                         + "data-dep='" + item.depName + "' "
@@ -240,6 +431,12 @@
         selectedApprovers.push({ empId, empName, depName, posId });
 
         $('#approverResultTable tbody').empty();  // 🔥 검색결과 표 초기화
+        
+        $('#manualApprovalSection').show();
+        $('#approverResultSection').show();
+        $('#selectedApproversSection').show();
+        $('#saveTemplateSection').show();
+        $('#resetBtn').show();
         
         // UI 반영
         renderApprovers();
@@ -336,6 +533,11 @@
     $(document).ready(function () {
     	// 오늘 날짜 기준 min 설정
         const today = new Date().toISOString().split('T')[0];
+        // 기본 감춤
+        $('#manualApprovalSection').hide();
+        $('#approverResultSection').hide();
+        $('#selectedApproversSection').hide();
+        $('#saveTemplateSection').hide();
 
         // 템플릿 + 상세 결재자 목록을 드롭다운에 표시 (미리보기 포함)
        $.ajax({
@@ -401,6 +603,7 @@
 	            const depName = $(this).data('dep');
 	            const posId = $(this).data('pos');
 	            addApprover(empId, empName, depName, posId);
+	            $('#approverResultSection').hide();
 	        });
 	     	
 	    	 // 오늘 날짜 기준으로 이전 날짜 비활성화
@@ -466,6 +669,15 @@
     	const approverData = selected.data('approvers');
 
     	if (!approverData) return;
+    	
+    	 // 직접 결재선 관련은 감춤
+    	  $('#manualApprovalSection').hide();
+    	  $('#approverResultSection').hide();
+    	  $('#saveTemplateSection').hide();
+
+    	  // 선택된 결재자는 보여줌
+    	  $('#selectedApproversSection').show();
+    	
     	isTemplateSelected = true;
 
         // 템플릿으로 선택되었으므로 직접입력 영역 비활성화
@@ -486,7 +698,10 @@
                 posId: a.posId
             });
         });
-
+		
+        $('#selectedApproversSection').show();
+        $('#resetBtn').show();
+        
         renderApprovers();
         toggleSubmitButton();
     });
