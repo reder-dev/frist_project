@@ -1,4 +1,4 @@
-package com.itwill.hr;
+package com.itwill.controller;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
