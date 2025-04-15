@@ -1,11 +1,22 @@
 package com.itwill.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+
+import com.itwill.domain.NoticeVO;
+
+import com.itwill.service.NoticeService;
 
 
 
@@ -57,21 +68,67 @@ public class AdminController {
         return "admin/salary/manage";
     }
     
+    
     // 전자결제
     @GetMapping("/approval/manage")
     public String approvalManage() {
         return "admin/approval/manage";
     }
     
+    @Autowired
+    private NoticeService noticeService;
+    
     // 공지사항 관리
     @GetMapping("/notice/manage")
-    public String noticeManage() {
+    public String adminNoticeManage(Model model) {
+        List<NoticeVO> noticeList = noticeService.getNoticeList(); // 서비스 메서드 동일하게 재사용 가능
+        model.addAttribute("noticeList", noticeList);
         return "admin/notice/manage";
     }
     
     // 공지사항 상세
     @GetMapping("/notice/detail")
-    public String noticeDetail(@RequestParam("id") Long id) {
+    public String noticeDetail(@RequestParam("not_id") int not_id, Model model) {
+        NoticeVO notice = noticeService.getNotice(not_id);
+        model.addAttribute("notice", notice);
         return "admin/notice/detail";
     }
+    
+    // 공지사항 작성
+    @GetMapping("/notice/write")
+    public String writeForm() {
+    	return "admin/notice/write";
+    }
+    
+    @PostMapping("/notice/write")
+    public String write(@ModelAttribute NoticeVO vo) {
+        vo.setNot_register("admin");  // ��: ���ǿ��� ���� ����
+        noticeService.insertNotice(vo);
+        return "redirect:/admin/notice/manage";
+    }
+    
+    // 공지사항 수정
+    @GetMapping("/notice/edit")
+    public String editForm(@RequestParam("not_id") int not_id, Model model) {
+        NoticeVO notice = noticeService.getNotice(not_id);
+        model.addAttribute("notice", notice);
+        return "admin/notice/update";
+    }
+
+    @PostMapping("/notice/edit")
+    public String edit(@ModelAttribute NoticeVO vo) {
+        vo.setNot_modifier("admin"); 
+        noticeService.updateNotice(vo);
+        return "redirect:/admin/notice/manage";
+    }
+
+
+    // 공지사항 삭제
+    @PostMapping("/notice/delete")
+    public String delete(@RequestParam("not_id") int not_id) {
+        noticeService.deleteNotice(not_id);
+        return "redirect:/admin/notice/manage";
+    }
+    
+    
 }

@@ -72,7 +72,7 @@
                     <td>
                         <fmt:formatDate value="${notice.not_wd}" pattern="yyyy-MM-dd" />
                     </td>
-                    <%-- <td>${notice.viewCount}</td> --%>
+                    <td>${notice.view_count}</td>
                 </tr>
             </c:forEach>
             

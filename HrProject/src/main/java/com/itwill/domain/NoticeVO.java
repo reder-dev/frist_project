@@ -17,5 +17,6 @@ public class NoticeVO {
     private String not_register;        // �����
 
     private Timestamp not_modifydate;   // ��������
-    private String not_modifier;        // ������
+    private String not_modifier;	// ������
+    private int view_count;
 }
