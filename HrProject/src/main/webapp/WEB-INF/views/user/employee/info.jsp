@@ -47,6 +47,14 @@
             </table>
         </div>
     </div>
+     <div class="employee-action-buttons">
+            <a href="<c:url value='/user/employee/edit' />" class="btn btn-primary">
+                <i class="fas fa-edit"></i> 정보 수정
+            </a>
+            <a href="<c:url value='/user/employee/resignation' />" class="btn btn-danger">
+                <i class="fas fa-user-times"></i> 퇴사 신청
+            </a>
+        </div>
     
     
 

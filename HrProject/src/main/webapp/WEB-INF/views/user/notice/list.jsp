@@ -76,66 +76,7 @@
                 </tr>
             </c:forEach>
             
-            <!-- 데이터가 없을 경우 샘플 데이터 표시 -->
-            <c:if test="${empty noticeList}">
-                <tr class="notice-fixed">
-                    <td>1</td>
-                    <td>
-                        <a href="<c:url value='/user/notice/detail?not_id=1' />">
-                            2025년 상반기 인사발령 안내
-                            <i class="fas fa-paperclip"></i>
-                        </a>
-                    </td>
-                    <td>관리자</td>
-                    <td>2025-03-27</td>
-                    <td>45</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>
-                        <a href="<c:url value='/user/notice/detail?not_id=2' />">
-                            사내 시스템 업데이트 안내
-                        </a>
-                    </td>
-                    <td>관리자</td>
-                    <td>2025-03-25</td>
-                    <td>38</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>
-                        <a href="<c:url value='/user/notice/detail?not_id=3' />">
-                            4월 회식 일정 안내
-                        </a>
-                    </td>
-                    <td>관리자</td>
-                    <td>2025-03-23</td>
-                    <td>42</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>
-                        <a href="<c:url value='/user/notice/detail?not_id=4' />">
-                            신입사원 교육 일정 안내
-                            <i class="fas fa-paperclip"></i>
-                        </a>
-                    </td>
-                    <td>관리자</td>
-                    <td>2025-03-20</td>
-                    <td>35</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>
-                        <a href="<c:url value='/user/notice/detail?not_id=5' />">
-                            연차 사용 안내
-                        </a>
-                    </td>
-                    <td>관리자</td>
-                    <td>2025-03-18</td>
-                    <td>40</td>
-                </tr>
-            </c:if>
+           
         </tbody>
     </table>
     
