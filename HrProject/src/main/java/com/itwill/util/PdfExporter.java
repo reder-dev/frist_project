@@ -1,9 +1,10 @@
 package com.itwill.util;
 
-import com.itwill.approval.attendance.attendance.Attendance;
+import com.itwill.attendance.record.Attendance;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 
+import java.util.stream.Stream;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
