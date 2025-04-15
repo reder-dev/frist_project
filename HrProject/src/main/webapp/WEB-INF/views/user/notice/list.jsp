@@ -58,7 +58,7 @@
                 </tr>
             </c:if>
             <c:forEach var="notice" items="${noticeList}" varStatus="status">
-                <tr class="${notice.isFixed ? 'notice-fixed' : ''}">
+                <tr>
                     <td>${notice.not_id}</td>
                     <td>
                         <a href="<c:url value='/user/notice/detail?not_id=${notice.not_id}' />">
@@ -72,7 +72,7 @@
                     <td>
                         <fmt:formatDate value="${notice.not_wd}" pattern="yyyy-MM-dd" />
                     </td>
-                    <td>${notice.viewCount}</td>
+                    <%-- <td>${notice.viewCount}</td> --%>
                 </tr>
             </c:forEach>
             

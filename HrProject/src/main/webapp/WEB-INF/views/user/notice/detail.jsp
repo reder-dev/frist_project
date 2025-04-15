@@ -21,9 +21,9 @@
                     <i class="fas fa-calendar-alt"></i> 작성일: 
                     <fmt:formatDate value="${notice.not_wd}" pattern="yyyy-MM-dd HH:mm" />
                 </span>
-                <span class="info-item">
+                <%-- <span class="info-item">
                     <i class="fas fa-eye"></i> 조회수: ${notice.viewCount}
-                </span>
+                </span> --%>
             </div>
         </div>
         

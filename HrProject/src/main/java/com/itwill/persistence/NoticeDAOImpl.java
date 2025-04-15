@@ -27,7 +27,7 @@ public class NoticeDAOImpl implements NoticeDAO {
     }
 
     @Override
-    public NoticeVO getNotice(String not_id) {
+    public NoticeVO getNotice(int not_id) {
         return sqlSession.selectOne(NAMESPACE + ".getNotice", not_id);
     }
 
@@ -37,7 +37,7 @@ public class NoticeDAOImpl implements NoticeDAO {
     }
 
     @Override
-    public void deleteNotice(String not_id) {
+    public void deleteNotice(int not_id) {
         sqlSession.delete(NAMESPACE + ".deleteNotice", not_id);
     }
 }

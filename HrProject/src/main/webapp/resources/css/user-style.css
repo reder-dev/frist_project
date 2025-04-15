@@ -317,13 +317,7 @@
 }
 
 /* 공지사항 목록 스타일 */
-.notice-fixed {
-    background-color: #f8f9fa;
-}
 
-.notice-fixed td a {
-    font-weight: bold;
-}
 
 .data-table {
     width: 100%;

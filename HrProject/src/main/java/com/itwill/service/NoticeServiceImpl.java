@@ -23,7 +23,7 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public NoticeVO getNotice(String not_id) {
+    public NoticeVO getNotice(int not_id) {
         return noticeDAO.getNotice(not_id);
     }
 
@@ -33,7 +33,7 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void deleteNotice(String not_id) {
+    public void deleteNotice(int not_id) {
         noticeDAO.deleteNotice(not_id);
     }
 }
