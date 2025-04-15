@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -156,5 +158,13 @@ public class ApprovalController {
 	@ResponseBody
 	public List<ApprovalLineDetailDTO> getTemplateDetails(@RequestParam("templateId") String templateId) {
 		return approvalService.getTemplateDetails(templateId);
+	}
+	
+	@GetMapping("/my-documents")
+	@ResponseBody
+	public List<PendingApprovalDTO> getMyDocuments(HttpSession session) {
+	    ApprovalSearchDTO loginUser = (ApprovalSearchDTO) session.getAttribute("loginUser");
+	    if (loginUser == null) return Collections.emptyList();
+	    return approvalService.getMyRequestedDocuments(loginUser.getEmpId());
 	}
 }

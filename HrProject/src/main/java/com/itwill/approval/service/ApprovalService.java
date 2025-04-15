@@ -59,5 +59,7 @@ public interface ApprovalService {
     void confirmBusinessApproval(String tripId);
     
     int countApprovalByPrefix(String prefix);
-
+    
+    List<PendingApprovalDTO> getMyRequestedDocuments(String empId);
+    
 }
