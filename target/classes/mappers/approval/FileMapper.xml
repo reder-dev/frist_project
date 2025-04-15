@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwill.approval.mapper.FileMapper">
+
+    <insert id="insertFile" parameterType="com.itwill.approval.dto.FileDTO">
+        INSERT INTO FILE (
+            file_id,
+            file_name,
+            file_path,
+            file_size,
+            file_type,
+            reference_table_id,
+            reference_table_name,
+            upload_date,
+            file_description
+        ) VALUES (
+            #{fileId},
+            #{fileName},
+            #{filePath},
+            #{fileSize},
+            #{fileType},
+            #{referenceTableId},
+            #{referenceTableName},
+            #{uploadDate},
+            #{fileDescription}
+        )
+    </insert>
+
+</mapper>
