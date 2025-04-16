@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -137,6 +138,9 @@ public class MemberController {
 
 		// 세션 영역에 로그인 성공한 사용자의 아이디를 저장
 		session.setAttribute("id", resultVO.getEmp_id());
+		
+		// 로그인 성공 시 세션에 role_id 저장
+		session.setAttribute("role_id", resultVO.getRole_id());
 
 		if ("1234".equals(resultVO.getEmp_pw())) {
 			session.setAttribute("loginUser", resultVO.getEmp_id()); // 세션에 사용자 정보 저장
@@ -184,11 +188,22 @@ public class MemberController {
 	 */
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public String MemberMainGET() {
+	public String MemberMainGET(HttpSession session, Model model) {
 		logger.info(" /member/main -> MemberMainGET()호출");
+		
+		// 세션에서 role_id 값을 가져옴
+	    Object roleId = session.getAttribute("role_id");
+		
+	    // role_id가 없을 경우 기본값 설정 (예: 직원)
+	    if (roleId == null) {
+	        roleId = 4; // 기본적으로 직원 역할로 설정
+	    }
 
-		logger.info(" /member/main.jsp 페이지로 이동");
-		return "/member/main";
+	    // role_id 값을 모델에 추가하여 JSP에서 사용
+	    model.addAttribute("role_id", roleId);
+
+	    logger.info(" /member/main.jsp 페이지로 이동");
+	    return "/member/main";
 	}
 
 	@PostMapping(value = "/main")

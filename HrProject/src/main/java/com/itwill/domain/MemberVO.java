@@ -14,6 +14,7 @@ public class MemberVO {
 	private String emp_email;
 	private Timestamp emp_registdate;
 	private Timestamp emp_modifydate;
+	private int role_id;
 	
 	// alt shift s + r
 	// alt shift s + s
