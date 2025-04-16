@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwill.attendance.mapper.AttendanceMapper">
+
+    <resultMap id="attendanceResultMap" type="com.itwill.attendance.record.Attendance">
+        <id property="id" column="id"/>
+        <result property="employeeId" column="employee_id"/>
+        <result property="date" column="date"/>
+        <result property="checkIn" column="check_in"/>
+        <result property="checkOut" column="check_out"/>
+        <result property="workType" column="work_type"/>
+        <result property="latenessMinutes" column="lateness_minutes"/>
+        <result property="lateReason" column="late_reason"/>
+        <result property="approvalStatus" column="approval_status"/>
+    </resultMap>
+
+    <select id="findByEmployeeIdAndDate" resultMap="attendanceResultMap">
+        SELECT * FROM attendance
+        WHERE employee_id = #{employeeId}
+        AND date = #{date}
+    </select>
+
+    <select id="findByEmployeeId" resultMap="attendanceResultMap">
+        SELECT * FROM attendance
+        WHERE employee_id = #{employeeId}
+        ORDER BY date DESC
+    </select>
+
+    <select id="findByDate" resultMap="attendanceResultMap">
+        SELECT * FROM attendance
+        WHERE date = #{date}
+    </select>
+
+    <select id="findById" resultMap="attendanceResultMap">
+        SELECT * FROM attendance
+        WHERE id = #{id}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO attendance (
+            employee_id, date, check_in, check_out, work_type,
+            lateness_minutes, late_reason, approval_status
+        )
+        VALUES (
+            #{employeeId}, #{date}, #{checkIn}, #{checkOut}, #{workType},
+            #{latenessMinutes}, #{lateReason}, #{approvalStatus}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE attendance
+        SET check_in = #{checkIn},
+            check_out = #{checkOut},
+            work_type = #{workType},
+            lateness_minutes = #{latenessMinutes},
+            late_reason = #{lateReason},
+            approval_status = #{approvalStatus}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

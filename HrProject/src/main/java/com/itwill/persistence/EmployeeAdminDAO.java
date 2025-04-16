@@ -5,9 +5,9 @@ import java.util.List;
 import com.itwill.domain.EmployeeVO;
 
 public interface EmployeeAdminDAO {
-	List<EmployeeVO> getAllEmployees();		// ¸ðµç Á÷¿ø Á¶È¸
-    EmployeeVO getEmployeeById(String empId);	// Æ¯Á¤ Á÷¿ø Á¶È¸
-    void updateEmployee(EmployeeVO employee);	// Á÷¿ø Á¤º¸ ¾÷µ¥ÀÌÆ®
+	List<EmployeeVO> getAllEmployees();		// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
+    EmployeeVO getEmployeeById(String empId);	// Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
+    void updateEmployee(EmployeeVO employee);	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	
     
 }

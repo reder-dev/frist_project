@@ -1,103 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
-		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/data/jpa https://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+    <!-- HikariCP 설정 -->
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+        <property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c6d2412t1p1" />
+        <property name="username" value="c6d2412t1p1" />
+        <property name="password" value="1234" />
+    </bean>
+    
+    <!-- JPA 설정 -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	    <property name="dataSource" ref="dataSource" />
+	    <property name="packagesToScan" value="com.itwill.attendance" />
+	    
+	    <property name="jpaVendorAdapter">
+	        <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+	            <property name="generateDdl" value="true" />
+	            <property name="showSql" value="true" />
+	        </bean>
+	    </property>
+	</bean>
 	
-	<!-- Root Context: defines shared resources visible to all other web components -->
-	<!-- 웹 자원을 제외한 프로젝트의 모든 자원을 관리하는 곳 -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+	    <property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
 	
-	<!-- DataSource - DB연결정보 객체  -->
-	
-	
-<!-- 	<bean id="dataSource"  -->
-<!-- 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
-<!-- 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/> -->
-<!-- 		<property name="url" value="com.mysql.cj.jdbc.Driver"/> -->
-<!-- 		<property name="username" value="root"/> -->
-<!-- 		<property name="password" value="1234"/> -->
-<!-- </bean> -->
-	<!-- Data Source - DB의   -->					
-				
-				
+	 <!-- ⭐ JPA Repository 스캔 추가 -->
+    <jpa:repositories base-package="com.itwill.attendance" />
+    
+    
 
+    <!-- DataSource 설정 -->
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfig" />
+    </bean>
 
+    <!-- MyBatis 설정 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:/mybatis-config.xml" />
+        <property name="mapperLocations" value="classpath:/mappers/**/*.xml" />
+        <property name="typeAliasesPackage" value="com.itwill.domain" />
+    </bean>
 
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="close">
+        <constructor-arg ref="sqlSessionFactory" />
+    </bean>
 
-	<!-- DataSource - DB연결정보 객체  -->
-	
-<!-- 디비연결정보 객체 (hikariCP) -->		
-<bean id="hikariConfig"
-		class="com.zaxxer.hikari.HikariConfig">
-		<!--  <property name="driverClassName" 
-					value="com.mysql.cj.jdbc.Driver"/> -->
-		<property name="driverClassName" 
-				value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
-		<property name="jdbcUrl"
-					value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c6d2412t1p1" />
-		<property name="username" value="c6d2412t1p1" />
-		<property name="password" value="1234" />
+    <!-- MyBatis 매퍼 인터페이스 등록 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+      <property name="basePackage" value="com.itwill.approval.mapper, com.itwill.mapper"/>
+    </bean>
 
-</bean>
+    <!-- 컴포넌트 스캔 설정 (Controller 제외) -->
+    <context:component-scan base-package="com.itwill">
+    	<!-- Controller 제외 설정 삭제 -->
+	</context:component-scan>
 
+    <!-- JavaMailSender 설정 -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com" />
+        <property name="port" value="587" />
+        <property name="username" value="hhsky1111@gmail.com" />
+        <property name="password" value="ucexcmgwtirpyytb" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">true</prop>
+            </props>
+        </property>
+    </bean>
 
-
-<!-- 디비연결정보 객체 (hikariCP) -->	
-<!-- Data Source - DB의    연결정보 객체 (hikariCP)-->		
-<bean id="dataSource"
-		class="com.zaxxer.hikari.HikariDataSource"
-		destroy-method="close">
-		
-		<constructor-arg ref="hikariConfig"/>
-</bean>
-
-<!-- Data Source - DB의    연결정보 객체 (hikariCP)-->		
-
-<!-- SqlSessionFactory - 디비연결(Connection), SQL 실행, 
-                         MyBatis 설정, mapper 실행 -->
-<bean id="sqlSessionFactory"
-		class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" 
-					value="classpath:/mybatis-config.xml"/>
-		<property name="mapperLocations"
-					value="classpath:/mappers/**/*Mapper.xml "></property>
-		
-</bean>
-
-
-
-<!-- SqlSessionFactory - 디비연결(Connection), SQL 실행 ,
-							MyBatis 설정, mapper 설정 -->
-
-
-<!-- SqlSessionTemle 객체 - 자동 디비 연결(Connection)/종료,
-							트래젝션 관리, 쓰레드 처리 안정성 높임,
-							SQL 실행, MyBatis설정, mapper설정 -->
-
-<bean id="sqlSession" 
-		class="org.mybatis.spring.SqlSessionTemplate"
-		destroy-method="close">
-		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
-
-
-</bean>
-
-
-
-
-
-<!-- SqlSessionTemle 객체 - 자동 디비 연결(Connection)/종료,
-							트래젝션 관리, 쓰레드 처리 안정성 높임,
-							SQL 실행, MyBatis설정, mapper설정 -->
-
-
-	
-	<!-- 외부에서 생성된 객체(빈)을 찾아와서 사용가능 설정 -->
-	<context:component-scan base-package="com.itwillbs.persistence" />	
-	<context:component-scan base-package="com.itwillbs.service" />	
-		
 </beans>

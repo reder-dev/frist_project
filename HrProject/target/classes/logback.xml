@@ -9,5 +9,18 @@
     <logger name="jdbc.resultset"      level="ERROR"/>
     <logger name="jdbc.resultsettable" level="ERROR"/>
     <logger name="jdbc.connection"     level="INFO"/>
+    
+    <!-- 📌 MemberController 로그 레벨 설정 (이 부분 추가!) -->
+    <logger name="com.itwill.hr" level="DEBUG"/>
+    <logger name="com.itiwll" level="DEBUG"/>
+
+    <!-- 📌 최상위 루트 로그 설정: 콘솔에 찍히도록 -->
+    <root level="DEBUG"><!-- INFO -->
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    
+    
+    
+    
 </configuration>
 

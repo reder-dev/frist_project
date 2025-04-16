@@ -5,13 +5,13 @@ import com.itwill.domain.EmployeeVO;
 
 public interface EmployeeAdminService {
     
-	//ÀüÃ¼Á÷¿ø Á¤º¸ ¸ñ·Ï Á¶È¸
+	//ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
 	List<EmployeeVO> getAllEmployees();
     
-	//Æ¯Á¤Á÷¿ø Á¤º¸ Á¶È¸
+	//Æ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
 	EmployeeVO getEmployeeById(String empId);
     
-    //Æ¯Á¤Á÷¿ø Á¤º¸ ¼öÁ¤
+    //Æ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	void updateEmployee(EmployeeVO employee);
     
 }
