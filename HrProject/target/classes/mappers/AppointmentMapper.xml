@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwill.persistence.AppointmentDAO">
+
+    <select id="getAppointmentsByEmpId"
+        resultType="com.itwill.domain.AppointmentVO"
+        parameterType="String">
+    SELECT * FROM APPOINTMENT
+    WHERE emp_id = #{empId}
+    ORDER BY app_registdate DESC
+</select>
+
+</mapper>

@@ -9,45 +9,44 @@
 
 <div class="content">
     <div class="main-column">
-        <!-- 프로필 정보 DIV (캘린더 위에 배치) -->
+        <!-- 프로필 카드 -->
         <div class="profile-card">
             <div class="profile-header">
-                <img src="images/profile.png" alt="프로필 이미지" class="profile-image">
+                <img src="<c:url value='/resources/images/profile.jpeg' />" alt="프로필 이미지" class="profile-image">
                 <div class="profile-info">
-                    <h3>홍길동</h3>
-                    <p>인사팀 / 사원</p>
-                    <p>사원번호: 2510035</p>
+                    <h3>${employee.emp_name}</h3>
+                    <p>${employee.dep_name} / ${employee.rank_id}</p>
+                    <p>사원번호: ${employee.emp_id}</p>
                 </div>
             </div>
             <div class="profile-details">
                 <div class="detail-item">
                     <span class="label">이메일:</span>
-                    <span class="value">hrgenie@naver.com</span>
+                    <span class="value">${employee.emp_email}</span>
                 </div>
                 <div class="detail-item">
                     <span class="label">연락처:</span>
-                    <span class="value">010-1111-1111</span>
+                    <span class="value">${employee.emp_phone}</span>
                 </div>
                 <div class="detail-item">
                     <span class="label">입사일:</span>
-                    <span class="value">2025-03-27</span>
+                    <span class="value"><fmt:formatDate value="${employee.emp_jd}" pattern="yyyy-MM-dd" /></span>
                 </div>
                 <div class="detail-item">
                     <span class="label">근무일수:</span>
-                    <span class="value">365일</span>
+                    <span class="value">${workDays}일</span>
                 </div>
             </div>
             <div class="profile-actions">
-                <a href="personnel/info.jsp" class="btn btn-primary btn-sm">인사정보 상세보기</a>
+                <a href="<c:url value='/user/employee/info' />" class="btn btn-primary btn-sm">인사정보 상세보기</a>
             </div>
         </div>
-        
-        <!-- 캘린더 (프로필 아래에 배치) -->
+
+        <!-- 캘린더 -->
         <div class="calendar-container">
             <div class="calendar-header">
                 <h3>이번달 일정 캘린더</h3>
             </div>
-            
             <table class="calendar-table">
                 <thead>
                     <tr>
@@ -61,111 +60,60 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                    </tr>
-                    <tr>
-                        <td>7</td>
-                        <td>8</td>
-                        <td>9</td>
-                        <td>10</td>
-                        <td>11</td>
-                        <td>12</td>
-                        <td>13</td>
-                    </tr>
-                    <tr>
-                        <td>14</td>
-                        <td>15</td>
-                        <td>16</td>
-                        <td>17</td>
-                        <td>18</td>
-                        <td>19</td>
-                        <td>20</td>
-                    </tr>
-                    <tr>
-                        <td>21</td>
-                        <td>22</td>
-                        <td>23</td>
-                        <td>24</td>
-                        <td>25</td>
-                        <td>26</td>
-                        <td>27</td>
-                    </tr>
-                    <tr>
-                        <td>28</td>
-                        <td>29</td>
-                        <td>30</td>
-                        <td>31</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    <!-- 일정 하드코딩 유지 또는 동적 처리 -->
+                    <c:forEach begin="1" end="31" var="day" step="7">
+                        <tr>
+                            <c:forEach begin="${day}" end="${day+6}" var="d">
+                                <td><c:if test="${d <= 31}">${d}</c:if></td>
+                            </c:forEach>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>
-        
+
+        <!-- TO DO & MEMO -->
         <div class="dashboard-row">
             <div class="todo-list-container">
                 <h4>TO DO LIST</h4>
-                <div class="todo-item">
-                    <input type="checkbox" id="todo1">
-                    <label for="todo1">업무 보고서 작성</label>
-                </div>
-                <div class="todo-item">
-                    <input type="checkbox" id="todo2">
-                    <label for="todo2">팀 미팅 준비</label>
-                </div>
-                <div class="todo-item">
-                    <input type="checkbox" id="todo3">
-                    <label for="todo3">프로젝트 일정 확인</label>
-                </div>
-                <div class="todo-item">
-                    <input type="checkbox" id="todo4">
-                    <label for="todo4">신입사원 교육 자료 준비</label>
-                </div>
-                <div class="todo-item">
-                    <input type="checkbox" id="todo5">
-                    <label for="todo5">월간 보고서 검토</label>
-                </div>
+                <c:forEach var="todo" items="${todoList}">
+                    <div class="todo-item">
+                        <input type="checkbox" id="todo_${todo.id}">
+                        <label for="todo_${todo.id}">${todo.task}</label>
+                    </div>
+                </c:forEach>
             </div>
-            
+
             <div class="memo-container">
                 <h4>MEMO</h4>
-                <textarea placeholder="메모를 입력하세요..."></textarea>
+                <textarea placeholder="메모를 입력하세요...">${memoContent}</textarea>
             </div>
         </div>
     </div>
-    
+
+    <!-- 우측 사이드바 -->
     <div class="side-column">
         <div class="company-info">
-            <h3>회사 정보 및 회사 관련 내용</h3>
-            <p>회사 정보 및 회사 관련 내용.....</p>
-            <p>회사 정보 및 회사 관련 내용.....</p>
-            <p>회사 정보 및 회사 관련 내용.....</p>
+            <h3>회사 정보</h3>
+            <p>회사 소개 및 주요 안내사항을 여기에 표시합니다.</p>
         </div>
-        
+
         <div class="quick-links">
             <h3>바로가기</h3>
             <div class="links-grid">
-                <a href="personnel/info.jsp" class="quick-link">
+                <a href="<c:url value='/user/employee/info' />" class="quick-link">
                     <i class="fas fa-user"></i>
                     <span>인사조회</span>
                 </a>
-                <a href="personnel/appointment.jsp" class="quick-link">
+                <a href="<c:url value='/user/employee/appointment' />" class="quick-link">
                     <i class="fas fa-exchange-alt"></i>
                     <span>발령조회</span>
                 </a>
-                <a href="personnel/organization.jsp" class="quick-link">
+                <a href="<c:url value='/user/employee/organization' />" class="quick-link">
                     <i class="fas fa-sitemap"></i>
                     <span>조직도</span>
                 </a>
-                <a href="notice/list.jsp" class="quick-link">
+                <a href="<c:url value='/user/notice/list' />" class="quick-link">
                     <i class="fas fa-bullhorn"></i>
                     <span>공지사항</span>
                 </a>

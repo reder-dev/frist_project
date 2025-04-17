@@ -9,4 +9,5 @@ public interface NoticeService {
     public NoticeVO getNotice(int not_id);
     public void updateNotice(NoticeVO vo);
     public void deleteNotice(int not_id);
+    public void increaseViewCount(int not_id);
 }

@@ -36,4 +36,9 @@ public class NoticeServiceImpl implements NoticeService {
     public void deleteNotice(int not_id) {
         noticeDAO.deleteNotice(not_id);
     }
+    @Override
+    public void increaseViewCount(int not_id) {
+        noticeDAO.increaseViewCount(not_id);
+    }
+    
 }

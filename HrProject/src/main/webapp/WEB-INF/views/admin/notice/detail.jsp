@@ -7,81 +7,86 @@
     <jsp:param name="menu" value="notice" />
 </jsp:include>
 
+<style>
+.notice-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+.notice-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+.notice-meta {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+.notice-meta span {
+    margin-right: 20px;
+}
+.notice-content {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 30px;
+}
+.notice-attachments {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.notice-actions {
+    text-align: right;
+}
+.notice-actions .btn {
+    margin-left: 8px;
+}
+</style>
+
 <div class="content">
     <h2>공지사항 상세</h2>
-    
-    <div class="notice-detail">
-        <div class="notice-header">
-            <h3 class="notice-title">${notice.not_ti}</h3>
-            <div class="notice-info">
-                <span class="info-item">
-                    <i class="fas fa-user"></i> 작성자: ${notice.not_register}
-                </span>
-                <span class="info-item">
-                    <i class="fas fa-calendar-alt"></i> 작성일: 
-                    <fmt:formatDate value="${notice.not_wd}" pattern="yyyy-MM-dd HH:mm" />
-                </span>
-                <span class="info-item">
-                    <i class="fas fa-eye"></i> 조회수: ${notice.view_count}
-                </span>
-            </div>
+
+    <div class="notice-container">
+        <div class="notice-title">${notice.not_ti}</div>
+
+        <div class="notice-meta">
+            <span><i class="fas fa-user"></i> 작성자: ${notice.not_register}</span>
+            <span><i class="fas fa-calendar-alt"></i> 작성일:
+                <fmt:formatDate value="${notice.not_wd}" pattern="yyyy-MM-dd HH:mm" />
+            </span>
+            <span><i class="fas fa-eye"></i> 조회수: ${notice.view_count}</span>
         </div>
-        
+
         <div class="notice-content">
             ${notice.not_cn}
         </div>
-        
+
         <c:if test="${not empty notice.not_file}">
             <div class="notice-attachments">
-                <h4>첨부파일</h4>
-                <div class="attachment-item">
-                    <i class="fas fa-file"></i>
-                    <a href="<c:url value='/user/notice/download?fileId=${notice.not_file}' />" class="attachment-link">
-                        첨부파일 다운로드
-                    </a>
-                </div>
+                <strong>첨부파일:</strong>
+                <a href="<c:url value='/admin/notice/download?fileId=${notice.not_file}' />">
+                    ${notice.not_file}
+                </a>
             </div>
         </c:if>
-        
+
         <div class="notice-actions">
-            <a href="<c:url value='/user/notice/list' />" class="btn btn-secondary">목록으로</a>
+            <a href="<c:url value='/admin/notice/manage' />" class="btn btn-secondary">목록</a>
+            <a href="<c:url value='/admin/notice/edit?not_id=${notice.not_id}' />" class="btn btn-primary">수정</a>
+            <form action="<c:url value='/admin/notice/delete' />" method="post" style="display:inline;">
+                <input type="hidden" name="not_id" value="${notice.not_id}" />
+                <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+            </form>
         </div>
     </div>
-    
-    <!-- 샘플 데이터 (실제로는 컨트롤러에서 모델에 담아 전달) -->
-    <c:if test="${empty notice}">
-        <script>
-            // 샘플 데이터 표시를 위한 스크립트
-            document.querySelector('.notice-title').textContent = '2025년 상반기 인사발령 안내';
-            document.querySelector('.notice-info .info-item:nth-child(1)').innerHTML = '<i class="fas fa-user"></i> 작성자: 관리자';
-            document.querySelector('.notice-info .info-item:nth-child(2)').innerHTML = '<i class="fas fa-calendar-alt"></i> 작성일: 2025-03-27 09:30';
-            document.querySelector('.notice-info .info-item:nth-child(3)').innerHTML = '<i class="fas fa-eye"></i> 조회수: 45';
-            
-            document.querySelector('.notice-content').innerHTML = `
-                <p>안녕하세요, HR Genie 임직원 여러분.</p>
-                <p>2025년 상반기 인사발령 내용을 아래와 같이 안내드립니다.</p>
-                <br>
-                <h4>1. 발령 일자</h4>
-                <p>- 2025년 4월 1일부터 적용</p>
-                <br>
-                <h4>2. 주요 발령 내용</h4>
-                <p>- 개발팀 김개발 대리 → 과장 승진</p>
-                <p>- 인사팀 이인사 사원 → 대리 승진</p>
-                <p>- 마케팅팀 박마케 과장 → 영업팀 전보</p>
-                <p>- 신입사원 5명 인사팀 배치</p>
-                <br>
-                <h4>3. 기타 안내사항</h4>
-                <p>- 발령 관련 상세 내용은 첨부파일을 참고해 주세요.</p>
-                <p>- 문의사항은 인사팀(내선: 1234)으로 연락 바랍니다.</p>
-                <br>
-                <p>감사합니다.</p>
-                <p>HR Genie 인사팀 드림</p>
-            `;
-            
-            // 첨부파일 영역 표시
-            document.querySelector('.notice-attachments').style.display = 'block';
-        </script>
-    </c:if>
 </div>
 
 <jsp:include page="../../common/footer.jsp" />

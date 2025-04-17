@@ -18,26 +18,25 @@
         
         <div class="employee-info-box">
             <h4>신청자 정보</h4>
-            <table class="info-table">
-                <tr>
-                    <th>이름</th>
-                    <td>${employee.name}</td>
-                    <th>사원번호</th>
-                    <td>${employee.emp_id}</td>
-                </tr>
-                <tr>
-                    <th>부서</th>
-                    <td>${employee.department}</td>
-                    <th>직급</th>
-                    <td>${employee.position}</td>
-                </tr>
-                <tr>
-                    <th>입사일</th>
-                    <td><fmt:formatDate value="${employee.hireDate}" pattern="yyyy-MM-dd" /></td>
-                    <th>근속기간</th>
-                    <td>${employee.yearsOfService}년 ${employee.monthsOfService}개월</td>
-                </tr>
-            </table>
+			    <table class="info-table">
+			    <tr>
+			        <th>이름</th>
+			        <td>${employee.emp_name}</td>
+			        <th>사원번호</th>
+			        <td>${employee.emp_id}</td>
+			    </tr>
+			    <tr>
+			        <th>부서</th>
+			        <td>${employee.dep_name}</td>
+			        <th>직급</th>
+			        <td>${employee.rank_id}</td>
+			    </tr>
+			    <tr>
+			        <th>입사일</th>
+			        <td><fmt:formatDate value="${employee.emp_jd}" pattern="yyyy-MM-dd" /></td>
+			        
+			    </tr>
+			</table>
         </div>
         
         <form action="<c:url value='/user/employee/resignation' />" method="post" class="resignation-form">
@@ -84,7 +83,9 @@
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label for="contactAfterResignation">퇴사 후 연락처</label>
-                        <input type="text" id="contactAfterResignation" name="contactAfterResignation" class="form-control" value="${employee.phone}">
+                        <input type="text" id="contactAfterResignation" name="contactAfterResignation" class="form-control"
+       value="${employee.emp_phone}">
+
                         <small class="form-text">* 퇴사 후 연락 가능한 연락처를 입력해주세요.</small>
                     </div>
                 </div>

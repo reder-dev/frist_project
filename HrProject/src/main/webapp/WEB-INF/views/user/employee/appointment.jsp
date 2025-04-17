@@ -9,9 +9,9 @@
 
 <div class="content">
     <h2>발령조회</h2>
-    
+
     <div class="search-box">
-        <form action="<c:url value='/user/personnel/appointment' />" method="get">
+        <form action="<c:url value='/user/employee/appointment' />" method="get">
             <div class="form-row">
                 <div class="form-group">
                     <label for="startDate">시작일</label>
@@ -37,51 +37,44 @@
             </div>
         </form>
     </div>
-    
+
     <table class="data-table">
         <thead>
             <tr>
                 <th>발령일자</th>
                 <th>발령구분</th>
                 <th>발령내용</th>
-                <th>이전부서</th>
-                <th>이전직급</th>
-                <th>발령부서</th>
-                <th>발령직급</th>
+                <th>발령자</th>
+                <th>발령수정자</th>
+                <th>발령번호</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>2025-03-27</td>
-                <td>입사</td>
-                <td>신규입사</td>
-                <td>-</td>
-                <td>-</td>
-                <td>인사팀</td>
-                <td>사원</td>
-            </tr>
-            <tr>
-                <td>2025-06-15</td>
-                <td>전보</td>
-                <td>부서이동</td>
-                <td>인사팀</td>
-                <td>사원</td>
-                <td>개발팀</td>
-                <td>사원</td>
-            </tr>
-            <tr>
-                <td>2026-01-01</td>
-                <td>승진</td>
-                <td>정기승진</td>
-                <td>개발팀</td>
-                <td>사원</td>
-                <td>개발팀</td>
-                <td>대리</td>
-            </tr>
+            <c:forEach var="appointment" items="${appointments}">
+                <tr>
+                    <td>
+                        <fmt:formatDate value="${appointment.app_registdate}" pattern="yyyy-MM-dd" />
+                    </td>
+                    <td>${appointment.app_ca}</td>
+                    <td>${appointment.app_dt}</td>
+                    <td>${appointment.app_register}</td>
+                    <td>
+                        <c:out value="${appointment.app_modifier}" default="-" />
+                    </td>
+                    <td>${appointment.app_id}</td>
+                </tr>
+            </c:forEach>
+
+            <c:if test="${empty appointments}">
+                <tr>
+                    <td colspan="6" style="text-align: center;">조회된 발령 정보가 없습니다.</td>
+                </tr>
+            </c:if>
         </tbody>
     </table>
-    
+
     <div class="pagination">
+        <!-- 실제 페이징 구현 시 여기에 동적 링크 처리 -->
         <a href="#" class="active">1</a>
         <a href="#">2</a>
         <a href="#">3</a>

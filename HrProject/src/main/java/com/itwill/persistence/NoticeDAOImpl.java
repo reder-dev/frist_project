@@ -40,5 +40,10 @@ public class NoticeDAOImpl implements NoticeDAO {
     public void deleteNotice(int not_id) {
         sqlSession.delete(NAMESPACE + ".deleteNotice", not_id);
     }
+    @Override
+    public void increaseViewCount(int not_id) {
+        sqlSession.update(NAMESPACE + ".increaseViewCount", not_id);
+    }
+    
 }
 

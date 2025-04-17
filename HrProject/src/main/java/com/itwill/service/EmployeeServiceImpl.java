@@ -2,16 +2,18 @@ package com.itwill.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.List;
 
 import com.itwill.domain.EmployeeVO;
-import com.itwill.persistence.EmployeeAdminDAO;
+import com.itwill.persistence.EmployeeDAO;
 
 @Service
-public class EmployeeAdminServiceImpl implements EmployeeAdminService {
+public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
-    private EmployeeAdminDAO employeeDAO;
+    private EmployeeDAO employeeDAO;
 
     @Override
     public List<EmployeeVO> getAllEmployees() {
@@ -27,4 +29,11 @@ public class EmployeeAdminServiceImpl implements EmployeeAdminService {
     public void updateEmployee(EmployeeVO employee) {
         employeeDAO.updateEmployee(employee);
     }
+    
+    @Override
+    public void updateResignationDate(String empId, Date empQd) {
+        employeeDAO.updateResignationDate(empId, empQd);
+    }
+    
+    
 }

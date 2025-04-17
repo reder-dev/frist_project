@@ -6,9 +6,23 @@
 <mapper namespace="com.itwill.persistence.NoticeDAO">
 
     <select id="getNoticeList" resultType="com.itwill.domain.NoticeVO">
-        SELECT * FROM NOTICE ORDER BY not_registdate DESC
-    </select>
-
+   		 SELECT 
+       		 not_id, not_ti, not_cn, not_file, emp_id,
+       		 not_registdate as not_wd,  
+       		 not_registdate, not_register,
+        	not_modifydate, not_modifier,
+        	COALESCE(view_count, 0) as view_count
+    	FROM NOTICE 
+    	ORDER BY not_registdate DESC
+	</select>
+	
+	<update id="increaseViewCount" parameterType="int">
+    	UPDATE NOTICE
+    	SET view_count = COALESCE(view_count, 0) + 1
+    	WHERE not_id = #{not_id}
+	</update>
+	
+	
     <insert id="insertNotice" parameterType="com.itwill.domain.NoticeVO">
         INSERT INTO NOTICE (not_ti, not_cn, not_file, emp_id, not_registdate, not_register)
         VALUES (#{not_ti}, #{not_cn}, #{not_file}, #{emp_id}, NOW(), #{not_register})

@@ -9,13 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import com.itwill.domain.EmployeeVO;
 import com.itwill.domain.NoticeVO;
-
+import com.itwill.service.EmployeeService;
 import com.itwill.service.NoticeService;
 
 
@@ -23,6 +24,10 @@ import com.itwill.service.NoticeService;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+	
+	@Autowired
+    private EmployeeService employeeService;
+	
 
     @GetMapping("/main")
     public String main(HttpSession session) {
@@ -40,9 +45,20 @@ public class AdminController {
     
     // 인사관리 - 인사조회
     @GetMapping("/employee/info")
-    public String personnelInfo() {
-        return "admin/employee/info";
+    public String employeeList(Model model) {
+        List<EmployeeVO> employees = employeeService.getAllEmployees();
+        model.addAttribute("employees", employees);
+        return "admin/employee/info"; 
     }
+    
+ // 인사 정보 상세
+    @GetMapping("/employee/detail/{empId}")
+    public String employeeDetail(@PathVariable("empId") String empId, Model model) {
+        EmployeeVO employee = employeeService.getEmployeeById(empId);
+        model.addAttribute("employee", employee);
+        return "admin/employee/detail";
+    }
+    
     
     // 인사관리 - 발령조회
     @GetMapping("/employee/appointment")
@@ -89,6 +105,7 @@ public class AdminController {
     // 공지사항 상세
     @GetMapping("/notice/detail")
     public String noticeDetail(@RequestParam("not_id") int not_id, Model model) {
+        noticeService.increaseViewCount(not_id); // 조회수 증가
         NoticeVO notice = noticeService.getNotice(not_id);
         model.addAttribute("notice", notice);
         return "admin/notice/detail";

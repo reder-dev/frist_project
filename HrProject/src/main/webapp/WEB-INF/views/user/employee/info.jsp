@@ -11,51 +11,52 @@
     <h2>인사조회</h2>
     
     <div class="profile-card">
-        <img src="<c:url value='/resources/images/profile.png' />" alt="프로필 이미지" class="profile-image">
+        <img src="<c:url value='/resources/images/profile.jpeg' />" alt="프로필 이미지" class="profile-image">
         <div class="profile-info">
             <table class="info-table">
                 <tr>
                     <td>이름</td>
-                    <td> ${employee.emp_name}</td>
+                    <td>${employee.emp_name}</td>
                     <td>사원번호</td>
                     <td>${employee.emp_id}</td>
                 </tr>
                 <tr>
                     <td>성별</td>
-                    <td>남성</td>
+                    <td>${employee.emp_gender}</td>
                     <td>연락처</td>
-                    <td>010-1111-1111</td>
+                    <td>${employee.emp_phone}</td>
                 </tr>
                 <tr>
                     <td>생년월일</td>
-                    <td>1988-08-08</td>
+					<td>${employee.emp_jm}</td>
+
                     <td>이메일</td>
-                    <td>hrgenie@naver.com</td>
+                    <td>${employee.emp_email}</td>
                 </tr>
                 <tr>
                     <td>주소</td>
-                    <td>부산시 진구 부전동</td>
+                    <td>${employee.emp_address}</td>
                     <td>부서명/부서번호</td>
-                    <td>인사팀 / 35</td>
+                    <td>${employee.dep_name} / ${employee.dep_id}</td>
                 </tr>
                 <tr>
                     <td>직급 및 직책</td>
-                    <td>사원 / 개발자</td>
+                    <td>${employee.rank_id} / ${employee.emp_cn}</td>
                     <td>입사일자</td>
-                    <td>2025-3-27</td>
+                    <td><fmt:formatDate value="${employee.emp_jd}" pattern="yyyy-MM-dd" /></td>
                 </tr>
             </table>
         </div>
     </div>
-     <div class="employee-action-buttons">
-            <a href="<c:url value='/user/employee/edit' />" class="btn btn-primary">
-                <i class="fas fa-edit"></i> 정보 수정
-            </a>
-            <a href="<c:url value='/user/employee/resignation' />" class="btn btn-danger">
-                <i class="fas fa-user-times"></i> 퇴사 신청
-            </a>
-        </div>
-    
-    
+
+    <div class="employee-action-buttons">
+        <a href="<c:url value='/user/employee/edit' />" class="btn btn-primary">
+            <i class="fas fa-edit"></i> 정보 수정
+        </a>
+        <a href="<c:url value='/user/employee/resignation' />" class="btn btn-danger">
+            <i class="fas fa-user-times"></i> 퇴사 신청
+        </a>
+    </div>
+</div>
 
 <jsp:include page="../../common/footer.jsp" />

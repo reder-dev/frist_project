@@ -80,68 +80,26 @@
                 <th>관리</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td><input type="checkbox" class="employee-select"></td>
-                <td>2510001</td>
-                <td>김대표</td>
-                <td>경영진</td>
-                <td>대표이사</td>
-                <td>ceo@hrgenie.com</td>
-                <td>010-1234-5678</td>
-                <td>2020-01-01</td>
-                <td>
-                    <button class="btn btn-sm btn-info view-btn" data-id="2510001">조회</button>
-                    <button class="btn btn-sm btn-warning edit-btn" data-id="2510001">수정</button>
-                    <button class="btn btn-sm btn-danger delete-btn" data-id="2510001">삭제</button>
-                </td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" class="employee-select"></td>
-                <td>2510010</td>
-                <td>이사장</td>
-                <td>경영지원본부</td>
-                <td>이사</td>
-                <td>director1@hrgenie.com</td>
-                <td>010-2345-6789</td>
-                <td>2020-02-15</td>
-                <td>
-                    <button class="btn btn-sm btn-info view-btn" data-id="2510010">조회</button>
-                    <button class="btn btn-sm btn-warning edit-btn" data-id="2510010">수정</button>
-                    <button class="btn btn-sm btn-danger delete-btn" data-id="2510010">삭제</button>
-                </td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" class="employee-select"></td>
-                <td>2510020</td>
-                <td>정부장</td>
-                <td>인사팀</td>
-                <td>부장</td>
-                <td>hrmanager@hrgenie.com</td>
-                <td>010-3456-7890</td>
-                <td>2020-03-10</td>
-                <td>
-                    <button class="btn btn-sm btn-info view-btn" data-id="2510020">조회</button>
-                    <button class="btn btn-sm btn-warning edit-btn" data-id="2510020">수정</button>
-                    <button class="btn btn-sm btn-danger delete-btn" data-id="2510020">삭제</button>
-                </td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" class="employee-select"></td>
-                <td>2510035</td>
-                <td>홍길동</td>
-                <td>인사팀</td>
-                <td>사원</td>
-                <td>hrgenie@naver.com</td>
-                <td>010-1111-1111</td>
-                <td>2025-03-27</td>
-                <td>
-                    <button class="btn btn-sm btn-info view-btn" data-id="2510035">조회</button>
-                    <button class="btn btn-sm btn-warning edit-btn" data-id="2510035">수정</button>
-                    <button class="btn btn-sm btn-danger delete-btn" data-id="2510035">삭제</button>
-                </td>
-            </tr>
-        </tbody>
+       <tbody>
+    <c:forEach var="employee" items="${employees}">
+        <tr>
+            <td><input type="checkbox" class="employee-select"></td>
+            <td>${employee.emp_id}</td>
+            <td>${employee.emp_name}</td>
+            <td>${employee.dep_name}</td>
+            <td>${employee.rank_id}</td>
+            <td>${employee.emp_email}</td>
+            <td>${employee.emp_phone}</td>
+            <td><fmt:formatDate value="${employee.emp_jd}" pattern="yyyy-MM-dd" /></td>
+            <td>
+                <button class="btn btn-sm btn-info view-btn" data-id="${employee.emp_id}">조회</button>
+                <button class="btn btn-sm btn-warning edit-btn" data-id="${employee.emp_id}">수정</button>
+                <button class="btn btn-sm btn-danger delete-btn" data-id="${employee.emp_id}">삭제</button>
+            </td>
+        </tr>
+    </c:forEach>
+</tbody>
+
     </table>
     
     <div class="table-actions">

@@ -9,141 +9,74 @@
 
 <div class="content">
     <h2>조직도</h2>
-    
+
     <div class="org-chart-container">
         <div class="org-chart">
             <div class="org-level level-1">
                 <div class="org-node">
                     <div class="node-content">
                         <h4>대표이사</h4>
-                        <p>김대표</p>
+                        <p>김대표</p> <!-- 고정 대표이사 -->
                     </div>
                 </div>
             </div>
-            
+
             <div class="org-level level-2">
-                <div class="org-node">
-                    <div class="node-content">
-                        <h4>경영지원본부</h4>
-                        <p>이사장</p>
+                <c:forEach var="dept" items="${departments}">
+                    <div class="org-node">
+                        <div class="node-content">
+                            <h4>${dept.dep_name}</h4>
+                            <p>관리자 미정</p> <!-- 담당자 지정 가능 시 나중에 추가 -->
+                        </div>
                     </div>
-                </div>
-                <div class="org-node">
-                    <div class="node-content">
-                        <h4>개발본부</h4>
-                        <p>박이사</p>
-                    </div>
-                </div>
-                <div class="org-node">
-                    <div class="node-content">
-                        <h4>영업본부</h4>
-                        <p>최이사</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="org-level level-3">
-                <div class="org-node">
-                    <div class="node-content">
-                        <h4>인사팀</h4>
-                        <p>정부장</p>
-                    </div>
-                </div>
-                <div class="org-node">
-                    <div class="node-content">
-                        <h4>총무팀</h4>
-                        <p>강부장</p>
-                    </div>
-                </div>
-                <div class="org-node">
-                    <div class="node-content">
-                        <h4>웹개발팀</h4>
-                        <p>조부장</p>
-                    </div>
-                </div>
-                <div class="org-node">
-                    <div class="node-content">
-                        <h4>모바일개발팀</h4>
-                        <p>윤부장</p>
-                    </div>
-                </div>
-                <div class="org-node">
-                    <div class="node-content">
-                        <h4>국내영업팀</h4>
-                        <p>한부장</p>
-                    </div>
-                </div>
-                <div class="org-node">
-                    <div class="node-content">
-                        <h4>해외영업팀</h4>
-                        <p>오부장</p>
-                    </div>
-                </div>
+                </c:forEach>
             </div>
         </div>
     </div>
-    
+
     <div class="department-list">
-        <h3>부서별 직원 목록</h3>
-        
-        <div class="department-filter">
-            <label for="departmentSelect">부서 선택:</label>
-            <select id="departmentSelect" class="form-control">
-                <option value="all">전체</option>
-                <option value="hr">인사팀</option>
-                <option value="admin">총무팀</option>
-                <option value="webdev">웹개발팀</option>
-                <option value="mobiledev">모바일개발팀</option>
-                <option value="domestic">국내영업팀</option>
-                <option value="overseas">해외영업팀</option>
-            </select>
-        </div>
-        
+        <h3>부서 목록</h3>
+
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>사원번호</th>
-                    <th>이름</th>
-                    <th>부서</th>
-                    <th>직급</th>
-                    <th>이메일</th>
-                    <th>연락처</th>
+                    <th>부서번호</th>
+                    <th>부서명</th>
+                    <th>등록자</th>
+                    <th>등록일</th>
+                    <th>수정자</th>
+                    <th>수정일</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>2510001</td>
-                    <td>김대표</td>
-                    <td>경영진</td>
-                    <td>대표이사</td>
-                    <td>ceo@hrgenie.com</td>
-                    <td>010-1234-5678</td>
-                </tr>
-                <tr>
-                    <td>2510010</td>
-                    <td>이사장</td>
-                    <td>경영지원본부</td>
-                    <td>이사</td>
-                    <td>director1@hrgenie.com</td>
-                    <td>010-2345-6789</td>
-                </tr>
-                <tr>
-                    <td>2510020</td>
-                    <td>정부장</td>
-                    <td>인사팀</td>
-                    <td>부장</td>
-                    <td>hrmanager@hrgenie.com</td>
-                    <td>010-3456-7890</td>
-                </tr>
-                <tr>
-                    <td>2510035</td>
-                    <td>홍길동</td>
-                    <td>인사팀</td>
-                    <td>사원</td>
-                    <td>hrgenie@naver.com</td>
-                    <td>010-1111-1111</td>
-                </tr>
-                <!-- 더 많은 직원 정보 -->
+                <c:forEach var="dept" items="${departments}">
+                    <tr>
+                        <td>${dept.dep_id}</td>
+                        <td>${dept.dep_name}</td>
+                        <td>${dept.dep_register}</td>
+                        <td><fmt:formatDate value="${dept.dep_registdate}" pattern="yyyy-MM-dd" /></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${not empty dept.dep_modifier}">${dept.dep_modifier}</c:when>
+                                <c:otherwise>-</c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${not empty dept.dep_modifydate}">
+                                    <fmt:formatDate value="${dept.dep_modifydate}" pattern="yyyy-MM-dd" />
+                                </c:when>
+                                <c:otherwise>-</c:otherwise>
+                            </c:choose>
+                        </td>
+                    </tr>
+                </c:forEach>
+
+                <c:if test="${empty departments}">
+                    <tr>
+                        <td colspan="6" style="text-align: center;">등록된 부서가 없습니다.</td>
+                    </tr>
+                </c:if>
             </tbody>
         </table>
     </div>

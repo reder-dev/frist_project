@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:include page="../../common/header.jsp" />
-<jsp:include page="../../common/user-sidebar.jsp">
+<jsp:include page="../../common/admin-sidebar.jsp">
     <jsp:param name="menu" value="notice" />
 </jsp:include>
 
