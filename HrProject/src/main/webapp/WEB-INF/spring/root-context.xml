@@ -68,6 +68,14 @@
 		
 </bean>
 
+<!-- MyBatis 매퍼 인터페이스 등록 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+
+
+      <property name="basePackage" value="com.itwill.approval.mapper, com.itwill.attendance.mapper, com.itwill.mapper, com.itwill.persistence"/>
+
+    </bean>
+
 
 
 <!-- SqlSessionFactory - 디비연결(Connection), SQL 실행 ,

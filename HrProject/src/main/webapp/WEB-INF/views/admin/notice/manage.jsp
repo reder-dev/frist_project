@@ -10,12 +10,6 @@
 <div class="content">
     <h2>공지사항 관리</h2>
 
-    <%-- <div class="admin-actions">
-        <a href="<c:url value='/admin/notice/write' />" class="btn btn-primary">
-            <i class="fas fa-plus"></i> 공지사항 작성
-        </a>
-    </div> --%>
-
     <div class="search-box">
         <form action="<c:url value='/admin/notice/manage' />" method="get">
             <div class="form-row">
@@ -67,23 +61,22 @@
             </c:if>
             <c:forEach var="notice" items="${noticeList}">
                 <tr>
-                    <td><input type="checkbox" class="notice-select" value="${notice.not_id}"></td>
-                    <td>${notice.not_id}</td>
+                    <td><input type="checkbox" class="notice-select" value="${notice.notId}"></td>
+                    <td>${notice.notId}</td>
                     <td>
-                        <a href="<c:url value='/admin/notice/detail?not_id=${notice.not_id}' />">
-                            ${notice.not_ti}
-                            <c:if test="${not empty notice.not_file}">
+                        <a href="<c:url value='/admin/notice/detail?notId=${notice.notId}' />">
+                            ${notice.notTi}
+                            <c:if test="${not empty notice.notFile}">
                                 <i class="fas fa-paperclip"></i>
                             </c:if>
                         </a>
                     </td>
-                    <td>${notice.not_register}</td>
-                    <td><fmt:formatDate value="${notice.not_wd}" pattern="yyyy-MM-dd" /></td>
-                    <td>${notice.view_count}</td>
+                    <td>${notice.notRegister}</td>
+                    <td><fmt:formatDate value="${notice.notWd}" pattern="yyyy-MM-dd" /></td>
+                    <td>${notice.viewCount}</td>
                     <td>
-                        
-                        <button class="btn btn-sm btn-warning edit-btn" data-id="${notice.not_id}">수정</button>
-                        <button class="btn btn-sm btn-danger delete-btn" data-id="${notice.not_id}">삭제</button>
+                        <button class="btn btn-sm btn-warning edit-btn" data-id="${notice.notId}">수정</button>
+                        <button class="btn btn-sm btn-danger delete-btn" data-id="${notice.notId}">삭제</button>
                     </td>
                 </tr>
             </c:forEach>
@@ -104,19 +97,20 @@
     </div>
 </div>
 
-<script>
-    
+<!-- 공지 작성 플로팅 버튼 -->
+<a href="<c:url value='/admin/notice/write' />" class="floating-btn" title="공지 작성">
+    <i class="fas fa-plus"></i>공지 작성
+</a>
 
-    // 수정 버튼
+<script>
     document.querySelectorAll(".edit-btn").forEach(btn => {
         btn.addEventListener("click", () => {
             const id = btn.dataset.id;
-            location.href = `/admin/notice/edit?not_id=${id}`;
+            location.href = /admin/notice/edit?notId=${id};
         });
     });
 
-    // 삭제 버튼
-     document.querySelectorAll(".delete-btn").forEach(btn => {
+    document.querySelectorAll(".delete-btn").forEach(btn => {
         btn.addEventListener("click", () => {
             const id = btn.dataset.id;
 
@@ -131,7 +125,7 @@
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     },
-                    body: `not_id=${id}`
+                    body: notId=${id}
                 })
                 .then(res => {
                     if (res.ok) {
@@ -149,13 +143,7 @@
     });
 </script>
 
-<!-- 공지 작성 플로팅 버튼 -->
-<a href="<c:url value='/admin/notice/write' />" class="floating-btn" title="공지 작성">
-    <i class="fas fa-plus"></i>공지 작성
-</a>
-
 <style>
-/* 플로팅 버튼 스타일 */
 .floating-btn {
     position: fixed;
     bottom: 30px;
@@ -173,10 +161,14 @@
     z-index: 1000;
     text-decoration: none;
 }
-
 .floating-btn:hover {
     background-color: #00838f;
 }
 </style>
 
 <jsp:include page="../../common/footer.jsp" />
+
+<script src="<c:url value='/resources/js/script.js' />"></script>
+<script src="<c:url value='/resources/js/session-timer.js' />"></script>
+</body>
+</html> 

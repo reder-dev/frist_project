@@ -7,7 +7,7 @@
     <jsp:param name="menu" value="personnel" />
 </jsp:include>
 
-<fmt:formatDate value="${employee.emp_jd}" pattern="yyyy-MM-dd" var="empJdFormatted" />
+<fmt:formatDate value="${employee.empJd}" pattern="yyyy-MM-dd" var="empJdFormatted" />
 
 <head>
     <meta charset="UTF-8">
@@ -37,6 +37,7 @@
             color: white;
             border: none;
             border-radius: 4px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -45,37 +46,37 @@
     <h2>내 정보 수정</h2>
 
     <form action="${pageContext.request.contextPath}/user/employee/update" method="post" class="employee-form">
-        <input type="hidden" name="emp_id" value="${employee.emp_id}" />
+        <input type="hidden" name="empId" value="${employee.empId}" />
 
         <div class="form-grid">
             <!-- ❌ 수정 불가 -->
             <label>사번:</label>
-            <input type="text" value="${employee.emp_id}" readonly />
+            <input type="text" value="${employee.empId}" readonly />
 
             <label>이름:</label>
-            <input type="text" value="${employee.emp_name}" readonly />
+            <input type="text" value="${employee.empName}" readonly />
 
             <label>부서:</label>
-            <input type="text" value="${employee.dep_name}" readonly />
+            <input type="text" value="${employee.depName}" readonly />
 
             <label>직급:</label>
-            <input type="text" value="${employee.rank_id}" readonly />
+            <input type="text" value="${employee.rankId}" readonly />
 
             <label>입사일자:</label>
             <input type="text" value="${empJdFormatted}" readonly />
 
             <!-- ✅ 수정 가능 -->
             <label>전화번호:</label>
-            <input type="text" name="emp_phone" value="${employee.emp_phone}" />
+            <input type="text" name="empPhone" value="${employee.empPhone}" />
 
             <label>이메일:</label>
-            <input type="text" name="emp_email" value="${employee.emp_email}" />
+            <input type="text" name="empEmail" value="${employee.empEmail}" />
 
             <label>주소:</label>
-            <input type="text" name="emp_address" value="${employee.emp_address}" />
+            <input type="text" name="empAddress" value="${employee.empAddress}" />
 
             <label>사진 경로:</label>
-            <input type="text" name="emp_pht" value="${employee.emp_pht}" />
+            <input type="text" name="empPht" value="${employee.empPht}" />
         </div>
 
         <button type="submit" class="btn-primary">수정 완료</button>
@@ -83,3 +84,8 @@
 </div>
 
 <jsp:include page="../../common/footer.jsp" />
+
+<script src="<c:url value='/resources/js/script.js' />"></script>
+<script src="<c:url value='/resources/js/session-timer.js' />"></script>
+</body>
+</html>

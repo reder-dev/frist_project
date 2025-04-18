@@ -3,40 +3,37 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.itwill.persistence.EmployeeDAO">
+<mapper namespace="com.itwill.employee.persistence.EmployeeDAO">
     
     
-    <!-- 직원 테이블의 모든 데이터를 가져옴 -->
-    <select id="getAllEmployees" resultType="com.itwill.domain.EmployeeVO">
+   <!-- 직원 전체 조회 -->
+    <select id="getAllEmployees" resultType="com.itwill.employee.domain.EmployeeVO">
         SELECT * FROM EMPLOYEE
     </select>
-     <!-- 직원 테이블의 모든 데이터를 가져옴 -->
 
-	<!-- 특정직원(emp_id)로 직원정보 조회함 -->
-    <select id="getEmployeeById" parameterType="String" resultType="com.itwill.domain.EmployeeVO">
-        SELECT * FROM EMPLOYEE WHERE emp_id = #{emp_id}
+    <!-- 직원 ID로 조회 -->
+    <select id="getEmployeeById" parameterType="String" resultType="com.itwill.employee.domain.EmployeeVO">
+        SELECT * FROM EMPLOYEE WHERE emp_id = #{empId}
     </select>
-    <!-- 특정직원(emp_id)로 직원정보 조회함 -->
-	
-	<!-- 특정직원의 정보를 수정함 -->
-    <update id="updateEmployee" parameterType="com.itwill.domain.EmployeeVO">
+
+    <!-- 직원 정보 수정 -->
+    <update id="updateEmployee" parameterType="com.itwill.employee.domain.EmployeeVO">
         UPDATE EMPLOYEE
-        SET dep_id = #{dep_id},
-            dep_name = #{dep_name},
-            pos_id = #{pos_id},
-            rank_id = #{rank_id},
-            emp_cn = #{emp_cn},
-            emp_modifier = #{emp_modifier},
-            emp_modifydate = #{emp_modifydate}
-        WHERE emp_id = #{emp_id}
+        SET dep_id = #{depId},
+            dep_name = #{depName},
+            pos_id = #{posId},
+            rank_id = #{rankId},
+            emp_cn = #{empCn},
+            emp_modifier = #{empModifier},
+            emp_modifydate = #{empModifydate}
+        WHERE emp_id = #{empId}
     </update>
-    <!-- 특정직원의 정보를 수정함 -->
-    
+
+    <!-- 퇴사일 수정 -->
     <update id="updateResignationDate">
-    	UPDATE employee
-    	SET emp_qd = #{empQd}
-   	 	WHERE emp_id = #{empId}
-	</update>
-    
-    
+        UPDATE EMPLOYEE
+        SET emp_qd = #{empQd}
+        WHERE emp_id = #{empId}
+    </update>
+
 </mapper>

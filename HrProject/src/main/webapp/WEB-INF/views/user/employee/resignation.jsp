@@ -17,26 +17,26 @@
         </div>
         
         <div class="employee-info-box">
-            <h4>신청자 정보</h4>
-			    <table class="info-table">
+	          <h4>신청자 정보</h4>
+				<table class="info-table">
 			    <tr>
 			        <th>이름</th>
-			        <td>${employee.emp_name}</td>
+			        <td>${employee.empName}</td>
 			        <th>사원번호</th>
-			        <td>${employee.emp_id}</td>
+			        <td>${employee.empId}</td>
 			    </tr>
 			    <tr>
 			        <th>부서</th>
-			        <td>${employee.dep_name}</td>
+			        <td>${employee.depName}</td>
 			        <th>직급</th>
-			        <td>${employee.rank_id}</td>
+			        <td>${employee.rankId}</td>
 			    </tr>
 			    <tr>
 			        <th>입사일</th>
-			        <td><fmt:formatDate value="${employee.emp_jd}" pattern="yyyy-MM-dd" /></td>
-			        
+			        <td><fmt:formatDate value="${employee.empJd}" pattern="yyyy-MM-dd" /></td>
 			    </tr>
 			</table>
+
         </div>
         
         <form action="<c:url value='/user/employee/resignation' />" method="post" class="resignation-form">
@@ -157,3 +157,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <jsp:include page="../../common/footer.jsp" />
+
+<script src="<c:url value='/resources/js/script.js' />"></script>
+<script src="<c:url value='/resources/js/session-timer.js' />"></script>
+</body>
+</html>

@@ -6,7 +6,20 @@
   
   <!-- MyBatis 설정파일 -->
   <configuration>
-  
+  	
+  	<!-- 언더스코어 → 카멜케이스 자동 매핑 -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+        <!-- <setting name="logImpl" value="STDOUT_LOGGING" /> -->
+    </settings>
+
+    <!-- DTO 클래스들이 위치한 패키지를 등록 -->
+    <typeAliases>
+<package name="com.itwill.employee.domain" />
+<!--         <package name="com.itwill.attendance.record" /> -->
+
+        <package name="com.itwill.approval.dto" />
+    </typeAliases>
   
   
   

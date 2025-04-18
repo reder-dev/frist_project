@@ -58,23 +58,21 @@
                 </tr>
             </c:if>
             <c:forEach var="notice" items="${noticeList}" varStatus="status">
-                <tr>
-                    <td>${notice.not_id}</td>
-                    <td>
-                        <a href="<c:url value='/user/notice/detail?not_id=${notice.not_id}' />">
-                            ${notice.not_ti}
-                            <c:if test="${not empty notice.not_file}">
-                                <i class="fas fa-paperclip"></i>
-                            </c:if>
-                        </a>
-                    </td>
-                    <td>${notice.not_register}</td>
-                    <td>
-                        <fmt:formatDate value="${notice.not_wd}" pattern="yyyy-MM-dd" />
-                    </td>
-                    <td>${notice.view_count}</td>
-                </tr>
-            </c:forEach>
+    <tr>
+        <td>${notice.notId}</td>
+        <td>
+            <a href="<c:url value='/user/notice/detail?not_id=${notice.notId}' />">
+                ${notice.notTi}
+                <c:if test="${not empty notice.notFile}">
+                    <i class="fas fa-paperclip"></i>
+                </c:if>
+            </a>
+        </td>
+        <td>${notice.notRegister}</td>
+        <td><fmt:formatDate value="${notice.notWd}" pattern="yyyy-MM-dd" /></td>
+        <td>${notice.viewCount}</td>
+    </tr>
+</c:forEach>
             
            
         </tbody>
@@ -91,3 +89,8 @@
 </div>
 
 <jsp:include page="../../common/footer.jsp" />
+
+<script src="<c:url value='/resources/js/script.js' />"></script>
+<script src="<c:url value='/resources/js/session-timer.js' />"></script>
+</body>
+</html>

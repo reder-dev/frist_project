@@ -12,25 +12,25 @@
         <!-- 프로필 카드 -->
         <div class="profile-card">
             <div class="profile-header">
-                <img src="<c:url value='/resources/images/profile.jpeg' />" alt="프로필 이미지" class="profile-image">
+                <img src="<c:url value='/resources/img/profile.jpeg' />" alt="프로필 이미지" class="profile-image">
                 <div class="profile-info">
-                    <h3>${employee.emp_name}</h3>
-                    <p>${employee.dep_name} / ${employee.rank_id}</p>
-                    <p>사원번호: ${employee.emp_id}</p>
+                    <h3>${employee.empName}</h3>
+                    <p>${employee.depName} / ${employee.rankId}</p>
+                    <p>사원번호: ${employee.empId}</p>
                 </div>
             </div>
             <div class="profile-details">
                 <div class="detail-item">
                     <span class="label">이메일:</span>
-                    <span class="value">${employee.emp_email}</span>
+                    <span class="value">${employee.empEmail}</span>
                 </div>
                 <div class="detail-item">
                     <span class="label">연락처:</span>
-                    <span class="value">${employee.emp_phone}</span>
+                    <span class="value">${employee.empPhone}</span>
                 </div>
                 <div class="detail-item">
                     <span class="label">입사일:</span>
-                    <span class="value"><fmt:formatDate value="${employee.emp_jd}" pattern="yyyy-MM-dd" /></span>
+                    <span class="value"><fmt:formatDate value="${employee.empJd}" pattern="yyyy-MM-dd" /></span>
                 </div>
                 <div class="detail-item">
                     <span class="label">근무일수:</span>
@@ -60,7 +60,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 일정 하드코딩 유지 또는 동적 처리 -->
                     <c:forEach begin="1" end="31" var="day" step="7">
                         <tr>
                             <c:forEach begin="${day}" end="${day+6}" var="d">
@@ -91,35 +90,9 @@
         </div>
     </div>
 
-    <!-- 우측 사이드바 -->
-    <div class="side-column">
-        <div class="company-info">
-            <h3>회사 정보</h3>
-            <p>회사 소개 및 주요 안내사항을 여기에 표시합니다.</p>
-        </div>
-
-        <div class="quick-links">
-            <h3>바로가기</h3>
-            <div class="links-grid">
-                <a href="<c:url value='/user/employee/info' />" class="quick-link">
-                    <i class="fas fa-user"></i>
-                    <span>인사조회</span>
-                </a>
-                <a href="<c:url value='/user/employee/appointment' />" class="quick-link">
-                    <i class="fas fa-exchange-alt"></i>
-                    <span>발령조회</span>
-                </a>
-                <a href="<c:url value='/user/employee/organization' />" class="quick-link">
-                    <i class="fas fa-sitemap"></i>
-                    <span>조직도</span>
-                </a>
-                <a href="<c:url value='/user/notice/list' />" class="quick-link">
-                    <i class="fas fa-bullhorn"></i>
-                    <span>공지사항</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
 <jsp:include page="../common/footer.jsp" />
+
+<script src="<c:url value='/resources/js/script.js' />"></script>
+<script src="<c:url value='/resources/js/session-timer.js' />"></script>
+</body>
+</html>

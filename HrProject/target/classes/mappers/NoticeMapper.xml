@@ -3,44 +3,35 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.itwill.persistence.NoticeDAO">
+<mapper namespace="com.itwill.employee.persistence.NoticeDAO">
 
-    <select id="getNoticeList" resultType="com.itwill.domain.NoticeVO">
-   		 SELECT 
-       		 not_id, not_ti, not_cn, not_file, emp_id,
-       		 not_registdate as not_wd,  
-       		 not_registdate, not_register,
-        	not_modifydate, not_modifier,
-        	COALESCE(view_count, 0) as view_count
-    	FROM NOTICE 
-    	ORDER BY not_registdate DESC
-	</select>
-	
-	<update id="increaseViewCount" parameterType="int">
-    	UPDATE NOTICE
-    	SET view_count = COALESCE(view_count, 0) + 1
-    	WHERE not_id = #{not_id}
-	</update>
-	
-	
-    <insert id="insertNotice" parameterType="com.itwill.domain.NoticeVO">
+    <select id="getNoticeList" resultType="com.itwill.employee.domain.NoticeVO">
+        SELECT * FROM NOTICE ORDER BY not_registdate DESC
+    </select>
+
+    <insert id="insertNotice" parameterType="com.itwill.employee.domain.NoticeVO">
         INSERT INTO NOTICE (not_ti, not_cn, not_file, emp_id, not_registdate, not_register)
         VALUES (#{not_ti}, #{not_cn}, #{not_file}, #{emp_id}, NOW(), #{not_register})
     </insert>
 
-    <select id="getNotice" resultType="com.itwill.domain.NoticeVO" parameterType="int">
+    <select id="getNotice" resultType="com.itwill.employee.domain.NoticeVO" parameterType="int">
         SELECT * FROM NOTICE WHERE not_id = #{not_id}
     </select>
 
-    <update id="updateNotice" parameterType="com.itwill.domain.NoticeVO">
+    <update id="updateNotice" parameterType="com.itwill.employee.domain.NoticeVO">
         UPDATE NOTICE
         SET not_ti = #{not_ti}, not_cn = #{not_cn}, not_file = #{not_file},
             not_modifydate = NOW(), not_modifier = #{not_modifier}
         WHERE not_id = #{not_id}
     </update>
+    
+    <update id="increaseViewCount" parameterType="int">
+	    UPDATE NOTICE
+	    SET view_count = view_count + 1
+	    WHERE not_id = #{notId}
+	</update>
 
     <delete id="deleteNotice" parameterType="int">
         DELETE FROM NOTICE WHERE not_id = #{not_id}
     </delete>
 </mapper>
-

@@ -3,9 +3,9 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.itwill.mappers.DepartmentMapper">
+<mapper namespace="com.itwill.employee.persistence.DepartmentDAO">
 
-    <select id="getAllDepartments" resultType="com.itwill.domain.DepartmentVO">
+    <select id="getAllDepartments" resultType="com.itwill.employee.domain.DepartmentVO">
         SELECT *
         FROM DEPARTMENT
         ORDER BY dep_id ASC

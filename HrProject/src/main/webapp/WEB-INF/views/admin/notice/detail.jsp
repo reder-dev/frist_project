@@ -55,34 +55,33 @@
     <h2>공지사항 상세</h2>
 
     <div class="notice-container">
-        <div class="notice-title">${notice.not_ti}</div>
+        <div class="notice-title">${notice.notTi}</div>
 
         <div class="notice-meta">
-            <span><i class="fas fa-user"></i> 작성자: ${notice.not_register}</span>
+            <span><i class="fas fa-user"></i> 작성자: ${notice.notRegister}</span>
             <span><i class="fas fa-calendar-alt"></i> 작성일:
-                <fmt:formatDate value="${notice.not_wd}" pattern="yyyy-MM-dd HH:mm" />
+                <fmt:formatDate value="${notice.notWd}" pattern="yyyy-MM-dd HH:mm" />
             </span>
-            <span><i class="fas fa-eye"></i> 조회수: ${notice.view_count}</span>
+            <span><i class="fas fa-eye"></i> 조회수: ${notice.viewCount}</span>
         </div>
 
         <div class="notice-content">
-            ${notice.not_cn}
+            ${notice.notCn}
         </div>
 
-        <c:if test="${not empty notice.not_file}">
+        <c:if test="${not empty notice.notFile}">
             <div class="notice-attachments">
                 <strong>첨부파일:</strong>
-                <a href="<c:url value='/admin/notice/download?fileId=${notice.not_file}' />">
-                    ${notice.not_file}
+                <a href="<c:url value='/admin/notice/download?fileId=${notice.notFile}' />">
+                    ${notice.notFile}
                 </a>
             </div>
         </c:if>
 
         <div class="notice-actions">
             <a href="<c:url value='/admin/notice/manage' />" class="btn btn-secondary">목록</a>
-            <a href="<c:url value='/admin/notice/edit?not_id=${notice.not_id}' />" class="btn btn-primary">수정</a>
-            <form action="<c:url value='/admin/notice/delete' />" method="post" style="display:inline;">
-                <input type="hidden" name="not_id" value="${notice.not_id}" />
+            <a href="<c:url value='/admin/notice/edit/${notice.notId}' />" class="btn btn-primary">수정</a>
+            <form action="<c:url value='/admin/notice/delete/${notice.notId}' />" method="post" style="display:inline;">
                 <button type="submit" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
             </form>
         </div>

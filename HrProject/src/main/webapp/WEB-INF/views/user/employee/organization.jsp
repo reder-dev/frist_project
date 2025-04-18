@@ -25,7 +25,7 @@
                 <c:forEach var="dept" items="${departments}">
                     <div class="org-node">
                         <div class="node-content">
-                            <h4>${dept.dep_name}</h4>
+                            <h4>${dept.depName}</h4>
                             <p>관리자 미정</p> <!-- 담당자 지정 가능 시 나중에 추가 -->
                         </div>
                     </div>
@@ -51,24 +51,25 @@
             <tbody>
                 <c:forEach var="dept" items="${departments}">
                     <tr>
-                        <td>${dept.dep_id}</td>
-                        <td>${dept.dep_name}</td>
-                        <td>${dept.dep_register}</td>
-                        <td><fmt:formatDate value="${dept.dep_registdate}" pattern="yyyy-MM-dd" /></td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${not empty dept.dep_modifier}">${dept.dep_modifier}</c:when>
-                                <c:otherwise>-</c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${not empty dept.dep_modifydate}">
-                                    <fmt:formatDate value="${dept.dep_modifydate}" pattern="yyyy-MM-dd" />
-                                </c:when>
-                                <c:otherwise>-</c:otherwise>
-                            </c:choose>
-                        </td>
+                        <td>${dept.depId}</td>
+						<td>${dept.depName}</td>
+						<td>${dept.depRegister}</td>
+						<td><fmt:formatDate value="${dept.depRegistdate}" pattern="yyyy-MM-dd" /></td>
+						<td>
+						    <c:choose>
+						        <c:when test="${not empty dept.depModifier}">${dept.depModifier}</c:when>
+						        <c:otherwise>-</c:otherwise>
+						    </c:choose>
+						</td>
+						<td>
+						    <c:choose>
+						        <c:when test="${not empty dept.depModifydate}">
+						            <fmt:formatDate value="${dept.depModifydate}" pattern="yyyy-MM-dd" />
+						        </c:when>
+						        <c:otherwise>-</c:otherwise>
+						    </c:choose>
+						</td>
+
                     </tr>
                 </c:forEach>
 
@@ -83,3 +84,8 @@
 </div>
 
 <jsp:include page="../../common/footer.jsp" />
+
+<script src="<c:url value='/resources/js/script.js' />"></script>
+<script src="<c:url value='/resources/js/session-timer.js' />"></script>
+</body>
+</html>

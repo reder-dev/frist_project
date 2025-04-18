@@ -11,39 +11,38 @@
     <h2>인사조회</h2>
     
     <div class="profile-card">
-        <img src="<c:url value='/resources/images/profile.jpeg' />" alt="프로필 이미지" class="profile-image">
+        <img src="<c:url value='/resources/img/profile.jpeg' />" alt="프로필 이미지" class="profile-image">
         <div class="profile-info">
             <table class="info-table">
                 <tr>
                     <td>이름</td>
-                    <td>${employee.emp_name}</td>
+                    <td>${employee.empName}</td>
                     <td>사원번호</td>
-                    <td>${employee.emp_id}</td>
+                    <td>${employee.empId}</td>
                 </tr>
                 <tr>
                     <td>성별</td>
-                    <td>${employee.emp_gender}</td>
+                    <td>${employee.empGender}</td>
                     <td>연락처</td>
-                    <td>${employee.emp_phone}</td>
+                    <td>${employee.empPhone}</td>
                 </tr>
                 <tr>
                     <td>생년월일</td>
-					<td>${employee.emp_jm}</td>
-
+                    <td>${employee.empJm}</td>
                     <td>이메일</td>
-                    <td>${employee.emp_email}</td>
+                    <td>${employee.empEmail}</td>
                 </tr>
                 <tr>
                     <td>주소</td>
-                    <td>${employee.emp_address}</td>
+                    <td>${employee.empAddress}</td>
                     <td>부서명/부서번호</td>
-                    <td>${employee.dep_name} / ${employee.dep_id}</td>
+                    <td>${employee.depName} / ${employee.depId}</td>
                 </tr>
                 <tr>
                     <td>직급 및 직책</td>
-                    <td>${employee.rank_id} / ${employee.emp_cn}</td>
+                    <td>${employee.rankId} / ${employee.empCn}</td>
                     <td>입사일자</td>
-                    <td><fmt:formatDate value="${employee.emp_jd}" pattern="yyyy-MM-dd" /></td>
+                    <td><fmt:formatDate value="${employee.empJd}" pattern="yyyy-MM-dd" /></td>
                 </tr>
             </table>
         </div>
@@ -60,3 +59,8 @@
 </div>
 
 <jsp:include page="../../common/footer.jsp" />
+
+<script src="<c:url value='/resources/js/script.js' />"></script>
+<script src="<c:url value='/resources/js/session-timer.js' />"></script>
+</body>
+</html>

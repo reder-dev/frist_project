@@ -18,7 +18,7 @@
         <div class="user-info">
             <div class="notification">
                 <a href="<c:url value='/notifications' />">
-                    <img src="<c:url value='/resources/images/bell.png' />" alt="알림">
+                    <img src="<c:url value='/resources/img/bell.png' />" alt="알림">
                 </a>
             </div>
             <span class="login-time">로그인시간 59:59</span>

@@ -53,15 +53,15 @@
             <c:forEach var="appointment" items="${appointments}">
                 <tr>
                     <td>
-                        <fmt:formatDate value="${appointment.app_registdate}" pattern="yyyy-MM-dd" />
+                        <fmt:formatDate value="${appointment.appRegistdate}" pattern="yyyy-MM-dd" />
                     </td>
-                    <td>${appointment.app_ca}</td>
-                    <td>${appointment.app_dt}</td>
-                    <td>${appointment.app_register}</td>
+                    <td>${appointment.appCa}</td>
+                    <td>${appointment.appDt}</td>
+                    <td>${appointment.appRegister}</td>
                     <td>
-                        <c:out value="${appointment.app_modifier}" default="-" />
+                        <c:out value="${appointment.appModifier}" default="-" />
                     </td>
-                    <td>${appointment.app_id}</td>
+                    <td>${appointment.appId}</td>
                 </tr>
             </c:forEach>
 
@@ -83,3 +83,8 @@
 </div>
 
 <jsp:include page="../../common/footer.jsp" />
+
+<script src="<c:url value='/resources/js/script.js' />"></script>
+<script src="<c:url value='/resources/js/session-timer.js' />"></script>
+</body>
+</html>

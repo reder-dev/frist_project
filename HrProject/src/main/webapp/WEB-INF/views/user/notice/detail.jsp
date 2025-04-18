@@ -52,25 +52,25 @@
     <h2>공지사항 상세</h2>
 
     <div class="notice-container">
-        <div class="notice-title">${notice.not_ti}</div>
+        <div class="notice-title">${notice.notTi}</div>
 
         <div class="notice-meta">
-            <span><i class="fas fa-user"></i> 작성자: ${notice.not_register}</span>
+            <span><i class="fas fa-user"></i> 작성자: ${notice.notRegister}</span>
             <span><i class="fas fa-calendar-alt"></i> 작성일: 
-                <fmt:formatDate value="${notice.not_wd}" pattern="yyyy-MM-dd HH:mm" />
+                <fmt:formatDate value="${notice.notWd}" pattern="yyyy-MM-dd HH:mm" />
             </span>
-            <span><i class="fas fa-eye"></i> 조회수: ${notice.view_count}</span>
+            <span><i class="fas fa-eye"></i> 조회수: ${notice.viewCount}</span>
         </div>
 
         <div class="notice-content">
-            ${notice.not_cn}
+            ${notice.notCn}
         </div>
 
-        <c:if test="${not empty notice.not_file}">
+        <c:if test="${not empty notice.notFile}">
             <div class="notice-attachments">
                 <strong>첨부파일:</strong>
-                <a href="<c:url value='/user/notice/download?fileId=${notice.not_file}' />">
-                    ${notice.not_file}
+                <a href="<c:url value='/user/notice/download?fileId=${notice.notFile}' />">
+                    ${notice.notFile}
                 </a>
             </div>
         </c:if>
@@ -82,3 +82,9 @@
 </div>
 
 <jsp:include page="../../common/footer.jsp" />
+
+<script src="<c:url value='/resources/js/script.js' />"></script>
+<script src="<c:url value='/resources/js/session-timer.js' />"></script>
+</body>
+</html>
+
