@@ -64,7 +64,7 @@
                     <td><input type="checkbox" class="notice-select" value="${notice.notId}"></td>
                     <td>${notice.notId}</td>
                     <td>
-                        <a href="<c:url value='/admin/notice/detail?notId=${notice.notId}' />">
+                        <a href="<c:url value='/admin/notice/detail/${notice.notId}' />">
                             ${notice.notTi}
                             <c:if test="${not empty notice.notFile}">
                                 <i class="fas fa-paperclip"></i>
@@ -75,9 +75,16 @@
                     <td><fmt:formatDate value="${notice.notWd}" pattern="yyyy-MM-dd" /></td>
                     <td>${notice.viewCount}</td>
                     <td>
-                        <button class="btn btn-sm btn-warning edit-btn" data-id="${notice.notId}">수정</button>
-                        <button class="btn btn-sm btn-danger delete-btn" data-id="${notice.notId}">삭제</button>
-                    </td>
+					    <a class="btn btn-sm btn-warning edit-btn" 
+							   href="/admin/notice/edit?notId=${notice.notId}" 
+							   style="display: inline-block; padding: 5px 10px; color: white; background-color: #f0ad4e; border: 1px solid #eea236; border-radius: 4px; text-decoration: none;">
+							   수정
+							</a>
+					    <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="${notice.notId}">
+						    삭제
+						</button>
+				</td>
+
                 </tr>
             </c:forEach>
         </tbody>
@@ -101,48 +108,53 @@
 <a href="<c:url value='/admin/notice/write' />" class="floating-btn" title="공지 작성">
     <i class="fas fa-plus"></i>공지 작성
 </a>
-
 <script>
-    document.querySelectorAll(".edit-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const id = btn.dataset.id;
-            location.href = /admin/notice/edit?notId=${id};
-        });
+
+
+document.querySelectorAll(".edit-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const id = btn.dataset.id;
+        location.href = `/admin/notice/edit?notId=${id}`;
     });
+});
 
-    document.querySelectorAll(".delete-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const id = btn.dataset.id;
 
-            if (!id) {
-                alert("삭제할 ID가 존재하지 않습니다.");
-                return;
-            }
+document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
 
-            if (confirm("정말 삭제하시겠습니까?")) {
-                fetch("/admin/notice/delete", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: notId=${id}
-                })
-                .then(res => {
-                    if (res.ok) {
-                        alert("삭제되었습니다.");
-                        location.reload();
-                    } else {
-                        alert("삭제에 실패했습니다.");
-                    }
-                })
-                .catch(() => {
-                    alert("요청 중 오류가 발생했습니다.");
-                });
-            }
-        });
+        if (!id) {
+            alert("삭제할 ID가 없습니다.");
+            return;
+        }
+
+        if (confirm("정말 삭제하시겠습니까?")) {
+            fetch("/admin/notice/delete", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "notId=" + encodeURIComponent(id)  // 정확히 notId로!
+            })
+            .then(res => {
+                if (res.redirected) {
+                    alert("삭제되었습니다.");
+                    location.href = res.url;
+                } else {
+                    alert("삭제에 실패했습니다.");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("오류가 발생했습니다.");
+            });
+        }
     });
+});
+
+
+
 </script>
-
 <style>
 .floating-btn {
     position: fixed;

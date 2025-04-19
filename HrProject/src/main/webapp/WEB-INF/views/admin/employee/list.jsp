@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
 <jsp:include page="../../common/header.jsp" />
 <jsp:include page="../../common/admin-sidebar.jsp">
     <jsp:param name="menu" value="personnel" />
@@ -80,26 +81,25 @@
                 <th>관리</th>
             </tr>
         </thead>
-       <tbody>
-    <c:forEach var="employee" items="${employees}">
-        <tr>
-            <td><input type="checkbox" class="employee-select"></td>
-            <td>${employee.emp_id}</td>
-            <td>${employee.emp_name}</td>
-            <td>${employee.dep_name}</td>
-            <td>${employee.rank_id}</td>
-            <td>${employee.emp_email}</td>
-            <td>${employee.emp_phone}</td>
-            <td><fmt:formatDate value="${employee.emp_jd}" pattern="yyyy-MM-dd" /></td>
-            <td>
-                <button class="btn btn-sm btn-info view-btn" data-id="${employee.emp_id}">조회</button>
-                <button class="btn btn-sm btn-warning edit-btn" data-id="${employee.emp_id}">수정</button>
-                <button class="btn btn-sm btn-danger delete-btn" data-id="${employee.emp_id}">삭제</button>
-            </td>
-        </tr>
-    </c:forEach>
-</tbody>
-
+        <tbody>
+            <c:forEach var="employee" items="${employees}">
+                <tr>
+                    <td><input type="checkbox" class="employee-select"></td>
+                    <td>${employee.empId}</td>
+                    <td>${employee.empName}</td>
+                    <td>${employee.depName}</td>
+                    <td>${employee.rankId}</td>
+                    <td>${employee.empEmail}</td>
+                    <td>${employee.empPhone}</td>
+                    <td><fmt:formatDate value="${employee.empJd}" pattern="yyyy-MM-dd" /></td>
+                    <td>
+                        <a href="/admin/employee/detail/${employee.empId}" class="view-link">조회</a>
+						<a href="/admin/employee/edit/${employee.empId}" class="edit-link">수정</a>
+						<button type="button" class="delete-btn" data-id="${employee.empId}">삭제</button>
+                    </td>
+                </tr>
+            </c:forEach>
+        </tbody>
     </table>
     
     <div class="table-actions">
@@ -117,3 +117,87 @@
 </div>
 
 <jsp:include page="../../common/footer.jsp" />
+
+<!-- JS 파일 + 기능 스크립트 -->
+<script src="<c:url value='/resources/js/script.js' />"></script>
+<script src="<c:url value='/resources/js/session-timer.js' />"></script>
+
+<!-- 버튼 동작 스크립트 추가 -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // 조회 버튼
+    document.querySelectorAll(".view-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const empId = btn.dataset.id;
+            location.href = `/admin/employee/detail/${empId}`;
+        });
+    });
+
+    // 수정 버튼
+    document.querySelectorAll(".edit-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const empId = btn.dataset.id;
+            location.href = `/admin/employee/edit/${empId}`;
+        });
+    });
+
+    // 삭제 버튼
+    document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const empId = btn.dataset.id;
+
+            if (confirm("정말 삭제하시겠습니까?")) {
+                fetch(`/admin/employee/delete`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: `empId=${empId}`
+                })
+                .then(res => {
+                    if (res.ok) {
+                        alert("삭제되었습니다.");
+                        location.reload();
+                    } else {
+                        alert("삭제에 실패했습니다.");
+                    }
+                })
+                .catch(() => {
+                    alert("요청 중 오류가 발생했습니다.");
+                });
+            }
+        });
+    });
+});
+</script>
+
+<style>
+.view-link, .edit-link {
+    display: inline-block;
+    padding: 4px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    margin-right: 5px;
+}
+
+.view-link {
+    background-color: #17a2b8;
+}
+
+.edit-link {
+    background-color: #ffc107;
+    color: black;
+}
+
+.view-link:hover, .edit-link:hover {
+    opacity: 0.85;
+}
+</style>
+
+
+
+</body>
+</html>

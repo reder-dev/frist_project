@@ -18,4 +18,19 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<AppointmentVO> getAppointmentsByEmpId(String empId) {
         return appointmentDAO.getAppointmentsByEmpId(empId);
     }
+
+    // 관리자: 전체 조회
+    public List<AppointmentVO> getAllAppointments() {
+        return appointmentDAO.getAllAppointments();
+    }
+
+    // 관리자: 단일 발령 조회
+    public AppointmentVO getAppointmentById(int appointmentId) {
+        return appointmentDAO.getAppointmentById(appointmentId);
+    }
+
+    // 관리자: 발령 등록
+    public void registerAppointment(AppointmentVO appointment) {
+        appointmentDAO.registerAppointment(appointment);
+    }
 }

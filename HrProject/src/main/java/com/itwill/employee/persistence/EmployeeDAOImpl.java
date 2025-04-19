@@ -52,4 +52,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         sqlSession.update(NAMESPACE + ".updateResignationDate", paramMap);
     }
     
+    @Override
+    public void deleteEmployee(String empId) {
+        sqlSession.delete("com.itwill.mapper.EmployeeMapper.deleteEmployee", empId);
+    }
+    
+    
 }

@@ -11,18 +11,18 @@
 
     <insert id="insertNotice" parameterType="com.itwill.employee.domain.NoticeVO">
         INSERT INTO NOTICE (not_ti, not_cn, not_file, emp_id, not_registdate, not_register)
-        VALUES (#{not_ti}, #{not_cn}, #{not_file}, #{emp_id}, NOW(), #{not_register})
+        VALUES (#{notTi}, #{notCn}, #{notFile}, #{empId}, NOW(), #{notRegister})
     </insert>
 
     <select id="getNotice" resultType="com.itwill.employee.domain.NoticeVO" parameterType="int">
-        SELECT * FROM NOTICE WHERE not_id = #{not_id}
+        SELECT * FROM NOTICE WHERE not_id = #{notId}
     </select>
 
     <update id="updateNotice" parameterType="com.itwill.employee.domain.NoticeVO">
         UPDATE NOTICE
-        SET not_ti = #{not_ti}, not_cn = #{not_cn}, not_file = #{not_file},
-            not_modifydate = NOW(), not_modifier = #{not_modifier}
-        WHERE not_id = #{not_id}
+        SET not_ti = #{notTi}, not_cn = #{notCn}, not_file = #{notFile},
+            not_modifydate = NOW(), not_modifier = #{notModifier}
+        WHERE not_id = #{notId}
     </update>
     
     <update id="increaseViewCount" parameterType="int">
@@ -32,6 +32,6 @@
 	</update>
 
     <delete id="deleteNotice" parameterType="int">
-        DELETE FROM NOTICE WHERE not_id = #{not_id}
+        DELETE FROM NOTICE WHERE not_id = #{notId}
     </delete>
 </mapper>

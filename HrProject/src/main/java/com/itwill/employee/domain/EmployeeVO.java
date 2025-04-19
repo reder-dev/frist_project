@@ -33,7 +33,8 @@ public class EmployeeVO {
 	private String posId;
 	private String rankId;
 
-	private String empRegistdate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Timestamp empRegistdate;
 	private String empRegister;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

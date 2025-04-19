@@ -11,10 +11,25 @@ import com.itwill.employee.domain.AppointmentVO;
 @Repository
 public class AppointmentDAOImpl implements AppointmentDAO {
 
-	private static final String NAMESPACE = "com.itwill.employee.persistence.AppointmentDAO";
-
     @Autowired
     private SqlSession sqlSession;
+
+    private static final String NAMESPACE = "com.itwill.employee.persistence.AppointmentDAO";
+
+    @Override
+    public List<AppointmentVO> getAllAppointments() {
+        return sqlSession.selectList(NAMESPACE + ".getAllAppointments");
+    }
+
+    @Override
+    public AppointmentVO getAppointmentById(int appointmentId) {
+        return sqlSession.selectOne(NAMESPACE + ".getAppointmentById", appointmentId);
+    }
+
+    @Override
+    public void registerAppointment(AppointmentVO appointment) {
+        sqlSession.insert(NAMESPACE + ".registerAppointment", appointment);
+    }
 
     @Override
     public List<AppointmentVO> getAppointmentsByEmpId(String empId) {

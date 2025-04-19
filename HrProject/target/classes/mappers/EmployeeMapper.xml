@@ -35,5 +35,9 @@
         SET emp_qd = #{empQd}
         WHERE emp_id = #{empId}
     </update>
+    
+    <delete id="deleteEmployee" parameterType="string">
+	    DELETE FROM EMPLOYEE WHERE emp_id = #{empId}
+	</delete>
 
 </mapper>

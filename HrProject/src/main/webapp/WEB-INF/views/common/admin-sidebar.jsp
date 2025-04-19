@@ -8,7 +8,7 @@
                 <span>인사관리</span>
             </a>
             <ul class="submenu ${param.menu == 'personnel' ? 'open' : ''}">
-                <li><a href="<c:url value='/admin/employee/info' />">인사조회</a></li>
+                <li><a href="<c:url value='/admin/employee/list' />">인사조회</a></li>
                 <li><a href="<c:url value='/admin/employee/appointment' />">발령조회</a></li>
                 <li><a href="<c:url value='/admin/employee/organization' />">조직도 조회</a></li>
             </ul>

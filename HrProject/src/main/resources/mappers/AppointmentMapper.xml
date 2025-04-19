@@ -1,15 +1,49 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwill.employee.persistence.AppointmentDAO">
 
-    <select id="getAppointmentsByEmpId"
-        resultType="com.itwill.employee.domain.AppointmentVO"
-        parameterType="String">
-    SELECT * FROM APPOINTMENT
-    WHERE emp_id = #{empId}
-    ORDER BY app_registdate DESC
-</select>
+    <!-- 사용자: 특정 사원의 발령 목록 조회 -->
+    <select id="getAppointmentsByEmpId" resultType="com.itwill.employee.domain.AppointmentVO">
+        SELECT *
+        FROM APPOINTMENT
+        WHERE emp_id = #{empId}
+        ORDER BY app_registdate DESC
+    </select>
+
+    <!-- 관리자: 전체 발령 목록 조회 -->
+    <select id="getAllAppointments" resultType="com.itwill.employee.domain.AppointmentVO">
+        SELECT *
+        FROM APPOINTMENT
+        ORDER BY app_registdate DESC
+    </select>
+
+    <!-- 관리자: 단일 발령 상세 조회 -->
+    <select id="getAppointmentById" resultType="com.itwill.employee.domain.AppointmentVO">
+        SELECT *
+        FROM APPOINTMENT
+        WHERE app_id = #{appointmentId}
+    </select>
+
+    <!-- 관리자: 발령 등록 -->
+    <insert id="registerAppointment">
+        INSERT INTO APPOINTMENT (
+            emp_id,
+            dep_id,
+            app_type,
+            app_content,
+            app_register,
+            app_registdate
+        ) VALUES (
+            #{empId},
+            #{depId},
+            #{appType},
+            #{appContent},
+            #{registerId},
+            NOW()
+        )
+    </insert>
 
 </mapper>

@@ -11,13 +11,33 @@ import com.itwill.employee.domain.DepartmentVO;
 @Repository
 public class DepartmentDAOImpl implements DepartmentDAO {
 
-    private static final String NAMESPACE = "com.itwill.employee.persistence.DepartmentDAO";
-
     @Autowired
     private SqlSession sqlSession;
+
+    private static final String NAMESPACE = "com.itwill.employee.persistence.DepartmentDAO";
 
     @Override
     public List<DepartmentVO> getAllDepartments() {
         return sqlSession.selectList(NAMESPACE + ".getAllDepartments");
+    }
+
+    @Override
+    public boolean addDepartment(DepartmentVO department) {
+        return sqlSession.insert(NAMESPACE + ".addDepartment", department) == 1;
+    }
+
+    @Override
+    public boolean updateDepartment(DepartmentVO department) {
+        return sqlSession.update(NAMESPACE + ".updateDepartment", department) == 1;
+    }
+
+    @Override
+    public boolean deleteDepartment(String deptId) {
+        return sqlSession.delete(NAMESPACE + ".deleteDepartment", deptId) == 1;
+    }
+
+    @Override
+    public List<String> getEmployeesByDeptId(String deptId) {
+        return sqlSession.selectList(NAMESPACE + ".getEmployeesByDeptId", deptId);
     }
 }

@@ -10,6 +10,8 @@ public interface EmployeeDAO {
     EmployeeVO getEmployeeById(String empId);	// Ư�� ���� ��ȸ
     void updateEmployee(EmployeeVO employee);	// ���� ���� ������Ʈ
     void updateResignationDate(String empId, Date empQd);
+    void deleteEmployee(String empId);
+    
     
 }
 

@@ -17,5 +17,7 @@ public interface EmployeeService {
 	void updateEmployee(EmployeeVO employee);
 	
 	void updateResignationDate(String empId, Date empQd);
+	
+	void deleteEmployee(String empId);
     
 }

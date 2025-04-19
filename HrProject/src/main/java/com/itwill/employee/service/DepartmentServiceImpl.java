@@ -18,4 +18,24 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<DepartmentVO> getAllDepartments() {
         return departmentDAO.getAllDepartments();
     }
+
+    @Override
+    public boolean addDepartment(DepartmentVO department) {
+        return departmentDAO.addDepartment(department);
+    }
+
+    @Override
+    public boolean updateDepartment(DepartmentVO department) {
+        return departmentDAO.updateDepartment(department);
+    }
+
+    @Override
+    public boolean deleteDepartment(String deptId) {
+        return departmentDAO.deleteDepartment(deptId);
+    }
+
+    @Override
+    public List<String> getEmployeesByDeptId(String deptId) {
+        return departmentDAO.getEmployeesByDeptId(deptId);
+    }
 }

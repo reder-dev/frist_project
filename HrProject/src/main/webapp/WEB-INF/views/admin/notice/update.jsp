@@ -10,37 +10,43 @@
 <div class="content">
     <h2>공지사항 수정</h2>
 
-    <form action="<c:url value='/admin/notice/update' />" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="not_id" value="${notice.not_id}" />
+    <form action="<c:url value='/admin/notice/edit' />" method="post" enctype="multipart/form-data">
+	    <input type="hidden" name="notId" value="${notice.notId}" />
+	
+	    <div class="form-group">
+	        <label for="notTi">제목</label>
+	        <input type="text" id="notTi" name="notTi" class="form-control" value="${notice.notTi}" required />
+	    </div>
+	
+	    <div class="form-group">
+	        <label for="notCn">내용</label>
+	        <textarea id="notCn" name="notCn" class="form-control" rows="10" required>${notice.notCn}</textarea>
+	    </div>
+	
+	    <div class="form-group">
+	        <label for="notFile">첨부파일</label>
+	        <input type="text" id="notFile" name="notFile" class="form-control" value="${notice.notFile}" />
+	        <c:if test="${not empty notice.notFile}">
+	            <p>현재 파일: ${notice.notFile}</p>
+	        </c:if>
+	    </div>
+	
+	    <div class="form-group">
+	        <label for="notRegister">작성자</label>
+	        <input type="text" id="notRegister" name="notRegister" class="form-control" value="${notice.notRegister}" readonly />
+	    </div>
+	
+	    <div class="form-group text-center">
+	        <button type="submit" class="btn btn-primary">수정 완료</button>
+	        <a href="<c:url value='/admin/notice/manage' />" class="btn btn-secondary">취소</a>
+	    </div>
+	</form>
 
-        <div class="form-group">
-            <label for="not_ti">제목</label>
-            <input type="text" id="not_ti" name="not_ti" class="form-control" value="${notice.not_ti}" required />
-        </div>
-
-        <div class="form-group">
-            <label for="not_cn">내용</label>
-            <textarea id="not_cn" name="not_cn" class="form-control" rows="10" required>${notice.not_cn}</textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="not_file">첨부파일</label>
-            <input type="file" id="not_file" name="not_file" class="form-control" />
-            <c:if test="${not empty notice.not_file}">
-                <p>현재 파일: ${notice.not_file}</p>
-            </c:if>
-        </div>
-
-        <div class="form-group">
-            <label for="not_register">작성자</label>
-            <input type="text" id="not_register" name="not_register" class="form-control" value="${notice.not_register}" readonly />
-        </div>
-
-        <div class="form-group text-center">
-            <button type="submit" class="btn btn-primary">수정 완료</button>
-            <a href="<c:url value='/admin/notice/manage' />" class="btn btn-secondary">취소</a>
-        </div>
-    </form>
 </div>
 
 <jsp:include page="../../common/footer.jsp" />
+
+<script src="<c:url value='/resources/js/script.js' />"></script>
+<script src="<c:url value='/resources/js/session-timer.js' />"></script>
+</body>
+</html> 

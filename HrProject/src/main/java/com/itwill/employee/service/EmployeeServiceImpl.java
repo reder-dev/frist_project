@@ -3,6 +3,7 @@ package com.itwill.employee.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -27,12 +28,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void updateEmployee(EmployeeVO employee) {
+    	employee.setEmpModifydate(new Timestamp(System.currentTimeMillis()));
         employeeDAO.updateEmployee(employee);
     }
     
     @Override
     public void updateResignationDate(String empId, Date empQd) {
         employeeDAO.updateResignationDate(empId, empQd);
+    }
+    
+    @Override
+    public void deleteEmployee(String empId) {
+        employeeDAO.deleteEmployee(empId);
     }
     
     
