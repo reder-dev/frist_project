@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.itwill.employee.domain.DepartmentVO;
+import com.itwill.employee.domain.EmployeeVO;
 
 @Repository
 public class DepartmentDAOImpl implements DepartmentDAO {
@@ -37,7 +38,9 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     }
 
     @Override
-    public List<String> getEmployeesByDeptId(String deptId) {
-        return sqlSession.selectList(NAMESPACE + ".getEmployeesByDeptId", deptId);
+    public List<EmployeeVO> getEmployeesByDeptId(String deptId) {
+        return sqlSession.selectList("com.itwill.employee.persistence.DepartmentDAO.getEmployeesByDeptId", deptId);
     }
+
+    
 }

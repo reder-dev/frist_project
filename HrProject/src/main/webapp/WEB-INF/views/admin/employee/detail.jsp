@@ -133,5 +133,8 @@
 </div>
 
 <jsp:include page="../../common/footer.jsp" />
+
 <script src="<c:url value='/resources/js/script.js' />"></script>
 <script src="<c:url value='/resources/js/session-timer.js' />"></script>
+</body>
+</html>

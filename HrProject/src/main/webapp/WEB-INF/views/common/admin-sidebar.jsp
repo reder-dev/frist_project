@@ -9,8 +9,10 @@
             </a>
             <ul class="submenu ${param.menu == 'personnel' ? 'open' : ''}">
                 <li><a href="<c:url value='/admin/employee/list' />">인사조회</a></li>
-                <li><a href="<c:url value='/admin/employee/appointment' />">발령조회</a></li>
-                <li><a href="<c:url value='/admin/employee/organization' />">조직도 조회</a></li>
+                <li><a href="<c:url value='/admin/appointment/list' />">발령조회</a></li>
+                <li><a href="<c:url value='/admin/organization/chart' />">조직도 조회</a></li>
+            	<li><a href="<c:url value='/admin/organization/departments' />">부서관리</a></li>
+            	<li><a href="<c:url value='/admin/resignation/manage' />">퇴사관리</a></li>
             </ul>
         </li>
         <li class="menu-item ${param.menu == 'attendance' ? 'active' : ''} has-submenu">

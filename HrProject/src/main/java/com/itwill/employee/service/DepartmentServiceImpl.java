@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwill.employee.domain.DepartmentVO;
+import com.itwill.employee.domain.EmployeeVO;
 import com.itwill.employee.persistence.DepartmentDAO;
 
 @Service
@@ -35,7 +36,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<String> getEmployeesByDeptId(String deptId) {
+    public List<EmployeeVO> getEmployeesByDeptId(String deptId) {
         return departmentDAO.getEmployeesByDeptId(deptId);
     }
 }

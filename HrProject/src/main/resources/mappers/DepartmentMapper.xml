@@ -6,26 +6,30 @@
 <mapper namespace="com.itwill.employee.persistence.DepartmentDAO">
 
     <select id="getAllDepartments" resultType="com.itwill.employee.domain.DepartmentVO">
-        SELECT * FROM department
+        SELECT * FROM DEPARTMENT
     </select>
 
     <insert id="addDepartment" parameterType="com.itwill.employee.domain.DepartmentVO">
-        INSERT INTO department (dep_id, dep_name, dep_register, dep_registdate)
+        INSERT INTO DEPARTMENT (dep_id, dep_name, dep_register, dep_registdate)
         VALUES (#{depId}, #{depName}, #{depRegister}, NOW())
     </insert>
 
     <update id="updateDepartment" parameterType="com.itwill.employee.domain.DepartmentVO">
-        UPDATE department
+        UPDATE DEPARTMENT
         SET dep_name = #{depName}
         WHERE dep_id = #{depId}
     </update>
 
     <delete id="deleteDepartment" parameterType="String">
-        DELETE FROM department WHERE dep_id = #{deptId}
+        DELETE FROM DEPARTMENT WHERE dep_id = #{deptId}
     </delete>
 
-    <select id="getEmployeesByDeptId" resultType="com.itwill.employee.domain.EmployeeVO">
-	    SELECT * FROM employee WHERE dep_id = #{deptId}
-	</select>
+    <select id="getEmployeesByDeptId" parameterType="String" resultType="com.itwill.employee.domain.EmployeeVO">
+        SELECT 
+            emp_id, emp_name, emp_email, emp_gender, emp_phone, 
+            dep_id, pos_id, rank_id, emp_address
+        FROM EMPLOYEE
+        WHERE dep_id = #{deptId}
+    </select>
 
 </mapper>

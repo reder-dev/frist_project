@@ -40,7 +40,7 @@
         </div>
         
         <form action="<c:url value='/user/employee/resignation' />" method="post" class="resignation-form">
-            <input type="hidden" name="emp_id" value="${employee.emp_id}">
+            <input type="hidden" name="emp_id" value="${employee.empId}">
             
             <div class="form-section">
                 <div class="form-row">
@@ -84,7 +84,7 @@
                     <div class="form-group full-width">
                         <label for="contactAfterResignation">퇴사 후 연락처</label>
                         <input type="text" id="contactAfterResignation" name="contactAfterResignation" class="form-control"
-       value="${employee.emp_phone}">
+       value="${employee.empPhone}">
 
                         <small class="form-text">* 퇴사 후 연락 가능한 연락처를 입력해주세요.</small>
                     </div>

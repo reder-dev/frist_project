@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwill.employee.persistence.ResignationDAO">
+
+    <insert id="insertResignation" parameterType="com.itwill.employee.domain.ResignationVO">
+        INSERT INTO resignation (
+            emp_id, resignation_date, resignation_type,
+            resignation_reason, handover_plan, contact_after, agreement
+        ) VALUES (
+            #{empId}, #{resignationDate}, #{resignationType},
+            #{resignationReason}, #{handoverPlan}, #{contactAfter}, #{agreement}
+        )
+    </insert>
+
+    <select id="getAllResignations" resultType="com.itwill.employee.domain.ResignationVO">
+        SELECT * FROM resignation ORDER BY request_date DESC
+    </select>
+
+    <select id="getResignationById" parameterType="int" resultType="com.itwill.employee.domain.ResignationVO">
+        SELECT * FROM resignation WHERE resign_id = #{resignId}
+    </select>
+
+    <update id="approveResignation" parameterType="map">
+        UPDATE resignation
+        SET status = '승인',
+            approver = #{approver},
+            approve_date = NOW()
+        WHERE resign_id = #{resignId}
+    </update>
+
+    <update id="rejectResignation" parameterType="map">
+        UPDATE resignation
+        SET status = '반려',
+            approver = #{approver},
+            approve_date = NOW()
+        WHERE resign_id = #{resignId}
+    </update>
+
+    <update id="updateStatus" parameterType="map">
+	    UPDATE resignation
+	    SET status = #{status},
+	        approver = #{approver},
+	        approve_date = NOW()
+	    WHERE resign_id = #{resignId}
+	</update>
+
+
+</mapper>

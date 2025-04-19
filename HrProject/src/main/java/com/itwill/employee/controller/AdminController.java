@@ -20,10 +20,12 @@ import com.itwill.employee.domain.AppointmentVO;
 import com.itwill.employee.domain.DepartmentVO;
 import com.itwill.employee.domain.EmployeeVO;
 import com.itwill.employee.domain.NoticeVO;
+import com.itwill.employee.domain.ResignationVO;
 import com.itwill.employee.service.AppointmentService;
 import com.itwill.employee.service.DepartmentService;
 import com.itwill.employee.service.EmployeeService;
 import com.itwill.employee.service.NoticeService;
+import com.itwill.employee.service.ResignationService;
 
 
 
@@ -40,6 +42,9 @@ public class AdminController {
 	@Autowired
     private AppointmentService appointmentService;
 	
+	
+	@Autowired
+    private ResignationService resignationService;
 
     @GetMapping("/main")
     public String main(HttpSession session) {
@@ -130,7 +135,7 @@ public class AdminController {
     @PostMapping("/appointment/register")
     public String appointmentRegister(@ModelAttribute AppointmentVO appointment, HttpSession session) {
         String empId = (String) session.getAttribute("empId");
-        appointment.setRegisterId(empId);
+        appointment.setAppRegister(empId);
         appointmentService.registerAppointment(appointment);
         return "redirect:/admin/appointment/list";
     }
@@ -146,10 +151,11 @@ public class AdminController {
     // 부서별 사원 목록 조회 (AJAX 요청용)
     @GetMapping("/organization/department-members")
     public String departmentMembers(@RequestParam("deptId") String deptId, Model model) {
-        List<EmployeeVO> employees = departmentService.getEmployeesByDeptId(deptId);
-        model.addAttribute("employees", employees);
-        return "admin/organization/department-members";
+    	List<EmployeeVO> employees = departmentService.getEmployeesByDeptId(deptId);
+    	model.addAttribute("employees", employees);
+    	return "admin/organization/department-members";
     }
+
     
     // 부서 관리 페이지
     @GetMapping("/organization/departments")
@@ -179,7 +185,7 @@ public class AdminController {
     public boolean deleteDepartment(@RequestParam("deptId") String deptId) {
         return departmentService.deleteDepartment(deptId);
     }
-}
+
     
     // 근태관리
     @GetMapping("/attendance/manage")
@@ -260,6 +266,47 @@ public class AdminController {
         noticeService.deleteNotice(notId);
         return "redirect:/admin/notice/manage";
     }
+    
+
+
+ // 관리자 퇴사 신청 이력 조회
+    @GetMapping("/resignation/manage")
+    public String manageResignation(Model model) {
+        List<ResignationVO> resignList = resignationService.getAllResignations();
+        model.addAttribute("resignList", resignList);
+        return "admin/resignation/manage";
+    }
+
+    // 관리자 퇴사 신청 상세
+    @GetMapping("/resignation/detail/{resignId}")
+    public String resignationDetail(@PathVariable("resignId") int resignId, Model model) {
+    	ResignationVO vo = resignationService.getResignationDetail(resignId);
+        EmployeeVO employee = employeeService.getEmployeeById(vo.getEmpId());
+        model.addAttribute("resign", vo);
+        model.addAttribute("employee", employee);
+        return "admin/resignation/detail";
+    }
+
+    // 관리자 퇴사 신청 상태 변경 (승인/반려)
+    @PostMapping("/resignation/update")
+    @ResponseBody
+    public String updateResignationStatus(@RequestParam("resignId") int resignId,
+                                          @RequestParam("status") String status,
+                                          HttpSession session) {
+        String approver = (String) session.getAttribute("empId");
+        if (approver == null) approver = "admin";
+
+        try {
+            resignationService.updateStatus(resignId, status, approver);
+            return "OK";
+        } catch (Exception e) {
+            e.printStackTrace(); // 로그 확인용
+            return "FAIL";
+        }
+    }
+
+    
+    
     
     
 }
